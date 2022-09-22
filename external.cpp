@@ -227,7 +227,7 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR){
    * Calculate the error as the weighted differences of sensor pairs
    * if you want to exlude some sensors change the for-statement accordingly
    **/
-  for (int i = 0 ; i < 3 ; i++){
+  for (int i = 0 ; i < 3 ; i++){          //change 1< 3 to tailor number of active sensor pairs
       reflex_error += (sesnor_diff_weights[i]) * (sensorVAL[i] - sensorVAL[numSensors -1 -i]);
   }
   reflex_error = reflex_error / (mapWhite - mapBlack); // normalise the error to the range
