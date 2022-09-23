@@ -8,8 +8,8 @@ class Bandpass;
 
 
 /**
- * Creates memory traces at specified length. It's a 2nd order IIR filter.
- **/
+ * @brief Creates memory traces at specified length. It's a 2nd order IIR filter.	
+ */
 class Bandpass {
 public:
 	/**
@@ -18,8 +18,11 @@ public:
 	Bandpass();
 	
 	/**
-	 * Filter
-	 **/
+	 * @brief 
+	 * 
+	 * @param v 
+	 * @return * Filter* 
+	 */
 	double filter(double v);
 
 	/**
@@ -29,8 +32,12 @@ public:
 	void calcPolesZeros(double f,double r);
 
 	/**
-	 * sets the filter parameters
-	 **/
+	 * @brief sets the filter parameters
+	 * 
+	 * @param frequency 
+	 * @param Qfactor 
+	 * @return * sets* 
+	 */
 	void setParameters(double frequency, double Qfactor);
 
 	/**
