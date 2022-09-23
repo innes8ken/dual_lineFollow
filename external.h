@@ -16,11 +16,48 @@
 using namespace cv;
 using namespace std;
 
+/**
+ * @brief Contains functions which manage error signals, reflex commands and GUI
+ * 
+ */
+
 class Extern {
 	public:
+
 	Extern();
+
+	/**
+	 * @brief Returns the overall motor command
+	 * 
+	 * onStepCompleted is called every timestep where it will complete one step of
+	 * learning and sum with reflex signals.  
+	 * 
+	 * @param stat_frame Used for plotting ?
+	 * @param deltaSensorData this is the reflex error found from calling calcError()
+	 * @param predictorDeltas the predictors differences
+	 * @return int motor_command
+	 */
 	int onStepCompleted(Mat &stat_frame, double deltaSensorData, vector<double> &predictorDeltas);
+
+	/**
+	 * @brief Returns reflex error 
+	 * 
+	 * Contains mapping, filtering and GUI plotting actions for the reflex signals.
+	 * 
+	 * @param statFrame Used for plotting?
+	 * @param sensorCHAR holds the raw sensor data for the PR sensors 
+	 * @return double reflex_Error
+	 */
 	double calcError(Mat &statFrame, vector<uint8_t> &sensorCHAR);
+
+	/**
+	 * @brief Returns the number of predictors to main.cpp
+	 * 
+	 * handles the predictive signals from the camera array 
+	 * 
+	 * @param frame 
+	 * @param predictorDeltaMeans camera array values 
+	 */
 	void calcPredictors(Mat &frame, vector<double> &predictorDeltaMeans);
 	int getNpredictors();
 
