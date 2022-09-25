@@ -59,6 +59,14 @@ class Extern {
 	 * @param predictorDeltaMeans camera array values 
 	 */
 	void calcPredictors(Mat &frame, vector<double> &predictorDeltaMeans);
+
+	/**
+	 * @brief Get the Npredictors object
+	 * 
+	 * Returns the number of predictors
+	 * 
+	 * @return int nPredictors
+	 */
 	int getNpredictors();
 
 	private:
