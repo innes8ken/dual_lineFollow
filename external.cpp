@@ -82,7 +82,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
    * Pass in the feedback_error (same as reflex error unless the learning is off)
    * Returns the NN's output, which is a weighted sum of neurons' output in the last layer
    **/
-  double nn_output = run_samanet(predictors_diff, feedback_error);
+  double nn_output = run_samanet(predictors_diff, feedback_error); //*********************************************************************ADDITION-get FCL nn output****************************************************
 
   // # SECTION: MOTOR COMMAND
   double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
@@ -237,53 +237,54 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR){
   double minVal = 40; // used to adjust the plots
   double maxVal = 260; // used to sdjust the plots
 
+  // Change sensor colours here 
   sensor0.push_back(sensorVAL[0]); //puts the errors in a buffer for plotting
   sensor0[0] = minVal;
   sensor0[1] = maxVal;
   std::vector<double> sensor_list0(sensor0.begin(), sensor0.end());
-  cvui::sparkline(stat_frame, sensor_list0, 10, 50, 580, 200, 0x660000); //0xff0000
+  cvui::sparkline(stat_frame, sensor_list0, 10, 50, 580, 200, 0xff0000); // RED
 
   sensor1.push_back(sensorVAL[1]); //puts the errors in a buffer for plotting
   sensor1[0] = minVal;
   sensor1[1] = maxVal;
   std::vector<double> sensor_list1(sensor1.begin(), sensor1.end());
-  cvui::sparkline(stat_frame, sensor_list1, 10, 50, 580, 200, 0x990000); //0xff9900
+  cvui::sparkline(stat_frame, sensor_list1, 10, 50, 580, 200, 0xff7000); // ORANGE
 
   sensor2.push_back(sensorVAL[2]); //puts the errors in a buffer for plotting
   sensor2[0] = minVal;
   sensor2[1] = maxVal;
   std::vector<double> sensor_list2(sensor2.begin(), sensor2.end());
-  cvui::sparkline(stat_frame, sensor_list2, 10, 50, 580, 200, 0xcc0000); //0xffff00
+  cvui::sparkline(stat_frame, sensor_list2, 10, 50, 580, 200, 0xffec00); // YELLOW
 
   sensor3.push_back(sensorVAL[3]); //puts the errors in a buffer for plotting
   sensor3[0] = minVal;
   sensor3[1] = maxVal;
   std::vector<double> sensor_list3(sensor3.begin(), sensor3.end());
-  cvui::sparkline(stat_frame, sensor_list3, 10, 50, 580, 200, 0xff0000); //0x00ff00
+  cvui::sparkline(stat_frame, sensor_list3, 10, 50, 580, 200, 0x32ff00); // GREEN
 
   sensor4.push_back(sensorVAL[4]); //puts the errors in a buffer for plotting
   sensor4[0] = minVal;
   sensor4[1] = maxVal;
   std::vector<double> sensor_list4(sensor4.begin(), sensor4.end());
-  cvui::sparkline(stat_frame, sensor_list4, 10, 50, 580, 200, 0x00ffff); //0x00ffff
+  cvui::sparkline(stat_frame, sensor_list4, 10, 50, 580, 200, 0x008202); // DARK GREEN
 
   sensor5.push_back(sensorVAL[5]); //puts the errors in a buffer for plotting
   sensor5[0] = minVal;
   sensor5[1] = maxVal;
   std::vector<double> sensor_list5(sensor5.begin(), sensor5.end());
-  cvui::sparkline(stat_frame, sensor_list5, 10, 50, 580, 200, 0x00cccc); //0x9900ff
+  cvui::sparkline(stat_frame, sensor_list5, 10, 50, 580, 200, 0xa600ff); //PURPLE
 
   sensor6.push_back(sensorVAL[6]); //puts the errors in a buffer for plotting
   sensor6[0] = minVal;
   sensor6[1] = maxVal;
   std::vector<double> sensor_list6(sensor6.begin(), sensor6.end());
-  cvui::sparkline(stat_frame, sensor_list6, 10, 50, 580, 200, 0x009999); //0xff00ff
+  cvui::sparkline(stat_frame, sensor_list6, 10, 50, 580, 200, 0x00ffbd); // LIGHT BLUE 
 
   sensor7.push_back(sensorVAL[7]); //puts the errors in a buffer for plotting
   sensor7[0] = minVal;
   sensor7[1] = maxVal;
   std::vector<double> sensor_list7(sensor7.begin(), sensor7.end());
-  cvui::sparkline(stat_frame, sensor_list7, 10, 50, 580, 200, 0x006666); //0xffffff
+  cvui::sparkline(stat_frame, sensor_list7, 10, 50, 580, 200, 0x0027ff); // DARK BLUE
 
   // average the reflex_error over the last N samples:
   stepCount += 1; // count how many steps the program has taken
@@ -385,7 +386,8 @@ int Extern::getNpredictors (){
     return nPredictors;
 }
 
-// 'calcPredictors' calculate the predictors for the NN 
+// 'calcPredictors' calculate the predictors for the NN  
+// Should work for both paradigms 
 void Extern::calcPredictors(Mat &frame, vector<double> &predictorDeltaMeans){
 	// Define the rectangular area that will be separated from the full camera view.
   // Only this area will be used for the learning
