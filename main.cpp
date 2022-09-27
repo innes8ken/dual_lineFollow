@@ -51,7 +51,13 @@ int main(int, char **) {
    * Initialises the CLDL network
    * This is called from the nueral.cpp file
    **/
-  initialize_samanet(nPredictors);
+
+ // switch (ParadigmOP) { ***************************************************************************ADDITION***********************************
+  //  case 0:
+    initialize_samanet(nPredictors);
+  //break 
+  //case 1: Initialise FCL 
+
   /**
    * Setting up a serial communication for arduino
    **/
@@ -88,10 +94,10 @@ int main(int, char **) {
    * They are received form the camera and are sent to the CLDL NN for prediction
    **/
   std::vector<double> predictorDeltaMeans;
-  predictorDeltaMeans.reserve(nPredictors);
+  predictorDeltaMeans.reserve(nPredictors);  
   /**
    * Create vectors to put the sensor values in
-   * This is type unsignes integer 8
+   * This is type unsigned integer 8
    * These are the reflex sensory inputs that are received form the arduino 
    **/
   std::vector<uint8_t> sensorsArray;
@@ -180,9 +186,9 @@ int main(int, char **) {
     /**
      * If the reflex error 'reflex_error' is greater than 99
      * it sends a value of +-19 to each motors which stops the robot
-     * When the learning has succeeded or a certain number of steps is completed
+     * When the learning has succeeded or a certain number of steps is completed.
      * the reflex error is manually set to 100 (in external.cpp file)
-     * which satisfies the if-statement below
+     * which satisfies the if-statement below.
      * This stops the robot and then the program terminates.
      * This is to stop extra unwanted data being written to the files
      * and also to stop the robot from falling off the table after the program has ended.
@@ -204,7 +210,7 @@ int main(int, char **) {
          * Pass the 'predictorDeltaMeans' for the NN to predict the future actions
          * It returns the 'motor_command' which is used to drive the motors
          **/
-        motor_command = external->onStepCompleted(statFrame, reflex_error, predictorDeltaMeans);
+        motor_command = external->onStepCompleted(statFrame, reflex_error, predictorDeltaMeans); //******************************************ADDITION********************
         /**
          * The differential, left and right velocities are all equal to the motor_command
          * In the future they could be used to send different values to the motors
