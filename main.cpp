@@ -28,6 +28,10 @@ using namespace std;
 constexpr int ESC_key = 27;
 const int numSens9 = 9;
 
+/**
+ * Main function of robot follower 
+ **/
+
 int main(int n, char* args[]) {
 
   /**
@@ -78,11 +82,11 @@ int main(int n, char* args[]) {
    * This is called from the nueral.cpp file
    **/
 
- // switch (ParadigmOP) { ***************************************************************************ADDITION***********************************
-  //  case 0:
+ switch (ParadigmOption) { //***************************************************************************ADDITION***********************************
+   case "B":
     initialize_samanet(nPredictors);
-  //break 
-  //case 1: Initialise FCL 
+    break 
+   //case 1: Initialise FCL 
 
   /**
    * Setting up a serial communication for arduino
