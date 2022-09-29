@@ -28,7 +28,33 @@ using namespace std;
 constexpr int ESC_key = 27;
 const int numSens9 = 9;
 
-int main(int, char **) {
+int main(int n, char* args[]) {
+
+  /**
+   * Introducing command line argument paradigmOption
+   **/
+  string paradigmOption = argz[1];
+
+  /**
+   * Checking for input error
+   **/
+  if ((n != 2) || ((paradigmOption!="F") && (paradigmOption!="B")))  
+    { 
+    cout << "ERROR: Wrong arguments as input. PLease input 'F' OR 'B' after executable" << endl;  
+    cout << "Number of input arguments = :" << n -1 << endl;  
+    break;
+    }
+  /**
+   * Printing successful paradigm setting  
+   **/
+  if (paradigmOption == "F"){
+    cout << "The learning paradigm is set to Forward error prop"<< endl;
+  
+  } else if (paradigmOption == "B") {
+    cout << "The learning paradigm is set to Backward error prop"<< endl;
+  }
+
+
   /**
    * Make an (a pointer) instance of the class Extern 
    **/
