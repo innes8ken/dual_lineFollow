@@ -34,27 +34,29 @@ const int numSens9 = 9;
 
 int main(int n, char* args[]) {
 
+
   /**
    * Introducing command line argument paradigmOption
    **/
-  string paradigmOption = args[1];
+ int paradigmOption = atoi(args[1]);
+ 
 
   /**
    * Checking for input error
    **/
-  if ((n != 2) || ((paradigmOption!="F") && (paradigmOption!="B")))  
+  if ((n != 2) || ((paradigmOption!=0) && (paradigmOption!=1)))  
     { 
-    cout << "ERROR: Wrong arguments as input. PLease input 'F' OR 'B' after executable" << endl;  
-    cout << "Number of input arguments = :" << n -1 << endl;  
-    break;
+    cout << "ERROR: Wrong arguments as input. PLease pass 0 for Back-Prop OR 1 for Forward-Prop after executable" << endl;  
+    cout << "Number of input arguments = " << n -1 << endl;  
+    return 0;
     }
   /**
    * Printing successful paradigm setting  
    **/
-  if (paradigmOption == "F"){
+  if (paradigmOption == 1){
     cout << "The learning paradigm is set to Forward error prop"<< endl;
   
-  } else if (paradigmOption == "B") {
+  } else if (paradigmOption == 0) {
     cout << "The learning paradigm is set to Backward error prop"<< endl;
   }
 
@@ -82,10 +84,10 @@ int main(int n, char* args[]) {
    * This is called from the nueral.cpp file
    **/
 
- switch (ParadigmOption) { //***************************************************************************ADDITION***********************************
-   case "B":
+ switch (paradigmOption) { //***************************************************************************ADDITION***********************************
+   case 0:
     initialize_samanet(nPredictors);
-    break 
+    //break; 
    //case 1: Initialise FCL 
 
   /**
@@ -280,4 +282,5 @@ int main(int n, char* args[]) {
       break;
   }
   return 0;
+}
 }
