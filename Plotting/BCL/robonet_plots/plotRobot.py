@@ -31,8 +31,8 @@ plt.close("all")
 #%%
 errorSuccessData=np.loadtxt('{}errorSuccessData.csv'.format(path));
 error = errorSuccessData[:,0];
-errorShifted = errorSuccessData[:,1];
-errorIntegral = errorSuccessData[:,2];
+#errorShifted = errorSuccessData[:,1];
+errorIntegral = errorSuccessData[:,1];
 minE=int(min(error))-1; maxE=int(max(error))
 #errorNorm=error/maxE
 fig=plt.figure('error', figsize=(3,1), dpi=my_dpi)
