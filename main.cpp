@@ -37,7 +37,7 @@ int main(int n, char* args[]) {
   /**
    * Introducing command line argument paradigmOption
    **/
-  string paradigmOption = argz[1];
+  string paradigmOption = args[1];
 
   /**
    * Checking for input error

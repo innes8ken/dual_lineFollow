@@ -1,4 +1,4 @@
-/*!
+/**
  \file    serialib.cpp
  \brief   Class to manage the serial port
  \author  Philippe Lucidarme (University of Angers) <serialib@googlegroups.com>

@@ -1,13 +1,13 @@
-# FCL and BCL Linefollower
 
-Forward error propagation within a closed loop system has been theorised and studied
-using a line following robot simulation (Porr & Miller, 2019). This project aims to
-incorporate the forward error propagation paradigm into a physical line-following robot
-serving as the autonomous agent. The robot’s ability to learn using the predictive signals
-from a camera array will be analysed and compared to the same robot running a
-backpropagation algorithm (Daryanavard & Porr, n.d.)
-
-[Github Page dual_linefollower](https://github.com/innes8ken/dual_lineFollow)
+/**\mainpage
+ *
+ * \section intro_sec FCL and BCL Linefollower
+ *
+  Forward error propagation within a closed loop system has been theorised and studied using a line following robot simulation (Porr & Miller, 2019). This project aims to incorporate the forward error propagation paradigm into a physical line-following robot serving as the autonomous agent. 
+  The robot’s ability to learn using the predictive signals from a camera array will be analysed and compared to the same robot running a 
+  backpropagation algorithm (Daryanavard & Porr, n.d.)
+ 
+  [Github Page dual_linefollower](https://github.com/innes8ken/dual_lineFollow)
 
 # Feedforward Closedloop Learning (FCL)
 

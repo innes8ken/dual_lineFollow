@@ -320,7 +320,7 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR){
   std::vector<double> movingAveErrorList(reflex_error_moving_ave_plot.begin(), reflex_error_moving_ave_plot.end());
   cvui::sparkline(stat_frame, movingAveErrorList, 10, 50, 580, 200, 0xffffff); //white = moving average 
 
-  // save some variable 
+  // save some variable (updating plotting file?)
   errorSuccessDatafs << reflex_error << " "
           << movingIntegralAve << "\n";
   
