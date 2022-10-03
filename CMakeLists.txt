@@ -11,7 +11,7 @@ find_package(OpenCV REQUIRED)
 
 find_package(Boost REQUIRED)
 
-add_executable(roboStartBCL main.cpp serialib.cpp neural.cpp LowPassFilter.hpp LowPassFilter.cpp neural.h external.cpp external.h bandpass.cpp)
+add_executable(dualRoboNet main.cpp serialib.cpp neural.cpp LowPassFilter.hpp LowPassFilter.cpp neural.h external.cpp external.h bandpass.cpp)
 #add_executable(roboStartFCL)
 
 target_link_libraries(dualRoboNet clBP ${OpenCV_LIBS})
