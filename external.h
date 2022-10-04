@@ -73,9 +73,9 @@ class Extern {
 	using clk = std::chrono::system_clock;
 	clk::time_point start_time;
 
-	double calibBlack[8+1]  = {100,110,115,125,   125,120,110,100,0};//x1 Red,Orange,Yellow,Green,Blue,Violet,Pink,White
+	double calibBlack[8+1]  = {100,110,115,125,   125,120,110,100,0};//x1 Red,Orange,Yellow,Green,D-green,Purple,L-Blue,D-Blue
 	double threshBlack[8+1] = {135,140,140,150,   150,140,140,135,0};
 	double threshWhite[8+1] = {140,145,145,155,   155,145,145,140,1};
-	double calibWhite[8+1]  = {150,160,160,160,   160,160,160,150,2}; //x2 Red,Orange,Yellow,Green,Blue,Violet,Pink,White
+	double calibWhite[8+1]  = {150,160,160,160,   160,160,160,150,2}; //x2 Red,Orange,Yellow,Green,D-green,Purple,L-Blue,D-Blue
 	double diffCalib[8+1]   = {1,1,1,1,           1,1,1,1,1};
 };

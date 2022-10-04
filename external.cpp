@@ -185,8 +185,8 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR){
   double mapBlack = 50; //y1
   double mapWhite = 250; //y2
   double m [8+1] = {1,1,1,1,1,1,1,1,1};
-  char colorName[8] = {'R', 'O', 'Y', 'G', 'B', 'V', 'P', 'W'}; // Red,Orange,Yellow,Green,Blue,Violet,Pink,White
-  const int colorCode[8] = {0xff0000, 0xff9900, 0xffff00, 0x00ff00, 0x00ffff, 0x9900ff, 0xff00ff, 0xffffff};
+  //char colorName[8] = {'R', 'O', 'Y', 'G', 'B', 'V', 'P', 'W'}; // Red,Orange,Yellow,Green,Dark-Green,Purple,L-Blue,D-Blue
+  //const int colorCode[8] = {0xff0000, 0xff9900, 0xffff00, 0x00ff00, 0x00ffff, 0x9900ff, 0xff00ff, 0xffffff};
 
   /**
    * Mapping the sensor data to the 50-250 range.

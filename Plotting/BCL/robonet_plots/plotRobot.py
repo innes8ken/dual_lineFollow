@@ -12,12 +12,14 @@ from plotRobotClass import setFileName
 plt.rcParams['font.family'] = 'serif'
 plt.rcParams.update({'font.size': 7})
 
-expNumber = 6 # for paper using 1run2 5run1 6run2
+expNumber = 5 # Choose where to locate data files
 run = 1
+
+#names of possible file locations
 
 expName = np.array(['2e_3p0/2e_3p0_run','2e_2p5/2e_2p5_run'
            ,'2e_2p0/2e_2p0_run','2e_1p5/2e_1p5_run'
-           ,'2e_1p0/2e_1p0_run', 'reflex/reflex_run'])
+           ,'learning/interim_test_run', 'reflex/reflex_run'])
 
 location = expName[expNumber-1] + str(run) + '/'
 mySetpath = setFileName(location)
