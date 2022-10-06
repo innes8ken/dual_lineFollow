@@ -30,6 +30,8 @@ plt.close("all")
 
 #%%
 errorSuccessData=np.loadtxt('{}errorSuccessData.csv'.format(path));
+successTime=np.loadtxt('{}successTime.csv'.format(path));
+time = np.linspace(0,len(errorSuccessData)/33, len(errorSuccessData))  #divide by 33Hz to get runtime 
 error = errorSuccessData[:,0];
 #errorShifted = errorSuccessData[:,1];
 errorIntegral = errorSuccessData[:,1];
@@ -37,12 +39,12 @@ minE=int(min(error))-1; maxE=int(max(error))
 #errorNorm=error/maxE
 fig=plt.figure('error', figsize=(3,1), dpi=my_dpi)
 axe=fig.add_subplot(111)
-plt.plot(error, color='black', linestyle="-", linewidth=0.2)
+plt.plot(time, error, color='black', linestyle="-", linewidth=0.2)
 #plt.plot(errorShifted[:], color='black', linestyle="-", linewidth=0.2)
-plt.plot(errorIntegral, color='black', linestyle="--", linewidth=0.3)
+plt.plot(time, errorIntegral, color='black', linestyle="--", linewidth=0.3)
 plt.ylim(-6.5, 6.5)
 plt.yticks(np.arange(-9, 7, 3))
-axe.set_aspect(aspect=100)
+# axe.set_aspect(aspect=100)
 fig.savefig(spath+'error', quality= 100, format='svg', bbox_inches='tight')
 plt.show()
 
