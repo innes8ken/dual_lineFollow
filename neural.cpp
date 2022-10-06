@@ -77,7 +77,7 @@ const int numLayers = 11; // number of layers
 void initialize_samanet(int numInputLayers, double sampleRate) {
   numInputLayers *= 5; // 5 is the number of filters
   int numNeurons[numLayers]= {};
-  int firstLayer = 11; // number of neurons in the first layer
+  int firstLayer = 11; // number of neurons in the first layer 
   int lastHiddenLayer = 4; // number of neurons in the last HIDDEN layer
   int incrementLayer = 1;
   int totalNeurons = 0;
@@ -92,7 +92,7 @@ void initialize_samanet(int numInputLayers, double sampleRate) {
   samanet = std::make_unique<Net>(numLayers, numNeurons, numInputLayers);
   // initialising the NN with random weights and no biases and with sigmoid function for activation
   samanet->initNetwork(Neuron::W_RANDOM, Neuron::B_NONE, Neuron::Act_Sigmoid);
-  double myLearningRate = exp(learningExp)*0; //*******************************************************************CHANGE ME 
+  double myLearningRate = exp(learningExp);
   // printing the learning rate 
   cout << "myLearningRate: e^" << learningExp << " = " << myLearningRate << endl;  
   samanet->setLearningRate(myLearningRate); // setting the learning rate
