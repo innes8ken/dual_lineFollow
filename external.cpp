@@ -44,7 +44,7 @@ std::ofstream modulusFile("modulusData.csv");
 
 double reflex_error_gain = 2; // reflex error's gain, how much influence the reflex has on the steering  
 // NN gain is calculated as coeff x 10^(power)
-double nn_gain_coeff = 0; // NN'output gain for steering, the coefficient
+double nn_gain_coeff = 1; // NN'output gain for steering, the coefficient
 double nn_gain_power = 0; // NN'output gain for steering, the power of 10
 double prev_error = 0.00; // The previous reflex_error, used to calculate the reflex_error derivative, not used for normal bak-propagation
 

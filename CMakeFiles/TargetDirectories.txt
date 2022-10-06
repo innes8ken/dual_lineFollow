@@ -1,6 +1,0 @@
-/home/pi/projects/lineFollowingDir/dual_lineFollow/CMakeFiles/rebuild_cache.dir
-/home/pi/projects/lineFollowingDir/dual_lineFollow/CMakeFiles/dualRoboNet.dir
-/home/pi/projects/lineFollowingDir/dual_lineFollow/CMakeFiles/edit_cache.dir
-/home/pi/projects/lineFollowingDir/dual_lineFollow/clBP/CMakeFiles/rebuild_cache.dir
-/home/pi/projects/lineFollowingDir/dual_lineFollow/clBP/CMakeFiles/clBP.dir
-/home/pi/projects/lineFollowingDir/dual_lineFollow/clBP/CMakeFiles/edit_cache.dir
