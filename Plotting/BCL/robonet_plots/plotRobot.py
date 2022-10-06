@@ -12,14 +12,12 @@ from plotRobotClass import setFileName
 plt.rcParams['font.family'] = 'serif'
 plt.rcParams.update({'font.size': 7})
 
-expNumber = 5 # Choose where to locate data files
+expNumber = 2 # Choose where to locate data files
 run = 1
 
 #names of possible file locations
 
-expName = np.array(['2e_3p0/2e_3p0_run','2e_2p5/2e_2p5_run'
-           ,'2e_2p0/2e_2p0_run','2e_1p5/2e_1p5_run'
-           ,'learning/interim_test_run', 'reflex/reflex_run'])
+expName = np.array(['learning/interim_test_run', 'reflex/reflex_run'])
 
 location = expName[expNumber-1] + str(run) + '/'
 mySetpath = setFileName(location)
@@ -42,7 +40,7 @@ axe=fig.add_subplot(111)
 plt.plot(error, color='black', linestyle="-", linewidth=0.2)
 #plt.plot(errorShifted[:], color='black', linestyle="-", linewidth=0.2)
 plt.plot(errorIntegral, color='black', linestyle="--", linewidth=0.3)
-plt.ylim(-9.9, 6.5)
+plt.ylim(-6.5, 6.5)
 plt.yticks(np.arange(-9, 7, 3))
 axe.set_aspect(aspect=100)
 fig.savefig(spath+'error', quality= 100, format='svg', bbox_inches='tight')
