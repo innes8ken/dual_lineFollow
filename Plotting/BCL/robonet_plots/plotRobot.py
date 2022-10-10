@@ -44,7 +44,7 @@ plt.plot(time, error, color='black', linestyle="-", linewidth=0.2)
 plt.plot(time, errorIntegral, color='black', linestyle="--", linewidth=0.3)
 plt.ylim(-6.5, 6.5)
 plt.yticks(np.arange(-9, 7, 3))
-# axe.set_aspect(aspect=100)
+#axe.set_aspect(aspect=100)
 fig.savefig(spath+'error', quality= 100, format='svg', bbox_inches='tight')
 plt.show()
 
