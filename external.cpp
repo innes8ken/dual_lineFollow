@@ -44,7 +44,7 @@ std::ofstream modulusFile("modulusData.csv");
 
 double reflex_error_gain = 2; // reflex error's gain, how much influence the reflex has on the steering  
 // NN gain is calculated as coeff x 10^(power)
-double nn_gain_coeff = 0; // NN'output gain for steering, the coefficient
+double nn_gain_coeff = 1; // NN'output gain for steering, the coefficient
 double nn_gain_power = 0; // NN'output gain for steering, the power of 10
 double prev_error = 0.00; // The previous reflex_error, used to calculate the reflex_error derivative, not used for normal bak-propagation
 
@@ -136,7 +136,7 @@ LowPassFilter lpf7(cutOff, sampFreq);
 
 // each loop of path is about 1500 samples
 // create an arrray to monitor the moving average of the error
-const int loopLength = 300;
+const int loopLength = 900;
 boost::circular_buffer<double> movingIntegralVector(loopLength);
 
 // create flags for monitoring the trial and the learning condition
@@ -150,7 +150,7 @@ std::ofstream errorSuccessDatafs("errorSuccessData.csv");
 std::ofstream successRatef("successTime.csv");
 
 // initialise some variables
-int sensorInUse = 4;
+int sensorInUse = 6;
 double thresholdInteg = 0;
 int getThreshold = 1;
 double maxMovingIntegral = 0;
