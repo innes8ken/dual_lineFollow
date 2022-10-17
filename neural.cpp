@@ -29,7 +29,7 @@ boost::circular_buffer<double> predVector3[numPred];
 boost::circular_buffer<double> predVector4[numPred];
 boost::circular_buffer<double> predVector5[numPred];
 
-double learningExp = 1.5; // This is the exponential of the leaning rate e^(learningExp)
+double learningExp = 1; // This is the exponential of the leaning rate e^(learningExp)
 
 // initialising the filters
 static void initialize_filters(int numInputs, double sampleRate) {

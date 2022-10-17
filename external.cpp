@@ -42,7 +42,7 @@ boost::circular_buffer<double> reflex_error_moving_ave_plot(samplingFreq * 100 *
 std::ofstream datafs("speedDiffdata.csv");
 std::ofstream modulusFile("modulusData.csv");
 
-double reflex_error_gain = 2; // reflex error's gain, how much influence the reflex has on the steering  
+double reflex_error_gain = 1.9; // reflex error's gain, how much influence the reflex has on the steering  
 // NN gain is calculated as coeff x 10^(power)
 double nn_gain_coeff = 1; // NN'output gain for steering, the coefficient
 double nn_gain_power = 0; // NN'output gain for steering, the power of 10
