@@ -30,6 +30,7 @@ boost::circular_buffer<double> predVector4[numPred];
 boost::circular_buffer<double> predVector5[numPred];
 
 double learningExp = 1; // This is the exponential of the leaning rate e^(learningExp)
+double lrCoeff = 0.2; //additional learning rate coefficient (for lrCoeff*10^(learningExp))  <---- IN USE 
 
 // initialising the filters
 static void initialize_filters(int numInputs, double sampleRate) {
@@ -80,7 +81,7 @@ void initialize_samanet(int numInputLayers, double sampleRate) {
   int firstLayer = 11; // number of neurons in the first layer
   int lastHiddenLayer = 4; // number of neurons in the last HIDDEN layer
   int incrementLayer = 1;
-  int totalNeurons = 0;
+  int totalNeurons = 0; 
   numNeurons[numLayers - 1] = 3; // number of neurons in the last layer
   for (int i = numLayers - 2; i >= 0; i--){
     numNeurons[i] = lastHiddenLayer + (numLayers - 2 - i)  * incrementLayer;
@@ -92,9 +93,15 @@ void initialize_samanet(int numInputLayers, double sampleRate) {
   samanet = std::make_unique<Net>(numLayers, numNeurons, numInputLayers);
   // initialising the NN with random weights and no biases and with sigmoid function for activation
   samanet->initNetwork(Neuron::W_RANDOM, Neuron::B_NONE, Neuron::Act_Sigmoid);
-  double myLearningRate = exp(learningExp); 
-  // printing the learning rate 
-  cout << "myLearningRate: e^" << learningExp << " = " << myLearningRate << endl;  
+  
+  
+  //double myLearningRate = exp(learningExp); 
+  double myLearningRate = lrCoeff*(pow(10.0,learningExp));
+  
+  // printing the learning rate
+   
+  //cout << "myLearningRate: e^" << learningExp << " = " << myLearningRate << endl;  
+  cout << "myLearningRate: " << myLearningRate << endl;
   samanet->setLearningRate(myLearningRate); // setting the learning rate
   initialize_filters(numInputLayers, sampleRate); // calls the above function to set up the filters
 }
