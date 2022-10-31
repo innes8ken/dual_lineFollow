@@ -12,8 +12,8 @@ from plotRobotClass import setFileName
 plt.rcParams['font.family'] = 'serif'
 plt.rcParams.update({'font.size': 7})
 
-expNumber = 2 # Choose where to locate data files
-run = 1
+expNumber = 1 # Choose where to locate data files
+run = 3
 
 #names of possible file locations
 
@@ -43,8 +43,10 @@ plt.plot(time, error, color='black', linestyle="-", linewidth=0.2)
 #plt.plot(errorShifted[:], color='black', linestyle="-", linewidth=0.2)
 plt.plot(time, errorIntegral, color='black', linestyle="--", linewidth=0.3)
 plt.ylim(-6.5, 6.5)
-plt.yticks(np.arange(-9, 7, 3))
-#axe.set_aspect(aspect=100)
+plt.yticks(np.arange(-6, 7, 3))
+plt.xlabel("Time (s)")
+plt.ylabel("Error Magnitude \n [E]")
+#axe.set_aspect(aspect=100) 
 fig.savefig(spath+'error', quality= 100, format='svg', bbox_inches='tight')
 plt.show()
 
@@ -65,6 +67,7 @@ plt.show()
 
 #%%
 wchraw=np.loadtxt('{}weight_distances.csv'.format(path))
+time = np.linspace(0,len(wchraw)/33, len(wchraw))  #divide by 33Hz to get runtime 
 wch=np.empty(wchraw.shape)
 nLayers=wchraw.shape[1]
 for i in range(nLayers):
@@ -74,7 +77,9 @@ wchfig=plt.figure('weigth change', figsize=(3,2),dpi=my_dpi)
 axe=wchfig.add_subplot(111)
 for i in range(1,wch.shape[1]-2):
     j= (i+0.1)/(13)
-    plt.plot(wch[:,i], color= [0,0,0] , linestyle="--", linewidth=0.3 , dashes=(5, i/2), label='layer'+str(i+1))
+    plt.plot(time, wch[:,i], color= [0,0,0] , linestyle="--", linewidth=0.3 , dashes=(5, i/2), label='layer'+str(i+1))
+    plt.xlabel("Time (s)")
+    plt.ylabel("Euclidian Distance of Weight Changes")
 #plt.plot(wch[:,wch.shape[1]-1], color=[0,0,0], linestyle="-", linewidth=0.3)
 #axe.legend()
 #plt.ylim(-0.05, 0.45)
