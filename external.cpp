@@ -44,7 +44,7 @@ std::ofstream modulusFile("modulusData.csv");
 
 double reflex_error_gain = 1.9; // reflex error's gain, how much influence the reflex has on the steering  
 // NN gain is calculated as coeff x 10^(power)
-double nn_gain_coeff = 1; // NN'output gain for steering, the coefficient
+double nn_gain_coeff = 1.2; // NN'output gain for steering, the coefficient
 double nn_gain_power = 0; // NN'output gain for steering, the power of 10
 double prev_error = 0.00; // The previous reflex_error, used to calculate the reflex_error derivative, not used for normal bak-propagation
 
@@ -245,6 +245,7 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR){
   cvui::sparkline(stat_frame, sensor_list0, 10, 50, 580, 200, 0xff0000); // RED
 
   sensor1.push_back(sensorVAL[1]); //puts the errors in a buffer for plotting
+  //cout << "orange sensor: " << sensorVAL[1] << endl;
   sensor1[0] = minVal;
   sensor1[1] = maxVal;
   std::vector<double> sensor_list1(sensor1.begin(), sensor1.end());
