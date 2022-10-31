@@ -39,8 +39,8 @@ boost::circular_buffer<double> sensor6(samplingFreq * figureLength);
 boost::circular_buffer<double> sensor7(samplingFreq * figureLength);
 boost::circular_buffer<double> reflex_error_moving_ave_plot(samplingFreq * 100 * figureLength);
 // creating files to save the data
-std::ofstream datafs("speedDiffdata.csv");
-std::ofstream modulusFile("modulusData.csv");
+std::ofstream datafs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/speedDiffdata.csv");
+std::ofstream modulusFile("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/modulusData.csv");
 
 double reflex_error_gain = 1.9; // reflex error's gain, how much influence the reflex has on the steering  
 // NN gain is calculated as coeff x 10^(power)
@@ -146,8 +146,8 @@ int stepCount = 1;
 int successDone = 0;
 
 // creating files for learning
-std::ofstream errorSuccessDatafs("errorSuccessData.csv");
-std::ofstream successRatef("successTime.csv");
+std::ofstream errorSuccessDatafs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/errorSuccessData.csv");
+std::ofstream successRatef("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/successTime.csv");
 
 // initialise some variables
 int sensorInUse = 6;
