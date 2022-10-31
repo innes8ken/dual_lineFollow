@@ -13,11 +13,11 @@ plt.rcParams['font.family'] = 'serif'
 plt.rcParams.update({'font.size': 7})
 
 expNumber = 1 # Choose where to locate data files
-run = 3
+run = 1
 
 #names of possible file locations
 
-expName = np.array(['learning/interim_test_run', 'reflex/reflex_run'])
+expName = np.array(['learning/L0.2_R1.9_N1.2_run', 'reflex/reflex_run'])
 
 location = expName[expNumber-1] + str(run) + '/'
 mySetpath = setFileName(location)
