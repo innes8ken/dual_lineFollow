@@ -17,7 +17,7 @@ run = 1
 
 #names of possible file locations
 
-expName = np.array(['learning/L0.2_R1.9_N1.2_run', 'reflex/reflex_run'])
+expName = np.array(['learning/L0.2_R1.9_N1.1_run', 'learning/L0.2_R1.9_N1.2_run', 'reflex/reflex_run'])
 
 location = expName[expNumber-1] + str(run) + '/'
 mySetpath = setFileName(location)
