@@ -11,9 +11,9 @@ In order to build:
 - run cmake -- ``cmake .``
 - run the build system -- ``make``
 
-Run the executible with the argument -``B`` for the Error Back-Propagation paradigm.
+Run the executible with the argument -``0`` for the Error Back-Propagation paradigm.
 
-Run the executible with the argument -``F`` for the Error Forward-Propagation paradigm.
+Run the executible with the argument -``1`` for the Error Forward-Propagation paradigm.
 
 This will build the clBP library automatically.*************8
 
