@@ -34,7 +34,7 @@ void initialize_samanet(int numInputLayers, double sampleRate = 30.f);
  * @param minT Minimum temporal delay for the filtered predictive signals 
  * @param maxT Maximum temporal delay from that filtered predictive signals 
  */
-void initialize_fclNet(int num_of_inputs, int* num_of_neurons_per_layer_array, int num_layers, int num_filtersInput, double minT, double maxT); 
+void initialize_fclNet(int num_of_predictors); //, int* num_of_neurons_per_layer_array, int num_layers, int num_filtersInput, double minT, double maxT); 
 
 /**
  * @brief Running the NN on each iteration

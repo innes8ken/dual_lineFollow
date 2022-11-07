@@ -29,8 +29,10 @@ boost::circular_buffer<double> predVector3[numPred];
 boost::circular_buffer<double> predVector4[numPred];
 boost::circular_buffer<double> predVector5[numPred];
 
-double learningExp = 1; // This is the exponential of the leaning rate
-double lrCoeff = 0.2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) 
+double learningExpBCL = -1; // This is the exponential of the leaning rate for the BCL algo 
+double lrCoeffBCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the BCL algo 
+double learningExpFCL = -5; // This is the exponential of the leaning rate for the FCL algo 
+double lrCoeffFCL = 1; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo 
 
 // initialising the filters
 static void initialize_filters(int numInputs, double sampleRate) {
@@ -89,24 +91,43 @@ void initialize_samanet(int numInputLayers, double sampleRate) {
     assert(numNeurons[i] > 0);
   }
 
-  // setting up the NN with the number of layers, neurons per layer and number of inputs
+  // setting up the BCL NN with the number of layers, neurons per layer and number of inputs
   samanet = std::make_unique<Net>(numLayers, numNeurons, numInputLayers);
   // initialising the NN with random weights and no biases and with sigmoid function for activation
   samanet->initNetwork(Neuron::W_RANDOM, Neuron::B_NONE, Neuron::Act_Sigmoid);
   
   
-  //double myLearningRate = exp(learningExp); 
-  double myLearningRate = lrCoeff*(pow(10.0,learningExp));
+  //double myLearningRateBCL = exp(learningExp); 
+  double myLearningRateBCL = lrCoeffBCL*(pow(10.0,learningExpBCL));
   
   // printing the learning rate
    
   //cout << "myLearningRate: e^" << learningExp << " = " << myLearningRate << endl;  
-  cout << "myLearningRate: " << myLearningRate << endl;
-  samanet->setLearningRate(myLearningRate); // setting the learning rate
+  cout << "myLearningRate: " << myLearningRateBcl << endl;
+  samanet->setLearningRate(myLearningRateBcl); // setting the learning rate
   initialize_filters(numInputLayers, sampleRate); // calls the above function to set up the filters
 }
 
+void initialize_fclNet(int num_of_predictors){//, int* num_of_neurons_per_layer_array, int num_layers, int num_filtersInput, double minT, double maxT){
+  //number of network inputs
+  const int nInputs = num_of_predictors; //* 5;
+	// Number of layers of neurons in total
+	static constexpr int nLayers = 11;
+	// The number of neurons in every layer
+	int nNeuronsInLayers[nLayers] = {11,10,9,8,7,6,6,6,6,6,3};
+	// We set nFilters in the input
+	const int nFiltersInput = 5;
+	// We set nFilters in the unit
+	const int nFilters = 0;
+	// Filterbank
+	const double minT = 100;
+	const double maxT = 150;
+  // Setting the learning rate 
+	double learningRate = lrCoeffFCL*(pow(10.0,learningExpFCL));   //0.00001;
 
+  
+
+} 
 
 
 
