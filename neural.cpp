@@ -107,6 +107,9 @@ void initialize_samanet(int numInputLayers, double sampleRate) {
 }
 
 
+
+
+
 // creating files to save the data
 std::ofstream weightDistancesfs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/weight_distances.csv");
 std::ofstream predictor("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/predictor.csv");
