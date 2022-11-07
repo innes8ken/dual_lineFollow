@@ -51,7 +51,7 @@ class Extern {
 	double calcError(Mat &statFrame, vector<uint8_t> &sensorCHAR);
 
 	/**
-	 * @brief Returns the number of predictors to main.cpp
+	 * @brief calculates the number of predictors
 	 * 
 	 * handles the predictive signals from the camera array 
 	 * 

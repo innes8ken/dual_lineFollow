@@ -89,7 +89,9 @@ int main(int n, char* args[]) {
    case 0:
     initialize_samanet(nPredictors);
     //break; 
-   //case 1: Initialise FCL 
+   case 1: 
+   //Initialise FCL
+     
 
   /**
    * Setting up a serial communication for arduino
