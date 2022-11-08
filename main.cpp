@@ -85,13 +85,14 @@ int main(int n, char* args[]) {
    * This is called from the nueral.cpp file
    **/
 
+
  switch (paradigmOption) { //***************************************************************************ADDITION***********************************
    case 0:
     initialize_samanet(nPredictors);
     //break; 
    case 1: 
     initialize_fclNet(nPredictors);
-
+ }
 
   /**
    * Setting up a serial communication for arduino
@@ -182,7 +183,7 @@ int main(int n, char* args[]) {
      * where the new predictor values will be stored.
      * It returns the angle of deviation, this is not used for the normal Back-Propagation learning
      **/
-    external->calcPredictors(frame, predictorDeltaMeans);
+    external->calcPredictors(frame, predictorDeltaMeans);        
 
     // # SECTION: SENSOR INPUTS
     /**

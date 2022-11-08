@@ -49,6 +49,9 @@ double bcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
 double bcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 double prev_error = 0.00; // The previous reflex_error, used to calculate the reflex_error derivative, not used for normal bak-propagation
 
+//###################################    FCL Environment  ########################################################################
+
+
 /**
  * The 'onStepCompleted' is called every step 
  **/

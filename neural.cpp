@@ -13,6 +13,8 @@
 #include <boost/circular_buffer.hpp>
 #include <math.h>
 #include <ctgmath>
+#include "fcl.h"
+#include "fcl_util.h"
 
 using namespace std;
 
@@ -75,9 +77,14 @@ static void initialize_filters(int numInputs, double sampleRate) {
 
 // initialising a pointer instance of NN called 'samanet'
 std::unique_ptr<Net> samanet;
-const int numLayers = 11; // number of layers
+//initialising a pointer instance of fcl_util class called 'fcl' (copying samanet)
+std::unique_ptr<FeedforwardClosedloopLearningWithFilterbank> fcl;
+//FeedforwardClosedloopLearningWithFilterbank* fcl = NULL;
+
+
 
 void initialize_samanet(int numInputLayers, double sampleRate) {
+  const int numLayers = 11; // number of layers
   numInputLayers *= 5; // 5 is the number of filters
   int numNeurons[numLayers]= {};
   int firstLayer = 11; // number of neurons in the first layer
@@ -93,7 +100,7 @@ void initialize_samanet(int numInputLayers, double sampleRate) {
 
   // setting up the BCL NN with the number of layers, neurons per layer and number of inputs
   samanet = std::make_unique<Net>(numLayers, numNeurons, numInputLayers);
-  // initialising the NN with random weights and no biases and with sigmoid function for activation
+  // initialising the BCL NN with random weights and no biases and with sigmoid function for activation
   samanet->initNetwork(Neuron::W_RANDOM, Neuron::B_NONE, Neuron::Act_Sigmoid);
   
   
@@ -102,18 +109,19 @@ void initialize_samanet(int numInputLayers, double sampleRate) {
   
   // printing the learning rate
    
-  //cout << "myLearningRate: e^" << learningExp << " = " << myLearningRate << endl;  
+    
   cout << "myLearningRate: " << myLearningRateBcl << endl;
   samanet->setLearningRate(myLearningRateBcl); // setting the learning rate
   initialize_filters(numInputLayers, sampleRate); // calls the above function to set up the filters
 }
 
 void initialize_fclNet(int num_of_predictors){//, int* num_of_neurons_per_layer_array, int num_layers, int num_filtersInput, double minT, double maxT){
+  
   //number of network inputs
   const int nInputs = num_of_predictors; //* 5;
 	// Number of layers of neurons in total
 	static constexpr int nLayers = 11;
-	// The number of neurons in every layer
+	// The number of neurons in every layer array
 	int nNeuronsInLayers[nLayers] = {11,10,9,8,7,6,6,6,6,6,3};
 	// We set nFilters in the input
 	const int nFiltersInput = 5;
@@ -123,15 +131,31 @@ void initialize_fclNet(int num_of_predictors){//, int* num_of_neurons_per_layer_
 	const double minT = 100;
 	const double maxT = 150;
   // Setting the learning rate 
-	double learningRate = lrCoeffFCL*(pow(10.0,learningExpFCL));   //0.00001;
+	double learningRateFcl = lrCoeffFCL*(pow(10.0,learningExpFCL));   //0.00001;
+ 
+ 
+  cout << "myLearningRate: " << myLearningRateFcl << endl;
+  //initialize_filters(numInputLayers, sampleRate); // calls the above function to set up the filters  //Using fcl_util which has built in filters
 
-  
+  fcl = std::make_unique<FeedforwardClosedloopLearningWithFilterbank>(nInputs, nNeuronsInLayers, nLayers, nFiltersInput, minT, maxT);
+     fcl->initWeights(1,0,FCLNeuron::MAX_OUTPUT_RANDOM);
+		 fcl->setLearningRate(learningRateFcl);
+		 fcl->setLearningRateDiscountFactor(1);
+		 fcl->setBias(1);
+	   fcl->setActivationFunction(FCLNeuron::TANH);
+	 	 fcl->setMomentum(0.9);		 
 
 } 
 
 
 
 // creating files to save the data
+
+
+switch (paradigmOption){
+
+}
+
 std::ofstream weightDistancesfs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/weight_distances.csv");
 std::ofstream predictor("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/predictor.csv");
 
@@ -223,7 +247,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   }
   weightDistancesfs << 0.01 * samanet->getWeightDistance() << "\n";
 
-  double coeff[4] = {1,3,5}; // This are the weights for the 3 outputs of the network
+  double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
   // 3 different outputs are sumed in a weightes manner
   // so that the NN can output slow, moderate, or fast steering
   double outSmall = samanet->getOutput(0);
