@@ -18,7 +18,7 @@ class Mat;
  * @param numInputLayers number of predictive input layers from camera array before filtering 
  * @param sampleRate sampling rate of network? 
  */
-void initialize_samanet(int numInputLayers, double sampleRate = 30.f);
+void initialize_samanet(int numInputs_pi, double sampleRate = 30.f);
 
 
 

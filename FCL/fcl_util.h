@@ -57,7 +57,7 @@ public:
          **/
 	void doStep(double* input, int n1, double* error, int n2);
 
-	double getFilterOutput(int inputIdx, int filterIdx) {
+	double getFilterOutput(int inputIdx, int filterIdx) {             //<------- use for NN inputs? pass to dostep()
 		const int idx = inputIdx * nFiltersPerInput + filterIdx;
 		assert((idx >= 0) || (idx < (nFiltersPerInput * nInputs)));
 		return filterbankOutputs[idx];

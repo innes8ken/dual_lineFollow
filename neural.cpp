@@ -88,9 +88,9 @@ std::unique_ptr<FeedforwardClosedloopLearningWithFilterbank> fcl;
 
 
 
-void initialize_samanet(int numInputLayers, double sampleRate) {
+void initialize_samanet(int numInputs_Pi, double sampleRate) {
   const int numLayers = 11; // number of layers
-  numInputLayers *= 5; // 5 is the number of filters
+  numInputs_Ui = numInputs_Pi * 5; // 5 is the number of filters                               
   int numNeurons[numLayers]= {};
   int firstLayer = 11; // number of neurons in the first layer
   int lastHiddenLayer = 4; // number of neurons in the last HIDDEN layer
@@ -104,7 +104,7 @@ void initialize_samanet(int numInputLayers, double sampleRate) {
   }
 
   // setting up the BCL NN with the number of layers, neurons per layer and number of inputs
-  samanet = std::make_unique<Net>(numLayers, numNeurons, numInputLayers);
+  samanet = std::make_unique<Net>(numLayers, numNeurons, numInputs_Ui);
   // initialising the BCL NN with random weights and no biases and with sigmoid function for activation
   samanet->initNetwork(Neuron::W_RANDOM, Neuron::B_NONE, Neuron::Act_Sigmoid);
   
@@ -117,13 +117,13 @@ void initialize_samanet(int numInputLayers, double sampleRate) {
     
   cout << "myLearningRate: " << myLearningRateBcl << endl;
   samanet->setLearningRate(myLearningRateBcl); // setting the learning rate
-  initialize_filters(numInputLayers, sampleRate); // calls the above function to set up the filters
+  initialize_filters(numInputs_Ui, sampleRate); // calls the above function to set up the filters
 }
 
-void initialize_fclNet(int num_of_predictors){//, int* num_of_neurons_per_layer_array, int num_layers, int num_filtersInput, double minT, double maxT){
+void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array, int num_layers, int num_filtersInput, double minT, double maxT){
   
   //number of network inputs
-  const int nInputs = num_of_predictors; //* 5;
+  const int nInputs = numInputs_Pi; //* 5;
 	// Number of layers of neurons in total
 	static constexpr int nLayers = 11;
 	// The number of neurons in every layer array
@@ -140,7 +140,7 @@ void initialize_fclNet(int num_of_predictors){//, int* num_of_neurons_per_layer_
  
  
   cout << "myLearningRate: " << myLearningRateFcl << endl;
-  //initialize_filters(numInputLayers, sampleRate); // calls the above function to set up the filters  //Using fcl_util which has built in filters
+  //initialize_filters(numInputs_Ui, sampleRate); // calls the above function to set up the filters  //Using fcl_util which has built in filters
 
   fcl = std::make_unique<FeedforwardClosedloopLearningWithFilterbank>(nInputs, nNeuronsInLayers, nLayers, nFiltersInput, minT, maxT);
      fcl->initWeights(1,0,FCLNeuron::MAX_OUTPUT_RANDOM);
@@ -156,10 +156,6 @@ void initialize_fclNet(int num_of_predictors){//, int* num_of_neurons_per_layer_
 
 // creating files to save the data
 
-
-switch (paradigmOption){
-
-}
 
 std::ofstream weightDistancesfs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/weight_distances.csv");
 std::ofstream predictor("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/predictor.csv");
@@ -253,7 +249,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   weightDistancesfs << 0.01 * samanet->getWeightDistance() << "\n";
 
   double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
-  // 3 different outputs are sumed in a weightes manner
+  // 3 different outputs are sumed in a weighted manner
   // so that the NN can output slow, moderate, or fast steering
   double outSmall = samanet->getOutput(0);
   double outMedium = samanet->getOutput(1);
@@ -262,3 +258,6 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   return resultNN; // returns the overall output of the NN
   // which together with the reflex error drives the robot's navigation
 }
+
+
+run 

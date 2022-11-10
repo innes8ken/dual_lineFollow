@@ -64,7 +64,7 @@ class Extern {
 	/**
 	 * @brief Get the Npredictors object
 	 * 
-	 * Returns the number of predictors
+	 * Returns the number of predictorsnn_output
 	 * 
 	 * @return int nPredictors
 	 */

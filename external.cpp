@@ -87,26 +87,23 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
 
    /**
    * Switch case to Run both Sama's net and FCL algo from neural.cpp. Does one iteration of learning
-   * Pass in the predictors differences
+   * Pass in the predictors differences (before filtration)
    * Pass in the feedback_error (same as reflex error unless the learning is off)
    * Returns the NN's output, which is a weighted sum of neurons' output in the last layer
    **/
   switch (paradigmOption_){
   case 0:
- 
   double nn_output = run_samanet(predictors_diff, feedback_error); //*********************************************************************ADDITION-get FCL nn output****************************************************
 
   
-  // saving the error into a new variable for calculating the derivative
- 
 
   case 1:
-   double nn_output = 
-
+   double nn_output = run_fclNet(predictors_diff, feedback_error);
 
   }
-
+  // saving the error into a new variable for calculating the derivative
   prev_error = reflex_error;
+
   // # SECTION: MOTOR COMMAND
   double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
   double learning_for_nav = nn_output * bcl_nn_gain_coeff * pow(10,bcl_nn_gain_power); // calculate the learning part of speed command
@@ -140,11 +137,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   return (int)motor_command;
 }
 
-// create filters for sensor data
-double cutOff = 10;
-double sampFreq = 0.033;
-Bandpass sensorFilters[8];
-LowPassFilter lpf0(cutOff, sampFreq);
+// create filters for sensor datann_output
 LowPassFilter lpf1(cutOff, sampFreq);
 LowPassFilter lpf2(cutOff, sampFreq);
 LowPassFilter lpf3(cutOff, sampFreq);

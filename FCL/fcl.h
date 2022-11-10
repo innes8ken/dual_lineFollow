@@ -50,7 +50,7 @@ public:
          * \param input Array with the input values
          * \param error Array of the error signals
          **/
-	void doStep(double* input, double* error);
+	void doStep(double* input, double* error); //   <------ use in onstepcomplete()
 
 	/** Python wrapper function. Not public.
          **/
