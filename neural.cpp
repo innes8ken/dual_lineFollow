@@ -31,10 +31,15 @@ boost::circular_buffer<double> predVector3[numPred];
 boost::circular_buffer<double> predVector4[numPred];
 boost::circular_buffer<double> predVector5[numPred];
 
+//########################################### Learning Rate Setup #######################################################
+
 double learningExpBCL = -1; // This is the exponential of the leaning rate for the BCL algo 
 double lrCoeffBCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the BCL algo 
+
 double learningExpFCL = -5; // This is the exponential of the leaning rate for the FCL algo 
 double lrCoeffFCL = 1; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo 
+
+//#######################################################################################################################
 
 // initialising the filters
 static void initialize_filters(int numInputs, double sampleRate) {
@@ -127,7 +132,7 @@ void initialize_fclNet(int num_of_predictors){//, int* num_of_neurons_per_layer_
 	const int nFiltersInput = 5;
 	// We set nFilters in the unit
 	const int nFilters = 0;
-	// Filterbank
+	// Filterbank temporal settings - matching BCL lowpass filter settings 
 	const double minT = 100;
 	const double maxT = 150;
   // Setting the learning rate 
@@ -156,8 +161,8 @@ switch (paradigmOption){
 
 }
 
-std::ofstream weightDistancesfs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/weight_distances.csv");
-std::ofstream predictor("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/predictor.csv");
+std::ofstream weightDistancesfs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/weight_distances.csv");
+std::ofstream predictor("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/predictor.csv");
 
 bool firstInputs = 1; // used to start the first iteration of learning
 

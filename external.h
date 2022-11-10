@@ -27,7 +27,7 @@ class Extern {
 	Extern();
 
 	/**
-	 * @brief Returns the overall motor command
+	 * @brief Returns the overall motor command from either BCL or FCL paradigm 
 	 * 
 	 * onStepCompleted is called every timestep where it will complete one step of
 	 * learning and sum with reflex signals.  
@@ -35,9 +35,10 @@ class Extern {
 	 * @param stat_frame Used for plotting ?
 	 * @param deltaSensorData this is the reflex error found from calling calcError()
 	 * @param predictorDeltas the predictors differences
+	 * @param paradigmOption Selects the learning paradigm to return correct output 
 	 * @return int motor_command
 	 */
-	int onStepCompleted(Mat &stat_frame, double deltaSensorData, vector<double> &predictorDeltas);
+	int onStepCompleted(Mat &stat_frame, double deltaSensorData, vector<double> &predictorDeltas, int paradigmOption_);
 
 	/**
 	 * @brief Returns reflex error 

@@ -16,6 +16,8 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include "fcl_util.h"
+#include "fcl.h"
 
 using namespace std;
 using namespace cv;
@@ -39,23 +41,29 @@ boost::circular_buffer<double> sensor6(samplingFreq * figureLength);
 boost::circular_buffer<double> sensor7(samplingFreq * figureLength);
 boost::circular_buffer<double> reflex_error_moving_ave_plot(samplingFreq * 100 * figureLength);
 // creating files to save the data
-std::ofstream datafs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/speedDiffdata.csv");
-std::ofstream modulusFile("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/modulusData.csv");
+std::ofstream datafs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/speedDiffdata.csv");
+std::ofstream modulusFile("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/modulusData.csv");
+
+
+double reflex_error_gain = 1.9; // reflex error's gain, how much influence the reflex has on the steering 
 
 //##################################   BCL Environment   ###################################################################
-double reflex_error_gain = 1.9; // reflex error's gain, how much influence the reflex has on the steering  
-// NN gain is calculated as coeff x 10^(power)
+ // NN gain is calculated as coeff x 10^(power)
 double bcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
 double bcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 double prev_error = 0.00; // The previous reflex_error, used to calculate the reflex_error derivative, not used for normal bak-propagation
 
 //###################################    FCL Environment  ########################################################################
 
+double fcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
+double fcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
+
+
 
 /**
  * The 'onStepCompleted' is called every step 
  **/
-int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vector<double> &predictors_diff) {
+int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vector<double> &predictors_diff, int paradigmOption_) {
   assert(std::isfinite(reflex_error)); // making sure that the reflex error is finite value
   reflex_error_plot.push_back(reflex_error); //puts the reflex errors in a buffer for plotting
   
@@ -71,31 +79,38 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
    * If the learning gain is zero, the feedback to the NN is set to zero too
    * So no learning takes place, meaning, no changes to the weights.
    **/
-  if (bcl_nn_gain_coeff == 0){
+  
+  if (bcl_nn_gain_coeff == 0)||(fcl_nn_gain_coeff == 0){
     feedback_error = 0;
   }
 
-  /* double reflex_error_derivative = (reflex_error - prev_error) / 2; // calculate reflex_error derivative, this is not used for normal Back-propagation
-  double cueExp = exp(reflex_error * reflex_error_derivative); // This is for PaM learning
-  double modulateFactor = abs(cueExp * phi); // This is for PaM learning
-  modulusFile << modulateFactor << "\n"; */
 
-  /**
-   * Run the Sama's net from neural.cpp. Does one iteration of learning
+   /**
+   * Switch case to Run both Sama's net and FCL algo from neural.cpp. Does one iteration of learning
    * Pass in the predictors differences
    * Pass in the feedback_error (same as reflex error unless the learning is off)
    * Returns the NN's output, which is a weighted sum of neurons' output in the last layer
    **/
-  double bcl_nn_output = run_samanet(predictors_diff, feedback_error); //*********************************************************************ADDITION-get FCL nn output****************************************************
+  switch (paradigmOption_){
+  case 0:
+ 
+  double nn_output = run_samanet(predictors_diff, feedback_error); //*********************************************************************ADDITION-get FCL nn output****************************************************
 
-  // # SECTION: MOTOR COMMAND
-  double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
-  double learning_for_nav = bcl_nn_output * bcl_nn_gain_coeff * pow(10,bcl_nn_gain_power); // calculate the learning part of speed command
-  double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command
   
   // saving the error into a new variable for calculating the derivative
-  prev_error = reflex_error;
+ 
 
+  case 1:
+   double nn_output = 
+
+
+  }
+
+  prev_error = reflex_error;
+  // # SECTION: MOTOR COMMAND
+  double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
+  double learning_for_nav = nn_output * bcl_nn_gain_coeff * pow(10,bcl_nn_gain_power); // calculate the learning part of speed command
+  double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command
   // # SECTION: PLOTS
   /**
    * setting up the GUI with the stats. Display the stat
@@ -150,8 +165,8 @@ int stepCount = 1;
 int successDone = 0;
 
 // creating files for learning
-std::ofstream errorSuccessDatafs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/errorSuccessData.csv");
-std::ofstream successRatef("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/BCL/robonet_plots/successTime.csv");
+std::ofstream errorSuccessDatafs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/errorSuccessData.csv");
+std::ofstream successRatef("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/successTime.csv");
 
 // initialise some variables
 int sensorInUse = 6;

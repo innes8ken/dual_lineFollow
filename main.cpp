@@ -246,7 +246,7 @@ int main(int n, char* args[]) {
          * Pass the 'predictorDeltaMeans' for the NN to predict the future actions
          * It returns the 'motor_command' which is used to drive the motors
          **/
-        motor_command = external->onStepCompleted(statFrame, reflex_error, predictorDeltaMeans); //******************************************ADDITION********************
+        motor_command = external->onStepCompleted(statFrame, reflex_error, predictorDeltaMeans, paradigmOption); //******************************************ADDITION********************
         /**
          * The differential, left and right velocities are all equal to the motor_command
          * In the future they could be used to send different values to the motors
