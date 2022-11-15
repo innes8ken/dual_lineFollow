@@ -41,7 +41,21 @@ double lrCoeffFCL = 1; //additional learning rate coefficient (for lrCoeff*10^(l
 
 //#######################################################################################################################
 
-// initialising the filters
+//########################################## Initialising global variables (FCL) ###########################################
+
+long step = 0; 
+double avgError = 0;
+//double* pred = NULL;
+double* err = NULL;
+ 
+FILE* flog = NULL;
+FILE* llog = NULL;
+FILE* fcoord = NULL;
+
+//##########################################################################################################################
+
+// ########################### initialising the filters used for predictor data ############################################
+
 static void initialize_filters(int numInputs, double sampleRate) {
   // number of inputs are 5* the number of predictors becuase
   // the predictors are filtered by 5 different FIR filters each
@@ -82,9 +96,9 @@ static void initialize_filters(int numInputs, double sampleRate) {
 
 // initialising a pointer instance of NN called 'samanet'
 std::unique_ptr<Net> samanet;
-//initialising a pointer instance of fcl_util class called 'fcl' (copying samanet)
-std::unique_ptr<FeedforwardClosedloopLearningWithFilterbank> fcl;
-//FeedforwardClosedloopLearningWithFilterbank* fcl = NULL;
+//initialising a pointer instance of fcl_util class called 'fclFB' (copying samanet)
+std::unique_ptr<FeedforwardClosedloopLearningWithFilterbank> fclFB;
+//FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL;
 
 
 
@@ -120,14 +134,16 @@ void initialize_samanet(int numInputs_Pi, double sampleRate) {
   initialize_filters(numInputs_Ui, sampleRate); // calls the above function to set up the filters
 }
 
+
+
 void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array, int num_layers, int num_filtersInput, double minT, double maxT){
-  
+
   //number of network inputs
   const int nInputs = numInputs_Pi; //* 5;
 	// Number of layers of neurons in total
 	static constexpr int nLayers = 11;
 	// The number of neurons in every layer array
-	int nNeuronsInLayers[nLayers] = {11,10,9,8,7,6,6,6,6,6,3};
+	int nNeuronsInLayers[nLayers] = {11,10,9,8,7,6,6,6,5,4,3};
 	// We set nFilters in the input
 	const int nFiltersInput = 5;
 	// We set nFilters in the unit
@@ -137,25 +153,29 @@ void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array
 	const double maxT = 150;
   // Setting the learning rate 
 	double learningRateFcl = lrCoeffFCL*(pow(10.0,learningExpFCL));   //0.00001;
+  
  
- 
-  cout << "myLearningRate: " << myLearningRateFcl << endl;
-  //initialize_filters(numInputs_Ui, sampleRate); // calls the above function to set up the filters  //Using fcl_util which has built in filters
+  //pred = new double[nInputs];
+	err = new double[nNeuronsInLayers[0]];
+  
+	
 
-  fcl = std::make_unique<FeedforwardClosedloopLearningWithFilterbank>(nInputs, nNeuronsInLayers, nLayers, nFiltersInput, minT, maxT);
-     fcl->initWeights(1,0,FCLNeuron::MAX_OUTPUT_RANDOM);
-		 fcl->setLearningRate(learningRateFcl);
-		 fcl->setLearningRateDiscountFactor(1);
-		 fcl->setBias(1);
-	   fcl->setActivationFunction(FCLNeuron::TANH);
-	 	 fcl->setMomentum(0.9);		 
+  cout << "myLearningRate: " << myLearningRateFcl << endl;
+  //Using fcl_util which has built in filters
+
+  fclFB = std::make_unique<FeedforwardClosedloopLearningWithFilterbank>(nInputs, nNeuronsInLayers, nLayers, nFiltersInput, minT, maxT);
+     fclFB->initWeights(1,0,FCLNeuron::MAX_OUTPUT_RANDOM);
+		 fclFB->setLearningRate(learningRateFcl);
+		 fclFB->setLearningRateDiscountFactor(1);
+		 fclFB->setBias(1);
+	   fclFB->setActivationFunction(FCLNeuron::TANH);
+	 	 fclFB->setMomentum(0.9);		 
 
 } 
 
 
 
 // creating files to save the data
-
 
 std::ofstream weightDistancesfs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/weight_distances.csv");
 std::ofstream predictor("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/predictor.csv");
@@ -260,4 +280,46 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
 }
 
 
-run 
+//############################################# FCL Running for each iteration ##############################################
+
+double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
+  // capturing the time stamp
+  using namespace std::chrono;
+  milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+  //std::vector<double> networkInputs;
+
+//Checking for learnign/reactive mode 
+fprintf(stderr,"%d ",learningOff);
+		if (learningOff>0) {
+			fclFB->setLearningRate(0);
+			learningOff--;
+		} else {
+			fclFB->setLearningRate(learningRate);
+		}
+  assert(std::isfinite(reflex_error)); // making sure that the error is finite number
+
+ inline long getStep() {return step;}
+ inline double getAvgError() {return avgError;}
+
+fclFB->doStep(predictorDeltas,reflex_error);
+
+//####################################Seperate left and right motor commands from network ##################
+//  
+// 		float vL = (float)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*50 +
+// 				   (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*10 +
+// 				   (fclFB->getOutputLayer()->getNeuron(2)->getOutput())*2);
+// 		float vR = (float)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
+// 				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
+// 				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
+
+//############################## Combining motor commands so Left and right have equal commands (matching the BCL algo) ###############
+  double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
+  // 3 different outputs are sumed in a weighted manner
+  // so that the NN can output slow, moderate, or fast steering
+  double outSmall = (double)fclFB->getOutputLayer()->getNeuron(0)->getOutput();
+  double outMedium = (double)fclFB->getOutputLayer()->getNeuron(1)->getOutput();
+  double outLarge = (double)fclFB->getOutputLayer()->getNeuron(2)->getOutput()
+  double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
+  return resultNN; // returns the overall output of the NN
+  // which together with the reflex error drives the robot's navigation
+}

@@ -58,7 +58,7 @@ double prev_error = 0.00; // The previous reflex_error, used to calculate the re
 double fcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
 double fcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 
-
+//################################################################################################################################
 
 /**
  * The 'onStepCompleted' is called every step 
@@ -71,7 +71,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   /**
    * Making a copy of the reflex error.
    * 'reflex_error' is used for motor command
-   * 'feedback_error' is used for training the network
+   * 'feedback_error' is used for training the network in the BCL algo
    * This allows us to work with the reflex and the learning separately
    **/
   double feedback_error = reflex_error;
@@ -98,7 +98,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   
 
   case 1:
-   double nn_output = run_fclNet(predictors_diff, feedback_error);
+   double nn_output = run_fclNet(predictors_diff, reflex_error);
 
   }
   // saving the error into a new variable for calculating the derivative

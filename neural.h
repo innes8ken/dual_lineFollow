@@ -24,7 +24,7 @@ void initialize_samanet(int numInputs_pi, double sampleRate = 30.f);
 
 
 /**
- * @brief Running the NN on each iteration
+ * @brief Running the NN on each BCL iteration 
  * 
  * Returns the overall output of the NN
  * 
@@ -54,4 +54,11 @@ void save_samanet();
  */
 void initialize_fclNet(int num_of_predictors); //, int* num_of_neurons_per_layer_array, int num_layers, int num_filtersInput, double minT, double maxT);
 
+/**
+ * @brief Running the nn on each FCL iteration
+ * 
+ * @param in predictor differences 
+ * @param error reflex error 
+ * @return double 
+ */
 double run_fclNet(std::vector<double> &in, double error);
