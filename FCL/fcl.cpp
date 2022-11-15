@@ -121,6 +121,7 @@ void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 		// now let's calc the output which can then be sent out
 		receiverLayer->calcOutputs();
 	}
+	
 	// the error is injected into the 1st layer!
 	for(int i=0;i<(layers[0]->getNneurons());i++) {
 		layers[0]->getNeuron(i)->setError(error[i]);

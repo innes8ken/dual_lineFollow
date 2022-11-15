@@ -47,6 +47,8 @@ long step = 0;
 double avgError = 0;
 //double* pred = NULL;
 double* err = NULL;
+// The number of neurons in every layer array
+int nNeuronsInLayers[nLayers] = {11,10,9,8,7,6,6,6,5,4,3};
  
 FILE* flog = NULL;
 FILE* llog = NULL;
@@ -142,8 +144,6 @@ void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array
   const int nInputs = numInputs_Pi; //* 5;
 	// Number of layers of neurons in total
 	static constexpr int nLayers = 11;
-	// The number of neurons in every layer array
-	int nNeuronsInLayers[nLayers] = {11,10,9,8,7,6,6,6,5,4,3};
 	// We set nFilters in the input
 	const int nFiltersInput = 5;
 	// We set nFilters in the unit
@@ -288,31 +288,35 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
   //std::vector<double> networkInputs;
 
-//Checking for learnign/reactive mode 
-fprintf(stderr,"%d ",learningOff);
+ //Checking for learnign/reactive mode 
+ fprintf(stderr,"%d ",learningOff);
 		if (learningOff>0) {
 			fclFB->setLearningRate(0);
 			learningOff--;
 		} else {
 			fclFB->setLearningRate(learningRate);
 		}
-  assert(std::isfinite(reflex_error)); // making sure that the error is finite number
+ assert(std::isfinite(reflex_error)); // making sure that the error is finite number
 
  inline long getStep() {return step;}
  inline double getAvgError() {return avgError;}
 
-fclFB->doStep(predictorDeltas,reflex_error);
+ //setting up reflex_error array 
+ for (int i = 0; i< nNeuronsInLayers[0]; i++){
+ double flex_errorArray[] 
+ }
+ fclFB->doStep(predictorDeltas,reflex_error);
 
-//####################################Seperate left and right motor commands from network ##################
-//  
-// 		float vL = (float)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*50 +
-// 				   (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*10 +
-// 				   (fclFB->getOutputLayer()->getNeuron(2)->getOutput())*2);
-// 		float vR = (float)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
-// 				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
-// 				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
+ //####################################Seperate left and right motor commands from network ##################
+ //  
+ // 		float vL = (float)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*50 +
+ // 				   (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*10 +
+ // 				   (fclFB->getOutputLayer()->getNeuron(2)->getOutput())*2);
+ // 		float vR = (float)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
+ // 				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
+ // 				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
 
-//############################## Combining motor commands so Left and right have equal commands (matching the BCL algo) ###############
+ //############################## Combining motor commands so Left and right have equal commands (matching the BCL algo) ###############
   double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
   // 3 different outputs are sumed in a weighted manner
   // so that the NN can output slow, moderate, or fast steering

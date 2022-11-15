@@ -6,7 +6,7 @@ Servo servoRight;
 
 int motorStopL = 1500; // Motor stop uS
 int motorStopR = 1500; // Motor stop uS
-int motorSpeedL = 16; // Constant fwd speed
+int motorSpeedL = 18; // Constant fwd speed
 int motorSpeedR = 23; // Constant fwd speed
 int errorMulti = 100; // Error multiplier
 int speedLeft = motorStopL + motorSpeedL; // Left constant speed
