@@ -288,14 +288,7 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
   //std::vector<double> networkInputs;
 
- //Checking for learnign/reactive mode 
- fprintf(stderr,"%d ",learningOff);
-		if (learningOff>0) {
-			fclFB->setLearningRate(0);
-			learningOff--;
-		} else {
-			fclFB->setLearningRate(learningRate);
-		}
+ 	
  assert(std::isfinite(reflex_error)); // making sure that the error is finite number
 
  inline long getStep() {return step;}
@@ -303,7 +296,7 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
 
  //setting up reflex_error array 
  for (int i = 0; i< nNeuronsInLayers[0]; i++){
- double flex_errorArray[] 
+ double reflex_errorArray[i] = reflex error;  
  }
  fclFB->doStep(predictorDeltas,reflex_error);
 
