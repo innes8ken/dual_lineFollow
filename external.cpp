@@ -16,8 +16,8 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "fcl_util.h"
-#include "fcl.h"
+#include "FCL/fcl.h"
+#include "FCL/fcl_util.h"
 
 using namespace std;
 using namespace cv;
