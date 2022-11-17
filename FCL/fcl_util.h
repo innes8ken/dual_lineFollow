@@ -1,10 +1,10 @@
 #ifndef __FEEDFORWARD_CLOSEDLOOP_LEARNING_UTIL_H_
 #define __FEEDFORWARD_CLOSEDLOOP_LEARNING_UTIL_H_
 
-#include "fcl/globals.h"
-#include "fcl/layer.h"
-#include "fcl/neuron.h"
-#include "fcl/bandpass.h"
+#include "fclNet/globals.h"
+#include "fclNet/layer.h"
+#include "fclNet/neuron.h"
+#include "fclNet/bandpass.h"
 #include "fcl.h"
 
 #include <stdio.h>
