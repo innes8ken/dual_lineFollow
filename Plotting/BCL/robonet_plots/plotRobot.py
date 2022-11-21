@@ -28,7 +28,8 @@ ratioYX=4
 my_dpi=300
 plt.close("all")
 
-#%%
+#this section plots the reflex error over time 
+
 errorSuccessData=np.loadtxt('{}errorSuccessData.csv'.format(path));
 successTime=np.loadtxt('{}successTime.csv'.format(path));
 time = np.linspace(0,len(errorSuccessData)/33, len(errorSuccessData))  #divide by 33Hz to get runtime 
@@ -50,22 +51,27 @@ plt.ylabel("Error Magnitude \n [E]")
 fig.savefig(spath+'error', quality= 100, format='svg', bbox_inches='tight')
 plt.show()
 
-#%%
 
-#speedDiffdata=np.loadtxt('{}speedDiffdata.csv'.format(path));
+##speedDiffdata is an array with columbs containg different data = [reflex_error reflex_error refelx_for_nav nn_output learnign_for_nav Motor_command] 
+# 
+# This section plots the learning part of the motor command (currently only for BCL) 
+
+speedDiffdata=np.loadtxt('{}speedDiffdata.csv'.format(path));
 #learningSpeedDiff = speedDiffdata[0:5000,4];
-#
-#figs=plt.figure('speedDiff', figsize=(3,1), dpi=my_dpi)
-#axes=figs.add_subplot(111)
-#plt.plot(learningSpeedDiff, color='black', linestyle="-", linewidth=0.2)
-#
-#plt.ylim(-9.9, 6.5)
-#plt.yticks(np.arange(-9, 7, 3))
-#axes.set_aspect(aspect=100)
-#figs.savefig(spath+'speeddiff', quality= 100, format='svg', bbox_inches='tight')
-#plt.show()
+learningSpeedDiff = speedDiffdata[:,4];
 
-#%%
+figs=plt.figure('speedDiff', figsize=(3,1), dpi=my_dpi)
+axes=figs.add_subplot(111)
+plt.plot(learningSpeedDiff, color='black', linestyle="-", linewidth=0.2)
+
+plt.ylim(-9.9, 6.5)
+plt.yticks(np.arange(-9, 7, 3))
+axes.set_aspect(aspect=100)
+figs.savefig(spath+'speeddiff', quality= 100, format='svg', bbox_inches='tight')
+plt.show()
+
+
+
 wchraw=np.loadtxt('{}weight_distances.csv'.format(path))
 time = np.linspace(0,len(wchraw)/33, len(wchraw))  #divide by 33Hz to get runtime 
 wch=np.empty(wchraw.shape)
