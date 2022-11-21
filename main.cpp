@@ -51,15 +51,15 @@ int main(int n, char* args[]) {
     cout << "Number of input arguments = " << n -1 << endl;  
     return 0;
     }
-  /**
-   * Printing successful paradigm setting  
-   **/
-  if (paradigmOption == 1){
-    cout << "The learning paradigm is set to Forward error prop"<< endl;
   
-  } else if (paradigmOption == 0) {
-    cout << "The learning paradigm is set to Backward error prop"<< endl;
-  }
+    //Printing successful paradigm setting  
+   
+  //if (paradigmOption == 1){
+    //cout << "The learning paradigm is set to Forward error prop"<< endl;
+  
+  //} else if (paradigmOption == 0) {
+    //cout << "The learning paradigm is set to Backward error prop"<< endl;
+  //}
 
 
   /**
@@ -88,10 +88,14 @@ int main(int n, char* args[]) {
 
  switch (paradigmOption) { //***************************************************************************ADDITION***********************************
    case 0:
+    cout << "The learning paradigm is set to BACKWARD ERROR PROP"<< endl;
     initialize_samanet(nPredictors);
-    //break; 
+    break; 
+    
    case 1: 
+    cout << "The learning paradigm is set to FORWARD ERROR PROP"<< endl;
     initialize_fclNet(nPredictors);
+    break;
  }
 
   /**

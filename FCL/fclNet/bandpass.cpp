@@ -47,7 +47,7 @@ void FCLBandpass::setParameters(double f,double q) {
 void FCLBandpass::impulse(char* name) {
   int steps=100;
 #ifdef DEBUG_BP
-  fprintf(stderr,"Impulse resp: %s, %d steps\n",name,steps);
+  //fprintf(stderr,"Impulse resp: %s, %d steps\n",name,steps);
 #endif
   for(int i=0;i<steps;i++) {
     filter(0);
@@ -55,7 +55,7 @@ void FCLBandpass::impulse(char* name) {
   double input=0.0;
   FILE* ff=fopen(name,"wt");
   if (!ff) {
-    fprintf(stderr,"Couldn't open %s \n",name);
+   // fprintf(stderr,"Couldn't open %s \n",name);
     return;
   }
   for(int i=0;i<steps;i++) {
@@ -64,7 +64,7 @@ void FCLBandpass::impulse(char* name) {
     } else {
       input=0.0F;
     }
-    fprintf(ff,"%d %f\n",i,filter(input));
+    //#fprintf(ff,"%d %f\n",i,filter(input));
   }
   fclose(ff);
 }

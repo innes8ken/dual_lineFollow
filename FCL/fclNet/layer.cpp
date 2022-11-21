@@ -185,7 +185,7 @@ void FCLLayer::setError(double _error) {
 void FCLLayer::setErrors( double* _errors) {
 	for(int i=0;i<nNeurons;i++) {
 		if (isnan(_errors[i])) {
-			fprintf(stderr,"Layer::%s L=%d, errors[%d]=%f\n",__func__,layerIndex,i,_errors[i]);
+			//fprintf(stderr,"Layer::%s L=%d, errors[%d]=%f\n",__func__,layerIndex,i,_errors[i]);
 		}
 		neurons[i]->setError(_errors[i]);
 	}
@@ -313,7 +313,7 @@ int FCLLayer::saveWeightMatrix(char *filename) {
 	if (!f) return errno;
 	for(int i=0;i<nNeurons;i++) {
 		for(int j=0;j<neurons[i]->getNinputs();j++) {
-			fprintf(f,"%f\t",neurons[i]->getWeight(j));
+			//fprintf(f,"%f\t",neurons[i]->getWeight(j));
 		}
 		fprintf(f,"\n");
 	}
