@@ -12,7 +12,7 @@ find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED)
 
 add_executable(dualRoboNet main.cpp serialib.cpp neural.cpp LowPassFilter.hpp LowPassFilter.cpp neural.h external.cpp 
-external.h bandpass.cpp fcl_util.h fcl_util.cpp fcl.h fcl.cpp)
+external.h bandpass.cpp) #fcl_util.h fcl_util.cpp fcl.h fcl.cpp)
 
 target_link_libraries(dualRoboNet clBP ${OpenCV_LIBS})
 

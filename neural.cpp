@@ -37,24 +37,35 @@ double learningExpBCL = -1; // This is the exponential of the leaning rate for t
 double lrCoeffBCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the BCL algo 
 
 double learningExpFCL = -5; // This is the exponential of the leaning rate for the FCL algo 
-double lrCoeffFCL = 1; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo 
+double lrCoeffFCL = 1; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo #
 
-//#######################################################################################################################
 
-//########################################## Initialising global variables (FCL) ###########################################
+//########################################## Declaring BCL global variables ###########################################
+
+// initialising a pointer instance of BCL NN called 'samanet'
+std::unique_ptr<Net> samanet;
+
+const int numLayersBCL = 11; // number of layers in the BCL algo 
+
+
+//########################################## Declaring FCL global variables ###########################################
+
+//initialising a pointer instance of fcl_util class called 'fclFB' (copying samanet)
+std::unique_ptr<FeedforwardClosedloopLearningWithFilterbank> fclFB;
+//FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL;
+//fclFB = new FeedforwardClosedloopLearningWithFilterbank(nInputs, nNeuronsInLayers, nLayers, nFiltersInput, minT, maxT);
+
+const int numLayersFCL = 11; // number of layers in the FCL algo 
+int nNeuronsInLayers[numLayersFCL] = {11,10,9,8,7,6,6,6,5,4,3}; // The number of neurons in every layer array
 
 long step = 0; 
 double avgError = 0;
 //double* pred = NULL;
 double* err = NULL;
-// The number of neurons in every layer array
-int nNeuronsInLayers[nLayers] = {11,10,9,8,7,6,6,6,5,4,3};
  
 FILE* flog = NULL;
 FILE* llog = NULL;
 FILE* fcoord = NULL;
-
-//##########################################################################################################################
 
 // ########################### initialising the filters used for predictor data ############################################
 
@@ -96,43 +107,36 @@ static void initialize_filters(int numInputs, double sampleRate) {
   }
 }
 
-// initialising a pointer instance of NN called 'samanet'
-std::unique_ptr<Net> samanet;
-//initialising a pointer instance of fcl_util class called 'fclFB' (copying samanet)
-std::unique_ptr<FeedforwardClosedloopLearningWithFilterbank> fclFB;
-//FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL;
-
-
 
 void initialize_samanet(int numInputs_Pi, double sampleRate) {
-  const int numLayers = 11; // number of layers
-  numInputs_Ui = numInputs_Pi * 5; // 5 is the number of filters                               
-  int numNeurons[numLayers]= {};
+  
+  int numInputs_Ui = numInputs_Pi * 5; // 5 is the number of filters                               
+  int numNeurons[numLayersBCL]= {};
   int firstLayer = 11; // number of neurons in the first layer
   int lastHiddenLayer = 4; // number of neurons in the last HIDDEN layer
   int incrementLayer = 1;
   int totalNeurons = 0; 
-  numNeurons[numLayers - 1] = 3; // number of neurons in the last layer
-  for (int i = numLayers - 2; i >= 0; i--){
-    numNeurons[i] = lastHiddenLayer + (numLayers - 2 - i)  * incrementLayer;
+  numNeurons[numLayersBCL - 1] = 3; // number of neurons in the last layer
+  for (int i = numLayersBCL - 2; i >= 0; i--){
+    numNeurons[i] = lastHiddenLayer + (numLayersBCL - 2 - i)  * incrementLayer;
     totalNeurons += numNeurons[i];
     assert(numNeurons[i] > 0);
   }
 
   // setting up the BCL NN with the number of layers, neurons per layer and number of inputs
-  samanet = std::make_unique<Net>(numLayers, numNeurons, numInputs_Ui);
+  samanet = std::make_unique<Net>(numLayersBCL, numNeurons, numInputs_Ui);
   // initialising the BCL NN with random weights and no biases and with sigmoid function for activation
   samanet->initNetwork(Neuron::W_RANDOM, Neuron::B_NONE, Neuron::Act_Sigmoid);
   
   
-  //double myLearningRateBCL = exp(learningExp); 
-  double myLearningRateBCL = lrCoeffBCL*(pow(10.0,learningExpBCL));
+  //double learningRateBCL = exp(learningExp); 
+  double learningRateBCL = lrCoeffBCL*(pow(10.0,learningExpBCL));
   
   // printing the learning rate
    
     
-  cout << "myLearningRate: " << myLearningRateBcl << endl;
-  samanet->setLearningRate(myLearningRateBcl); // setting the learning rate
+  cout << "myLearningRate: " << learningRateBCL << endl;
+  samanet->setLearningRate(learningRateBCL); // setting the learning rate
   initialize_filters(numInputs_Ui, sampleRate); // calls the above function to set up the filters
 }
 
@@ -142,8 +146,6 @@ void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array
 
   //number of network inputs
   const int nInputs = numInputs_Pi; //* 5;
-	// Number of layers of neurons in total
-	static constexpr int nLayers = 11;
 	// We set nFilters in the input
 	const int nFiltersInput = 5;
 	// We set nFilters in the unit
@@ -152,20 +154,20 @@ void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array
 	const double minT = 100;
 	const double maxT = 150;
   // Setting the learning rate 
-	double learningRateFcl = lrCoeffFCL*(pow(10.0,learningExpFCL));   //0.00001;
+	double learningRateFCL = lrCoeffFCL*(pow(10.0,learningExpFCL));   //0.00001;
   
  
   //pred = new double[nInputs];
-	err = new double[nNeuronsInLayers[0]];
+	//err = new double[nNeuronsInLayers[0]];
   
 	
 
-  cout << "myLearningRate: " << myLearningRateFcl << endl;
+  cout << "myLearningRate: " << learningRateFCL << endl;
   //Using fcl_util which has built in filters
 
-  fclFB = std::make_unique<FeedforwardClosedloopLearningWithFilterbank>(nInputs, nNeuronsInLayers, nLayers, nFiltersInput, minT, maxT);
+  fclFB = std::make_unique<FeedforwardClosedloopLearningWithFilterbank>(nInputs, nNeuronsInLayers, numLayersFCL, nFiltersInput, minT, maxT);
      fclFB->initWeights(1,0,FCLNeuron::MAX_OUTPUT_RANDOM);
-		 fclFB->setLearningRate(learningRateFcl);
+		 fclFB->setLearningRate(learningRateFCL);
 		 fclFB->setLearningRateDiscountFactor(1);
 		 fclFB->setBias(1);
 	   fclFB->setActivationFunction(FCLNeuron::TANH);
@@ -259,7 +261,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
 
   // saving the weights into the file
   double compensationScale = 1;
-  for (int i = 0; i <numLayers; i++){
+  for (int i = 0; i <numLayersFCL; i++){
     if (i == 0){ // for the first layer the weight change is amplified so that it is more visible in plots
       compensationScale = 0.01; // compensates for the weight change amplification
     }
@@ -290,15 +292,13 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
 
  	
  assert(std::isfinite(reflex_error)); // making sure that the error is finite number
-
- inline long getStep() {return step;}
- inline double getAvgError() {return avgError;}
+ double reflex_errorArray[nNeuronsInLayers[0]] ={0}; // initialising an empty array for error storage in first layer
 
  //setting up reflex_error array 
  for (int i = 0; i< nNeuronsInLayers[0]; i++){
- double reflex_errorArray[i] = reflex error;  
+ reflex_errorArray[i] = reflex_error;  
  }
- fclFB->doStep(predictorDeltas,reflex_error);
+ fclFB->doStep(predictorDeltas,reflex_errorArray);
 
  //####################################Seperate left and right motor commands from network ##################
  //  
@@ -315,7 +315,7 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   // so that the NN can output slow, moderate, or fast steering
   double outSmall = (double)fclFB->getOutputLayer()->getNeuron(0)->getOutput();
   double outMedium = (double)fclFB->getOutputLayer()->getNeuron(1)->getOutput();
-  double outLarge = (double)fclFB->getOutputLayer()->getNeuron(2)->getOutput()
+  double outLarge = (double)fclFB->getOutputLayer()->getNeuron(2)->getOutput();
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
   return resultNN; // returns the overall output of the NN
   // which together with the reflex error drives the robot's navigation
