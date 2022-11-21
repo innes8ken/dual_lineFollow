@@ -1,21 +1,15 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.8.1)
 
-set(CMAKE_CXX_STANDARD 11)
-
- set(CMAKE_THREAD_LIBS_INIT "-lpthread")
- Set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
- set(CMAKE_HAVE_THREADS_LIBRARY 1)
- set(CMAKE_USE_WIN32_THREADS_INIT 0)
- set(CMAKE_USE_PTHREADS_INIT 1)
- set(THREADS_PREFER_PTHREAD_FLAG ON)
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+set(CMAKE_CXX_STANDARD 14)
 
 project (FCL)
 
 add_library(FCL
-        
-        fclNet/bandpass.cpp
-        fclNet/neuron.cpp
         fclNet/layer.cpp
+        fclNet/bandpass.cpp
+        fclNet/neuron.cpp 
         fcl.cpp
         fcl_util.cpp
         )	
