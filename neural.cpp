@@ -51,9 +51,9 @@ const int numLayersBCL = 11; // number of layers in the BCL algo
 //########################################## Declaring FCL global variables ###########################################
 
 //initialising a pointer instance of fcl_util class called 'fclFB' (copying samanet)
-std::unique_ptr<FeedforwardClosedloopLearningWithFilterbank> fclFB;
-//FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL;
-//fclFB = new FeedforwardClosedloopLearningWithFilterbank(nInputs, nNeuronsInLayers, nLayers, nFiltersInput, minT, maxT);
+//std::unique_ptr<FeedforwardClosedloopLearningWithFilterbank> fclFB;
+
+FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL; // initialising fcl nn from class ffcllwf 
 
 const int numLayersFCL = 11; // number of layers in the FCL algo 
 int nNeuronsInLayers[numLayersFCL] = {11,10,9,8,7,6,6,6,5,4,3}; // The number of neurons in every layer array
@@ -156,6 +156,7 @@ void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array
   // Setting the learning rate 
 	double learningRateFCL = lrCoeffFCL*(pow(10.0,learningExpFCL));   //0.00001;
   
+ fclFB = new FeedforwardClosedloopLearningWithFilterbank(nInputs, nNeuronsInLayers, numLayersFCL, nFiltersInput, minT, maxT);
  
   //pred = new double[nInputs];
 	//err = new double[nNeuronsInLayers[0]];
@@ -165,7 +166,7 @@ void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array
   cout << "myLearningRate: " << learningRateFCL << endl;
   //Using fcl_util which has built in filters
 
-  fclFB = std::make_unique<FeedforwardClosedloopLearningWithFilterbank>(nInputs, nNeuronsInLayers, numLayersFCL, nFiltersInput, minT, maxT);
+  //fclFB = std::make_unique<FeedforwardClosedloopLearningWithFilterbank>(nInputs, nNeuronsInLayers, numLayersFCL, nFiltersInput, minT, maxT);
      fclFB->initWeights(1,0,FCLNeuron::MAX_OUTPUT_RANDOM);
 		 fclFB->setLearningRate(learningRateFCL);
 		 fclFB->setLearningRateDiscountFactor(1);
@@ -298,7 +299,9 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
  for (int i = 0; i< nNeuronsInLayers[0]; i++){
  reflex_errorArray[i] = reflex_error;  
  }
- fclFB->doStep(predictorDeltas,reflex_errorArray);
+ 
+ 
+ fclFB->doStep(predictorDeltas.data(),reflex_errorArray);
 
  //####################################Seperate left and right motor commands from network ##################
  //  

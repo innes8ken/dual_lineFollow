@@ -16,8 +16,8 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "FCL/fcl_util.h"
-#include "FCL/fcl.h"
+//#include "FCL/fcl_util.h"
+//#include "FCL/fcl.h"
 
 using namespace std;
 using namespace cv;
@@ -60,8 +60,12 @@ double fcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 
 //################################################################################################################################
 
+double nn_output;
+
+
 /**
  * The 'onStepCompleted' is called every step 
+ *
  **/
 int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vector<double> &predictors_diff, int paradigmOption_) {
   assert(std::isfinite(reflex_error)); // making sure that the reflex error is finite value
@@ -80,7 +84,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
    * So no learning takes place, meaning, no changes to the weights.
    **/
   
-  if (bcl_nn_gain_coeff == 0)||(fcl_nn_gain_coeff == 0){
+  if ((bcl_nn_gain_coeff == 0)||(fcl_nn_gain_coeff == 0)){
     feedback_error = 0;
   }
 
@@ -91,14 +95,16 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
    * Pass in the feedback_error (same as reflex error unless the learning is off)
    * Returns the NN's output, which is a weighted sum of neurons' output in the last layer
    **/
+   
+  
   switch (paradigmOption_){
   case 0:
-  double nn_output = run_samanet(predictors_diff, feedback_error); //*********************************************************************ADDITION-get FCL nn output****************************************************
+  nn_output = run_samanet(predictors_diff, feedback_error); // the output of one iteration through BCL learning 
 
   
 
   case 1:
-   double nn_output = run_fclNet(predictors_diff, reflex_error);
+  nn_output = run_fclNet(predictors_diff, reflex_error); // the output of one iteration of FCL learning 
 
   }
   // saving the error into a new variable for calculating the derivative
@@ -121,7 +127,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
 	cvui::trackbar(stat_frame, 180, 350, 400, &bcl_nn_gain_power, (double)0, (double)20, 1, "%.2Lf", 0, 0.5);
   cvui::sparkline(stat_frame, error_list, 10, 50, 580, 200, 0x000000); //Black = reflex_error
   cvui::text(stat_frame, 220, 10, "Net out:");
-  cvui::printf(stat_frame, 300, 10, "%+.4lf (%+.4lf)", bcl_nn_output, learning_for_nav);
+  cvui::printf(stat_frame, 300, 10, "%+.4lf (%+.4lf)", nn_output, learning_for_nav);
   cvui::text(stat_frame, 220, 30, "Error:");
   cvui::printf(stat_frame, 300, 30, "%+.4lf (%+.4lf)", reflex_error, reflex_for_nav);
 
@@ -129,7 +135,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   datafs << reflex_error << " "
          << reflex_error << " "
          << reflex_for_nav << " "
-         << bcl_nn_output << " "
+         << nn_output << " "
          << learning_for_nav << " "
          << motor_command << "\n";
   
@@ -138,6 +144,10 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
 }
 
 // create filters for sensor datann_output
+double cutOff = 10;
+double sampFreq = 0.033;
+Bandpass sensorFilters[8];
+LowPassFilter lpf0(cutOff, sampFreq);
 LowPassFilter lpf1(cutOff, sampFreq);
 LowPassFilter lpf2(cutOff, sampFreq);
 LowPassFilter lpf3(cutOff, sampFreq);
