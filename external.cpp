@@ -100,12 +100,12 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   switch (paradigmOption_){
   case 0:
   nn_output = run_samanet(predictors_diff, feedback_error); // the output of one iteration through BCL learning 
-  cout << " Currently on BCL Step " << endl;
+  //cout << " Currently on BCL Step " << endl;
   break;
 
   case 1:
   nn_output = run_fclNet(predictors_diff, reflex_error); // the output of one iteration of FCL learning 
-  cout << " Currently on FCL Step " << endl;
+  //cout << " Currently on FCL Step " << endl;
   break;
   }
   // saving the error into a new variable for calculating the derivative
