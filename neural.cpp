@@ -303,7 +303,19 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
  
  fclFB->doStep(predictorDeltas.data(),reflex_errorArray);
 
- //####################################Seperate left and right motor commands from network ##################
+ double compensationScale = 1;
+  for (int i = 0; i <numLayersFCL; i++){
+    /**if (i == 0){ // for the first layer the weight change is amplified so that it is more visible in plots
+     * compensationScale = 0.01; // compensates for the weight change amplification
+      }
+    **/
+    weightDistancesfs << compensationScale * fclFB->getLayerWeightDistance(i) << " ";
+    compensationScale = 1;
+  }
+  weightDistancesfs << 0.01 * samanet->getWeightDistance() << "\n";
+
+
+ //Seperate left and right motor commands from network: 
  //  
  // 		float vL = (float)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*50 +
  // 				   (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*10 +
@@ -312,7 +324,8 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
  // 				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
  // 				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
 
- //############################## Combining motor commands so Left and right have equal commands (matching the BCL algo) ###############
+ // Combining motor commands so Left and right have equal commands (matching the BCL algo):
+
   double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
   // 3 different outputs are sumed in a weighted manner
   // so that the NN can output slow, moderate, or fast steering

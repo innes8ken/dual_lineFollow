@@ -359,7 +359,7 @@ Layer* Net::getLayer(int _layerIndex){
 
 double Net::getWeightDistance(){
     double weightChange = 0 ;
-    double weightDistance =0;
+    double weightDistance = 0;
     for (int i=0; i<nLayers; i++){
         weightChange += layers[i]->getWeightChange();
     }

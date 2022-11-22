@@ -79,7 +79,6 @@ wch=np.empty(wchraw.shape)
 nLayers=wchraw.shape[1]
 for i in range(nLayers):
     wch[:,i]= (wchraw[:,i]) # / (max(abs(wchraw[:,i])))) * (max(abs(wchraw[:,0])))
-
 wchfig=plt.figure('weigth change', figsize=(3,2),dpi=my_dpi)
 axe=wchfig.add_subplot(111)
 for i in range(1,wch.shape[1]-2):
