@@ -262,7 +262,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
 
   // saving the weights into the file
   double compensationScale = 1;
-  for (int i = 0; i <numLayersFCL; i++){
+  for (int i = 0; i <numLayersBCL; i++){
     if (i == 0){ // for the first layer the weight change is amplified so that it is more visible in plots
       compensationScale = 0.01; // compensates for the weight change amplification
     }

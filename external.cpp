@@ -432,8 +432,8 @@ void Extern::calcPredictors(Mat &frame, vector<double> &predictorDeltaMeans){
     auto area = Rect{startX, offsetFromTop, areaWidth, areaHeight};
     int predictorWidth = area.width / 2 / nPredictorCols;
     int predictorHeight = area.height / nPredictorRows;
-	Mat edges;
-	cvtColor(frame, edges, COLOR_BGR2GRAY);
+	    Mat edges;
+	    cvtColor(frame, edges, COLOR_BGR2GRAY);
   rectangle(edges, area, Scalar(122, 144, 255));
   predictorDeltaMeans.clear();
 	int areaMiddleLine = area.width / 2 + area.x;
