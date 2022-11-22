@@ -45,7 +45,11 @@ std::ofstream datafs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plottin
 std::ofstream modulusFile("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/modulusData.csv");
 
 
+//##################################   Mutual Environment   ###################################################################
+
 double reflex_error_gain = 1.9; // reflex error's gain, how much influence the reflex has on the steering 
+double nn_output;
+double nn_gain_coeff; 
 
 //##################################   BCL Environment   ###################################################################
  // NN gain is calculated as coeff x 10^(power)
@@ -60,7 +64,7 @@ double fcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 
 //################################################################################################################################
 
-double nn_output;
+
 
 
 /**
@@ -100,22 +104,27 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   switch (paradigmOption_){
   case 0:
   nn_output = run_samanet(predictors_diff, feedback_error); // the output of one iteration through BCL learning 
+  nn_gain_coeff = bcl_nn_gain_coeff;
+  
   //cout << " Currently on BCL Step " << endl;
   break;
 
   case 1:
   nn_output = run_fclNet(predictors_diff, reflex_error); // the output of one iteration of FCL learning 
+  nn_gain_coeff = fcl_nn_gain_coeff;
+
   //cout << " Currently on FCL Step " << endl;
   break;
   }
   // saving the error into a new variable for calculating the derivative
   prev_error = reflex_error;
 
-  // # SECTION: MOTOR COMMAND
+  // ###########################################   GENERAL MOTOR COMMANDS   ##############################################################
   double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
-  double learning_for_nav = nn_output * bcl_nn_gain_coeff * pow(10,bcl_nn_gain_power); // calculate the learning part of speed command
+  double learning_for_nav = nn_output * nn_gain_coeff * pow(10,bcl_nn_gain_power); // calculate the learning part of the motor speed command
   double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command
-  // # SECTION: PLOTS
+ 
+  // ###########################################   SECTION: PLOTS   ######################################################################
   /**
    * setting up the GUI with the stats. Display the stat
    * Setting up track bars for the reflex and learning gains to be changes in trials interactively
