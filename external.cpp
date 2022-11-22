@@ -45,14 +45,14 @@ std::ofstream datafs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plottin
 std::ofstream modulusFile("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/modulusData.csv");
 
 
-//##################################   Mutual Environment   ###################################################################
+//##################################   Mutual Environment   ######################################################################
 
 double reflex_error_gain = 1.9; // reflex error's gain, how much influence the reflex has on the steering 
 double nn_output;
 double nn_gain_coeff; 
 
-//##################################   BCL Environment   ###################################################################
- // NN gain is calculated as coeff x 10^(power)
+//##################################   BCL Environment   #########################################################################
+// NN gain is calculated as coeff x 10^(power)
 double bcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
 double bcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 double prev_error = 0.00; // The previous reflex_error, used to calculate the reflex_error derivative, not used for normal bak-propagation
@@ -63,9 +63,6 @@ double fcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
 double fcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 
 //################################################################################################################################
-
-
-
 
 /**
  * The 'onStepCompleted' is called every step 
@@ -105,7 +102,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   case 0:
   nn_output = run_samanet(predictors_diff, feedback_error); // the output of one iteration through BCL learning 
   nn_gain_coeff = bcl_nn_gain_coeff;
-  
+
   //cout << " Currently on BCL Step " << endl;
   break;
 
