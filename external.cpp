@@ -50,6 +50,7 @@ std::ofstream modulusFile("/home/pi/projects/lineFollowingDir/dual_lineFollow/Pl
 double reflex_error_gain = 1.9; // reflex error's gain, how much influence the reflex has on the steering 
 double nn_output;
 double nn_gain_coeff; 
+double nn_gain_power;
 
 //##################################   BCL Environment   #########################################################################
 // NN gain is calculated as coeff x 10^(power)
@@ -101,15 +102,15 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   switch (paradigmOption_){
   case 0:
   nn_output = run_samanet(predictors_diff, feedback_error); // the output of one iteration through BCL learning 
-  nn_gain_coeff = bcl_nn_gain_coeff;
-
+  nn_gain_coeff = bcl_nn_gain_coeff;  // Setting the nn gain varirables 
+  nn_gain_power = bcl_nn_gain_power;
   //cout << " Currently on BCL Step " << endl;
   break;
 
   case 1:
   nn_output = run_fclNet(predictors_diff, reflex_error); // the output of one iteration of FCL learning 
   nn_gain_coeff = fcl_nn_gain_coeff;
-
+  nn_gain_power = fcl_nn_gain_power;
   //cout << " Currently on FCL Step " << endl;
   break;
   }
@@ -118,7 +119,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
 
   // ###########################################   GENERAL MOTOR COMMANDS   ##############################################################
   double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
-  double learning_for_nav = nn_output * nn_gain_coeff * pow(10,bcl_nn_gain_power); // calculate the learning part of the motor speed command
+  double learning_for_nav = nn_output * nn_gain_coeff * pow(10,nn_gain_power); // calculate the learning part of the motor speed command
   double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command
  
   // ###########################################   SECTION: PLOTS   ######################################################################
@@ -130,8 +131,8 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   cvui::text(stat_frame, 10, 250, "Sensor Error Multiplier: ");
   cvui::trackbar(stat_frame, 180, 250, 400, &reflex_error_gain, (double)0.0, (double)10.0, 1, "%.2Lf", 0, 0.5);
   cvui::text(stat_frame, 10, 300, "Net Output Multiplier: ");
-  cvui::trackbar(stat_frame, 180, 300, 400, &bcl_nn_gain_coeff, (double)0.0, (double)10.0, 1, "%.2Lf", 0, 0.5);
-	cvui::trackbar(stat_frame, 180, 350, 400, &bcl_nn_gain_power, (double)0, (double)20, 1, "%.2Lf", 0, 0.5);
+  cvui::trackbar(stat_frame, 180, 300, 400, &nn_gain_coeff, (double)0.0, (double)10.0, 1, "%.2Lf", 0, 0.5);
+	cvui::trackbar(stat_frame, 180, 350, 400, &nn_gain_power, (double)0, (double)20, 1, "%.2Lf", 0, 0.5);
   cvui::sparkline(stat_frame, error_list, 10, 50, 580, 200, 0x000000); //Black = reflex_error
   cvui::text(stat_frame, 220, 10, "Net out:");
   cvui::printf(stat_frame, 300, 10, "%+.4lf (%+.4lf)", nn_output, learning_for_nav);
@@ -366,8 +367,8 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR){
   cvui::text(stat_frame, 100, 20, "ave:");
   cvui::printf(stat_frame, 130, 20, "%1.3f", movingIntegralAve);
 
-  if (bcl_nn_gain_coeff == 0){ // this is for reflex
-    // stop the program is certain number of steps has been taken
+  if (nn_gain_coeff == 0){ // this is for reflex
+    // stop the program if certain number of steps has been taken
     if ( stepCount - firstEncounter > loopLength * 2 && successDone == 0){
         cout << "DONE!" << endl;
         cout << "movingIntegralAve: " << movingIntegralAve << endl;

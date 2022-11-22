@@ -52,14 +52,14 @@ int main(int n, char* args[]) {
     return 0;
     }
   
-    //Printing successful paradigm setting  
+    Printing successful paradigm setting  
    
-  //if (paradigmOption == 1){
-    //cout << "The learning paradigm is set to Forward error prop"<< endl;
+  if (paradigmOption == 1){
+    cout << "The learning paradigm is set to Forward error prop"<< endl;
   
-  //} else if (paradigmOption == 0) {
-    //cout << "The learning paradigm is set to Backward error prop"<< endl;
-  //}
+  } else if (paradigmOption == 0) {
+    cout << "The learning paradigm is set to Backward error prop"<< endl;
+  }
 
 
   /**
