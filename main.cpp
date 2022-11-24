@@ -52,7 +52,7 @@ int main(int n, char* args[]) {
     return 0;
     }
   
-    Printing successful paradigm setting  
+    //Printing successful paradigm setting  
    
   if (paradigmOption == 1){
     cout << "The learning paradigm is set to Forward error prop"<< endl;
