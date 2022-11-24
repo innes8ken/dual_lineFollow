@@ -269,7 +269,8 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
     weightDistancesfs << compensationScale * samanet->getLayerWeightDistance(i) << " ";
     compensationScale = 1;
   }
-  weightDistancesfs << 0.01 * samanet->getWeightDistance() << "\n";
+  
+   weightDistancesfs << 0.01 * samanet->getWeightDistance() << "\n";
 
   double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
   // 3 different outputs are sumed in a weighted manner
@@ -308,11 +309,15 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
     /**if (i == 0){ // for the first layer the weight change is amplified so that it is more visible in plots
      * compensationScale = 0.01; // compensates for the weight change amplification
       }
-    **/
-    weightDistancesfs << compensationScale * fclFB->getLayerWeightDistance(i) << " ";
-    compensationScale = 1;
+     **/
+  
+		(weightDistancesfs << compensationScale * fclFB->getLayer(i)->getWeightDistanceFromInitialWeights()) << " ";
+		
   }
-  weightDistancesfs << 0.01 * samanet->getWeightDistance() << "\n";
+  weightDistancesfs << "\n";
+  //weightDistancesfs << 0.01 * samanet->getWeightDistance() << "\n";
+
+
 
 
  //Seperate left and right motor commands from network: 
