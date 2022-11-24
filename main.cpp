@@ -54,13 +54,6 @@ int main(int n, char* args[]) {
   
     //Printing successful paradigm setting  
    
-  if (paradigmOption == 1){
-    cout << "The learning paradigm is set to Forward error prop"<< endl;
-  
-  } else if (paradigmOption == 0) {
-    cout << "The learning paradigm is set to Backward error prop"<< endl;
-  }
-
 
   /**
    * Make an (a pointer) instance of the class Extern 
@@ -219,7 +212,7 @@ int main(int n, char* args[]) {
      * This is the reflex error that is used to adjust the speed of the motors
      * This is also used as the feedback that trains the NN
      **/
-    double reflex_error = external->calcError(statFrame, sensorsArray);
+    double reflex_error = external->calcError(statFrame, sensorsArray, paradigmOption);
 
     // # SECTION: MOTOR COMMAND
     if (Ret > 0){ // if Ret is 1 means there is no errors

@@ -49,7 +49,7 @@ class Extern {
 	 * @param sensorCHAR holds the raw sensor data for the PR sensors 
 	 * @return double reflex_Error
 	 */
-	double calcError(Mat &statFrame, vector<uint8_t> &sensorCHAR);
+	double calcError(Mat &statFrame, vector<uint8_t> &sensorCHAR, int paradigmOption_);
 
 	/**
 	 * @brief calculates the number of predictors

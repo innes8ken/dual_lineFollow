@@ -40,8 +40,8 @@ FeedforwardClosedloopLearningWithFilterbank::FeedforwardClosedloopLearningWithFi
 		for(int j=0;j<num_filtersInput;j++) {
 			bandpass[i][j] = new FCLBandpass();
 #ifdef DEBUG
-			fprintf(stderr,"bandpass[%d][%d]->setParameters(%f,%f)\n",
-				i,j,f,dampingCoeff);
+			//fprintf(stderr,"bandpass[%d][%d]->setParameters(%f,%f)\n",
+				//i,j,f,dampingCoeff);
 #endif
 			bandpass[i][j]->setParameters(f,dampingCoeff);
 			f = f + df;
