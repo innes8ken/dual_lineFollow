@@ -12,12 +12,20 @@ from plotRobotClass import setFileName
 plt.rcParams['font.family'] = 'serif'
 plt.rcParams.update({'font.size': 7})
 
-expNumber = 1 # Choose where to locate data files
+expNumber = 1     # Choose where to locate data files
 run = 1
+FCLplots = 0
+BCLplots = 1 
 
 #names of possible file locations
+FCLfolder = np.array(['FCL/learning/Map 1/L0.2_R1.9_N1.1_run', 'FCL/learning/Map 1/L0.2_R1.9_N1.2_run', 'FCL/reflex/reflex_run'])
+BCLfolder = np.array(['BCL/learning/Map 1/L0.2_R1.9_N1.1_run', 'BCL/learning/Map 1/L0.2_R1.9_N1.2_run', 'BCL/reflex/reflex_run'])
 
-expName = np.array(['learning/L0.2_R1.9_N1.1_run', 'learning/L0.2_R1.9_N1.2_run', 'reflex/reflex_run'])
+if (BCLplots ==1 and FCLplots==0):
+    expName = BCLfolder 
+elif (BCLplots ==0 and FCLplots==1):
+    expName = FCLfolder
+else : print('ERROR!!! Please revise nnPlots varaibles')
 
 location = expName[expNumber-1] + str(run) + '/'
 mySetpath = setFileName(location)
@@ -48,7 +56,7 @@ plt.yticks(np.arange(-6, 7, 3))
 plt.xlabel("Time [s]")
 plt.ylabel("Error Magnitude \n [E]")
 #axe.set_aspect(aspect=100) 
-fig.savefig(spath+'error', quality= 100, format='svg', bbox_inches='tight')
+fig.savefig(spath+'error', quality=100, format='svg', bbox_inches='tight')
 plt.show()
 
 
@@ -56,20 +64,20 @@ plt.show()
 # 
 # This section plots the learning part of the motor command (currently only for BCL) 
 
-speedDiffdata=np.loadtxt('{}speedDiffdata.csv'.format(path));
+#speedDiffdata=np.loadtxt('{}speedDiffdata.csv'.format(path));
 #learningSpeedDiff = speedDiffdata[0:5000,4];
-learningSpeedDiff = speedDiffdata[:,4];
+#learningSpeedDiff = speedDiffdata[:,4];
 
-figs=plt.figure('speedDiff', figsize=(3,1), dpi=my_dpi)
-axes=figs.add_subplot(111)
-plt.plot(time, learningSpeedDiff, color='black', linestyle="-", linewidth=0.2)
-plt.xlabel("Time [s]")
-plt.ylabel("Predictive Motor Comamand \n [O_p]")
-plt.ylim(-9.9, 6.5)
-plt.yticks(np.arange(-9, 7, 3))
-axes.set_aspect(aspect=100)
-figs.savefig(spath+'speeddiff', quality= 100, format='svg', bbox_inches='tight')
-plt.show()
+#figs=plt.figure('speedDiff', figsize=(3,1), dpi=my_dpi)
+#axes=figs.add_subplot(111)
+#plt.plot(time, learningSpeedDiff, color='black', linestyle="-", linewidth=0.2)
+#plt.xlabel("Time [s]")
+#plt.ylabel("Predictive Motor Comamand \n [O_p]")
+#plt.ylim(-9.9, 6.5)
+#plt.yticks(np.arange(-9, 7, 3))
+#axes.set_aspect(aspect=100)
+#figs.savefig(spath+'speeddiff', quality= 100, format='svg', bbox_inches='tight')
+#plt.show()
 
 
 
