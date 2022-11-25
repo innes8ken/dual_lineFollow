@@ -47,9 +47,10 @@ class Extern {
 	 * 
 	 * @param statFrame Used for plotting?
 	 * @param sensorCHAR holds the raw sensor data for the PR sensors 
+	 * @param paradigmOption passes the nn paradigm option to detect if fcl plotting is needed 
 	 * @return double reflex_Error
 	 */
-	double calcError(Mat &statFrame, vector<uint8_t> &sensorCHAR);
+	double calcError(Mat &statFrame, vector<uint8_t> &sensorCHAR, int paradigmOption);
 
 	/**
 	 * @brief calculates the number of predictors

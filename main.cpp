@@ -219,7 +219,7 @@ int main(int n, char* args[]) {
      * This is the reflex error that is used to adjust the speed of the motors
      * This is also used as the feedback that trains the NN
      **/
-    double reflex_error = external->calcError(statFrame, sensorsArray);
+    double reflex_error = external->calcError(statFrame, sensorsArray, paradigmOption);
 
     // # SECTION: MOTOR COMMAND
     if (Ret > 0){ // if Ret is 1 means there is no errors
@@ -280,6 +280,7 @@ int main(int n, char* args[]) {
      * which stops the program and returns 0
      **/
     if(abs(reflex_error) > 99){
+      
       break;
     }
     /**

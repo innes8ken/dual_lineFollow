@@ -313,7 +313,7 @@ int FCLLayer::saveWeightMatrix(char *filename) {
 	if (!f) return errno;
 	for(int i=0;i<nNeurons;i++) {
 		for(int j=0;j<neurons[i]->getNinputs();j++) {
-			//fprintf(f,"%f\t",neurons[i]->getWeight(j));
+			fprintf(f,"%f\t",neurons[i]->getWeight(j));
 		}
 		fprintf(f,"\n");
 	}
