@@ -353,7 +353,7 @@ void Layer::saveWeights(){
 void Layer::snapWeights(){
     std::ofstream wfile;
     char l = '0';
-    //l += myLayerIndex + 1;
+    l += myLayerIndex + 1;
     string name = "wL";
     name += l;
     name += ".csv";

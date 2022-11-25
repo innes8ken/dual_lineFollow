@@ -396,7 +396,7 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR, int p
         //cout << "totalIntegralAve: " << totalIntegralAve << endl;
         if (paradigmOption_ == 1){
           char tmp[256];
-          sprintf(tmp,"FCLwL1.csv",0);
+          sprintf(tmp,"wL1.csv",0);
           fclFB->getLayer(0)->saveWeightMatrix(tmp); //**************************************************** EDIT ME NOT COMPLETE ********************
           }   
         }

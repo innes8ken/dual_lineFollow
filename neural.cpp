@@ -279,7 +279,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   double outMedium = samanet->getOutput(1);
   double outLarge = samanet->getOutput(2);
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
-  fprintf(resultNN'\n');
+  cout << resultNN << '\n' <<endl;
   return resultNN; // returns the overall output of the NN
   // which together with the reflex error drives the robot's navigation
 }
@@ -305,6 +305,7 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
  
  fclFB->doStep(predictorDeltas.data(),reflex_errorArray);
 
+//Overwriting the FCL weight distances to the same file used for BCL
  double compensationScale = 1;
   for (int i = 0; i <numLayersFCL; i++){
     /**if (i == 0){ // for the first layer the weight change is amplified so that it is more visible in plots
@@ -312,7 +313,7 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
       }
      **/
   
-		(weightDistancesfs << compensationScale * fclFB->getLayer(i)->getWeightDistanceFromInitialWeights()) << " ";
+		weightDistancesfs << compensationScale * fclFB->getLayer(i)->getWeightDistanceFromInitialWeights() << " ";
 		
   }
   weightDistancesfs << "\n";
@@ -339,7 +340,8 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   double outMedium = (double)fclFB->getOutputLayer()->getNeuron(1)->getOutput();
   double outLarge = (double)fclFB->getOutputLayer()->getNeuron(2)->getOutput();
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
+  cout << resultNN << '\n' <<endl;
   return resultNN; // returns the overall output of the NN
-  fprintf(resultNN'\n');
+  
   // which together with the reflex error drives the robot's navigation
 }
