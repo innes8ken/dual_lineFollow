@@ -406,13 +406,11 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR, int p
       //This is to record and later plot the weight values of the nn in the first layer
       
       if (paradigmOption_ == 1)&&(successDone==1){
-        char tmp[256];
-        sprintf(tmp,"wL%d.dat",1);
-        fclFB->getLayer(0)->saveWeightMatrix(tmp)
-        }
+        fcl_weightPlotting();
+      }
 
         
-      }
+    
     }else{consistency = 0;}
   }
   return reflex_error; // return the relfex error for NN feedback and for motor command

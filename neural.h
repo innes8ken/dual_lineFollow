@@ -66,4 +66,4 @@ void initialize_fclNet(int num_of_predictors); //, int* num_of_neurons_per_layer
 double run_fclNet(std::vector<double> &in, double error);
 
 
-void fcl_weightPlotting(int successDone)//, double reflex_error)
+void fcl_weightPlotting()//int successDone)//, double reflex_error)
