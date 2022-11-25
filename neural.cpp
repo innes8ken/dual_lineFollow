@@ -348,8 +348,8 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
 
 void fcl_weightPlotting(){
 
-    char tmp[256];
-    sprintf(tmp,"wL1.dat");
-    fclFB->getLayer(0)->saveWeightMatrix(tmp)
+  char tmp[256];
+  sprintf(tmp,"wL1.csv");
+  fclFB->getLayer(0)->saveWeightMatrix(tmp)
 }
   
