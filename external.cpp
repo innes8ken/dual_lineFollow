@@ -394,26 +394,21 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR, int p
         //cout << "maxMovingIntegral: " << maxMovingIntegral << endl;
         //cout << "totalIntegral: " << totalIntegral << endl;
         //cout << "totalIntegralAve: " << totalIntegralAve << endl;
-        if (paradigmOption_ == 1){
-          char tmp[256];
-          sprintf(tmp,"wL1.csv",0);
-          fclFB->getLayer(0)->saveWeightMatrix(tmp); //**************************************************** EDIT ME NOT COMPLETE ********************
-          }   
         }
         
-        successDone = 1;
-        successRatef << firstEncounter << " " << stepCount - firstEncounter 
+      successDone = 1;
+      successRatef << firstEncounter << " " << stepCount - firstEncounter 
                   << " " << movingIntegralAve << " " << maxMovingIntegral
                   << " " << totalIntegral << " " << totalIntegralAve << "\n";
-          reflex_error = 100;                            
-        //exit(14);
+      reflex_error = 100;                            
+      //exit(14);
         
-        //This is to record and later plot the weight values of the nn in the first layer
-
-        if (paradigmOption_ == 1){
-          char tmp[256];
-				  sprintf(tmp,"wL%d.dat",0);
-				  fcl->getLayer(0)->saveWeightMatrix(tmp)
+      //This is to record and later plot the weight values of the nn in the first layer
+      
+      if (paradigmOption_ == 1)&&(successDone==1){
+        char tmp[256];
+        sprintf(tmp,"wL%d.dat",1);
+        fclFB->getLayer(0)->saveWeightMatrix(tmp)
         }
 
         

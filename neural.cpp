@@ -345,3 +345,10 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   
   // which together with the reflex error drives the robot's navigation
 }
+
+void FCL_weightPlotting(int successDone){
+  if (successDone==1){
+    char tmp[256];
+    sprintf(tmp,"wL1.dat");
+    fclFB->getLayer(0)->saveWeightMatrix(tmp)
+  }

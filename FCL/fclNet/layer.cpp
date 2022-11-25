@@ -309,7 +309,7 @@ void FCLLayer::setConvolution( int width,  int height) {
 
 
 int FCLLayer::saveWeightMatrix(char *filename) {
-	FILE* f = fopen(filename,"wt");
+	FILE* f = fopen(filename,"wL1");
 	if (!f) return errno;
 	for(int i=0;i<nNeurons;i++) {
 		for(int j=0;j<neurons[i]->getNinputs();j++) {
