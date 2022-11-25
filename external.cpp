@@ -195,6 +195,7 @@ double totalIntegral = 0;
  * It also takes in the raw sensor data in order to calculate the reflex error
  **/
 
+
 double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR, int paradigmOption_){
 	const int numSensors = 8; //number of sensors
 	int startIndex = 8; // used to find the first sensor data, syncing the data
@@ -406,6 +407,16 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR, int p
                   << " " << totalIntegral << " " << totalIntegralAve << "\n";
           reflex_error = 100;                            
         //exit(14);
+        
+        //This is to record and later plot the weight values of the nn in the first layer
+
+        if (paradigmOption_ == 1){
+          char tmp[256];
+				  sprintf(tmp,"wL%d.dat",0);
+				  fcl->getLayer(0)->saveWeightMatrix(tmp)
+        }
+
+        
       }
     }else{consistency = 0;}
   }

@@ -279,6 +279,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   double outMedium = samanet->getOutput(1);
   double outLarge = samanet->getOutput(2);
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
+  fprintf(resultNN'\n');
   return resultNN; // returns the overall output of the NN
   // which together with the reflex error drives the robot's navigation
 }
@@ -339,5 +340,6 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   double outLarge = (double)fclFB->getOutputLayer()->getNeuron(2)->getOutput();
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
   return resultNN; // returns the overall output of the NN
+  fprintf(resultNN'\n');
   // which together with the reflex error drives the robot's navigation
 }
