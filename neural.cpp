@@ -350,6 +350,6 @@ void fcl_weightPlotting(){
 
   char tmp[256];
   sprintf(tmp,"wL1.csv");
-  fclFB->getLayer(0)->saveWeightMatrix(tmp)
+  fclFB->getLayer(0)->saveWeightMatrix(tmp);
 }
   
