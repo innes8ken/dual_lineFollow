@@ -308,7 +308,7 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
  
  fclFB->doStep(predictorDeltas.data(),reflex_errorArray);
 
-//Overwriting the FCL weight distances to the same file used for BCL
+ //Overwriting the FCL weight distances to the same file used for BCL
  double compensationScale = 1;
   for (int i = 0; i <numLayersFCL; i++){
     /**if (i == 0){ // for the first layer the weight change is amplified so that it is more visible in plots
@@ -339,9 +339,9 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
   // 3 different outputs are sumed in a weighted manner
   // so that the NN can output slow, moderate, or fast steering
-  double outSmall = (double)fclFB->getOutputLayer()->getNeuron(0)->getOutput();
-  double outMedium = (double)fclFB->getOutputLayer()->getNeuron(1)->getOutput();
-  double outLarge = (double)fclFB->getOutputLayer()->getNeuron(2)->getOutput();
+  double outSmall = fclFB->getOutputLayer()->getNeuron(0)->getOutput();
+  double outMedium = fclFB->getOutputLayer()->getNeuron(1)->getOutput();
+  double outLarge = fclFB->getOutputLayer()->getNeuron(2)->getOutput();
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
   cout << resultNN << '\n' <<endl;
   return resultNN; // returns the overall output of the NN
