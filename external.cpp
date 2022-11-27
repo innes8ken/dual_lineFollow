@@ -405,7 +405,7 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR, int p
         
       //This is to record and later plot the weight values of the nn in the first layer
       
-      if (paradigmOption_ == 1)&&(successDone==1){
+      if ((paradigmOption_ == 1)&&(successDone==1)){
         fcl_weightPlotting();
       }
 
