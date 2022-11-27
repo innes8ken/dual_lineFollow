@@ -55,7 +55,7 @@ const int numLayersBCL = 11; // number of layers in the BCL algo
 
 FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL; // initialising fcl nn from class ffcllwf 
 
-const int numLayersFCL = 11; // number of layers in the FCL algo 
+static constexpr int numLayersFCL = 11; // number of layers in the FCL algo 
 int nNeuronsInLayers[numLayersFCL] = {11,10,9,8,7,6,6,6,5,4,3}; // The number of neurons in every layer array
 
 long step = 0; 
@@ -156,7 +156,13 @@ void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array
   // Setting the learning rate 
 	double learningRateFCL = lrCoeffFCL*(pow(10.0,learningExpFCL));   //0.00001;
   
- fclFB = new FeedforwardClosedloopLearningWithFilterbank(nInputs, nNeuronsInLayers, numLayersFCL, nFiltersInput, minT, maxT);
+ fclFB = new FeedforwardClosedloopLearningWithFilterbank(
+  nInputs, 
+  nNeuronsInLayers, 
+  numLayersFCL, 
+  nFiltersInput, 
+  minT, 
+  maxT);
  
   //pred = new double[nInputs];
 	//err = new double[nNeuronsInLayers[0]];
@@ -167,19 +173,16 @@ void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array
   //Using fcl_util which has built in filters
 
   //fclFB = std::make_unique<FeedforwardClosedloopLearningWithFilterbank>(nInputs, nNeuronsInLayers, numLayersFCL, nFiltersInput, minT, maxT);
-     fclFB->initWeights(1,0,FCLNeuron::MAX_OUTPUT_RANDOM);
-		 fclFB->setLearningRate(learningRateFCL);
-		 fclFB->setLearningRateDiscountFactor(1);
-		 fclFB->setBias(1);
-	   fclFB->setActivationFunction(FCLNeuron::TANH);
-	 	 fclFB->setMomentum(0.9);		 
+ fclFB->initWeights(1,0,FCLNeuron::MAX_OUTPUT_RANDOM);
+ fclFB->setLearningRate(learningRateFCL);
+ fclFB->setLearningRateDiscountFactor(1);
+ fclFB->setBias(1);
+ fclFB->setActivationFunction(FCLNeuron::TANH);
+ fclFB->setMomentum(0.9);		 
 
 } 
 
-
-
 // creating files to save the data
-
 std::ofstream weightDistancesfs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/weight_distances.csv");
 std::ofstream predictor("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/predictor.csv");
 

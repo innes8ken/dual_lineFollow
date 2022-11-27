@@ -241,9 +241,10 @@ int main(int n, char* args[]) {
          * Pass the 'reflex_error' to train the NN and to drive the robot together with NN's output
          * Pass the 'angle of deviation', this is for another learning paradigm (PaM).
          * Pass the 'predictorDeltaMeans' for the NN to predict the future actions
+         * pass the 'paradigmOption' to declare which nn to use 
          * It returns the 'motor_command' which is used to drive the motors
          **/
-        motor_command = external->onStepCompleted(statFrame, reflex_error, predictorDeltaMeans, paradigmOption); //******************************************ADDITION********************
+        motor_command = external->onStepCompleted(statFrame, reflex_error, predictorDeltaMeans, paradigmOption);
         /**
          * The differential, left and right velocities are all equal to the motor_command
          * In the future they could be used to send different values to the motors
