@@ -290,19 +290,20 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
 
 //############################################# FCL Running for each iteration ##############################################
 
+//double reflex_errorArray[nNeuronsInLayers[0]] ={0}; // initialising an empty array for error storage in first layer
+
 double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   // capturing the time stamp
   using namespace std::chrono;
   milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
   //std::vector<double> networkInputs;
 
- 	
- assert(std::isfinite(reflex_error)); // making sure that the error is finite number
- double reflex_errorArray[nNeuronsInLayers[0]] ={0}; // initialising an empty array for error storage in first layer
+ assert(std::isfinite(reflex_error)); // making sure that the error is finite number 
+ double reflex_errorArray[nNeuronsInLayers[0]];
 
  //setting up reflex_error array 
  for (int i = 0; i< nNeuronsInLayers[0]; i++){
- reflex_errorArray[i] = reflex_error;  
+  reflex_errorArray[i] = reflex_error;  
  }
  
  
@@ -340,13 +341,13 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   // 3 different outputs are sumed in a weighted manner
   // so that the NN can output slow, moderate, or fast steering
   double outSmall = fclFB->getOutputLayer()->getNeuron(0)->getOutput();
+  //cout << "Output: "<< outSmall << '\n' << endl;
+  cout << "Output Layer Neuron Output: "<< fclFB->getOutputLayer()->getNeuron(0) << '\n' << endl;
   double outMedium = fclFB->getOutputLayer()->getNeuron(1)->getOutput();
   double outLarge = fclFB->getOutputLayer()->getNeuron(2)->getOutput();
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
   cout << resultNN << '\n' <<endl;
-  return resultNN; // returns the overall output of the NN
-  
-  // which together with the reflex error drives the robot's navigation
+  return resultNN; // returns the overall output of the NN which together with the reflex error drives the robot's navigation
 }
 
 void fcl_weightPlotting(){
