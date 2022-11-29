@@ -266,7 +266,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   samanet->propInputs(); // propagates the inputs
   samanet->snapWeights();
   
-  cout << "BCL NEtwork Inputs: " << '\n' << endl;
+  //cout << "BCL NEtwork Inputs: " << '\n' << endl;
   for (int i =0; i < networkInputs.size(); i++){
    //cout << networkInputs[i] << ' ';
   }
