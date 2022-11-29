@@ -201,6 +201,9 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   for (int i =0; i < predictorDeltas.size(); i++){
     predictor << " " << error; // write the error to file
     double sampleValue = predictorDeltas[i];
+    //cout << "Predictor D; " << predictorDeltas[i] << endl;    
+    //cout << sampleValue << ' ';
+    
     predictor << " " << sampleValue; // write to file
     predVector1[i].push_back(sampleValue); // add to buffer
     predVector2[i].push_back(sampleValue);
@@ -220,6 +223,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
     predictor << " " << predVector4[i][0];
     predictor << " " << predVector5[i][0];
   }
+
 
 /*
   for (int j = 0; j < predictorDeltas.size(); ++j) {
@@ -246,7 +250,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
     firstInputs = 0;
   }
   assert(std::isfinite(error)); // making sure that the error is finite number
-
+  
   // NN has 6 different errors in different pipelines
   // The second one is for the Back-propagated error
   // a coefficient of 1 ensures that the back-propagated error is in effect
@@ -261,8 +265,13 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   samanet->setInputs(networkInputs.data()); //then take a new action, set the inputs
   samanet->propInputs(); // propagates the inputs
   samanet->snapWeights();
-
-
+  
+  cout << "BCL NEtwork Inputs: " << '\n' << endl;
+  for (int i =0; i < networkInputs.size(); i++){
+   //cout << networkInputs[i] << ' ';
+  }
+  //cout << "\n" << endl;
+  
   // saving the weights into the file
   double compensationScale = 1;
   for (int i = 0; i <numLayersBCL; i++){
@@ -282,7 +291,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   double outMedium = samanet->getOutput(1);
   double outLarge = samanet->getOutput(2);
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
-  cout << resultNN << '\n' <<endl;
+  //cout << resultNN << '\n' <<endl;
   return resultNN; // returns the overall output of the NN
   // which together with the reflex error drives the robot's navigation
 }
@@ -297,29 +306,33 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   using namespace std::chrono;
   milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
   //std::vector<double> networkInputs;
-
+  
  assert(std::isfinite(reflex_error)); // making sure that the error is finite number 
  double reflex_errorArray[nNeuronsInLayers[0]];
-
- //setting up reflex_error array 
- for (int i = 0; i< nNeuronsInLayers[0]; i++){
-  reflex_errorArray[i] = reflex_error;  
+ double fclInputsArray[predictorDeltas.size()];
+ 
+  
+ for (int i = 0; i< nNeuronsInLayers[0]; i++){ //setting up reflex_error array
+  reflex_errorArray[i] = reflex_error;
+  //cout << "Reflex Error Inputs: " << reflex_errorArray[i] << '\n' << endl;  
  }
  
- cout << predictorDeltas.data() << '\n' << endl; 
- //double* predictorDiffArray = predictorDeltas;
+ //cout << predictorDeltas.data() << '\n' << endl; 
+ for (int i =0; i < predictorDeltas.size(); i++){ //setting up the network inputs 
+   fclInputsArray[i] = predictorDeltas[i];
+   cout << "FCL Inputs :" << fclInputsArray[i] << '\n' << endl;
+ }
   
- fclFB->doStep(predictorDeltas.data(),reflex_errorArray);
+ fclFB->doStep(fclInputsArray,reflex_errorArray);
 
  //Overwriting the FCL weight distances to the same file used for BCL
- double compensationScale = 1;
   for (int i = 0; i <numLayersFCL; i++){
     /**if (i == 0){ // for the first layer the weight change is amplified so that it is more visible in plots
      * compensationScale = 0.01; // compensates for the weight change amplification
       }
      **/
   
-		weightDistancesfs << compensationScale * fclFB->getLayer(i)->getWeightDistanceFromInitialWeights() << " ";
+		weightDistancesfs << fclFB->getLayer(i)->getWeightDistanceFromInitialWeights() << " ";
 		
   }
   weightDistancesfs << "\n";
@@ -347,14 +360,14 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   double outMedium = fclFB->getOutputLayer()->getNeuron(1)->getOutput();
   double outLarge = fclFB->getOutputLayer()->getNeuron(2)->getOutput();
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
-  cout << resultNN << '\n' <<endl;
+  //cout << resultNN << '\n' <<endl;
   return resultNN; // returns the overall output of the NN which together with the reflex error drives the robot's navigation
 }
 
 void fcl_weightPlotting(){
 
   char tmp[256];
-  sprintf(tmp,"wL1.csv");
+  sprintf(tmp,"FCLwL1.csv");
   fclFB->getLayer(0)->saveWeightMatrix(tmp);
 }
   
