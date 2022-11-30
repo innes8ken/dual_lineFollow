@@ -41,8 +41,8 @@ boost::circular_buffer<double> sensor6(samplingFreq * figureLength);
 boost::circular_buffer<double> sensor7(samplingFreq * figureLength);
 boost::circular_buffer<double> reflex_error_moving_ave_plot(samplingFreq * 100 * figureLength);
 // creating files to save the data
-std::ofstream datafs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/speedDiffdata.csv");
-std::ofstream modulusFile("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/modulusData.csv");
+std::ofstream datafs("/home/pi/projects/dual_lineFollow/Plotting/speedDiffdata.csv");
+std::ofstream modulusFile("/home/pi/projects/dual_lineFollow/Plotting/modulusData.csv");
 
 
 //##################################   Mutual Environment   ######################################################################
@@ -176,8 +176,8 @@ int stepCount = 1;
 int successDone = 0;
 
 // creating files for learning
-std::ofstream errorSuccessDatafs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/errorSuccessData.csv");
-std::ofstream successRatef("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/successTime.csv");
+std::ofstream errorSuccessDatafs("/home/pi/projects/dual_lineFollow/Plotting/errorSuccessData.csv");
+std::ofstream successRatef("/home/pi/projects/dual_lineFollow/Plotting/successTime.csv");
 
 // initialise some variables
 int sensorInUse = 6;

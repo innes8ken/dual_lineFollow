@@ -183,8 +183,8 @@ void initialize_fclNet(int numInputs_Pi){//, int* num_of_neurons_per_layer_array
 } 
 
 // creating files to save the data
-std::ofstream weightDistancesfs("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/weight_distances.csv");
-std::ofstream predictor("/home/pi/projects/lineFollowingDir/dual_lineFollow/Plotting/predictor.csv");
+std::ofstream weightDistancesfs("/home/pi/projects/dual_lineFollow/Plotting/weight_distances.csv");
+std::ofstream predictor("/home/pi/projects/dual_lineFollow/Plotting/predictor.csv");
 
 bool firstInputs = 1; // used to start the first iteration of learning
 
@@ -201,7 +201,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   for (int i =0; i < predictorDeltas.size(); i++){
     predictor << " " << error; // write the error to file
     double sampleValue = predictorDeltas[i];
-    //cout << "Predictor D; " << predictorDeltas[i] << endl;    
+       
     //cout << sampleValue << ' ';
     
     predictor << " " << sampleValue; // write to file
@@ -225,17 +225,17 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   }
 
 
-/*
+
   for (int j = 0; j < predictorDeltas.size(); ++j) {
     predictor << " " << error;
     double sample = predictorDeltas[j];
     predictor << " " << sample;
-    for (auto &filt : bandpassFilters[j]) {e
+    for (auto &filt : bandpassFilters[j]) {
       auto filtered = filt.filter(sample);
       networkInputs.push_back(filtered);
       predictor << " " << filtered;
     }
-  } */
+  } 
 
   predictor << "\n" ; // new line in file
 
@@ -317,13 +317,15 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   //cout << "Reflex Error Inputs: " << reflex_errorArray[i] << '\n' << endl;  
  }
  
- //cout << predictorDeltas.data() << '\n' << endl; 
+ //cout << "fclinputArray: " << endl; 
  for (int i =0; i < predictorDeltas.size(); i++){ //setting up the network inputs 
    fclInputsArray[i] = predictorDeltas[i];
-   cout << "FCL Inputs :" << fclInputsArray[i] << '\n' << endl;
+  // cout << fclInputsArray[i] << ' ' ;
+   //cout << predictorDeltas[i] << ' ';
  }
+ //cout << '\n' << endl; 
   
- fclFB->doStep(fclInputsArray,reflex_errorArray);
+ fclFB->doStep(predictorDeltas.data(),reflex_errorArray);
 
  //Overwriting the FCL weight distances to the same file used for BCL
   for (int i = 0; i <numLayersFCL; i++){
@@ -356,11 +358,15 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
   // 3 different outputs are sumed in a weighted manner
   // so that the NN can output slow, moderate, or fast steering
   double outSmall = fclFB->getOutputLayer()->getNeuron(0)->getOutput();
-  //cout << outSmall << '\n'<<endl;
   double outMedium = fclFB->getOutputLayer()->getNeuron(1)->getOutput();
   double outLarge = fclFB->getOutputLayer()->getNeuron(2)->getOutput();
+  
+  float outTest = (float)(fclFB->getLayer(1)->getNeuron(3)->getOutput());
+   
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
-  //cout << resultNN << '\n' <<endl;
+  //cout << "nnFclOut: " << resultNN << '\n' <<endl;
+  cout << "testNeuronOutput: " << resultNN << '\n' <<endl;
+  
   return resultNN; // returns the overall output of the NN which together with the reflex error drives the robot's navigation
 }
 
