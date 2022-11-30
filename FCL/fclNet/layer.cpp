@@ -63,7 +63,7 @@ FCLLayer::~FCLLayer() {
 
 void FCLLayer::calcOutputs() {
 	if (useThreads) {
-		fprintf(stderr,"+");
+		//fprintf(stderr,"+");
 		for(int i=0;i<NUM_THREADS;i++) {
 			calcOutputThread[i]->start();
 		}
@@ -71,7 +71,7 @@ void FCLLayer::calcOutputs() {
 			calcOutputThread[i]->join();
 		}
 	} else {
-		fprintf(stderr,"-");
+		//fprintf(stderr,"-");
 		for (int i = 0; i<nNeurons; i++) {
 			neurons[i]->calcOutput();
 		}
@@ -137,7 +137,7 @@ void FCLLayer::doLearning() {
 				maxDetThread[i]->start();
 			}
 		} else {
-			fprintf(stderr,"*");
+			//fprintf(stderr,"*");
 			for(int i=0;i<NUM_THREADS;i++) {
 				learningThread[i]->start();
 			}

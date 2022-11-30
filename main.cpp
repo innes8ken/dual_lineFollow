@@ -88,6 +88,8 @@ int main(int n, char* args[]) {
    case 1: 
     cout << "The learning paradigm is set to FORWARD ERROR PROP"<< endl;
     initialize_fclNet(nPredictors);
+    cout << "Number of Preictors: " << nPredictors << endl; 
+    //cout << "array of preds: "<< endl;
     break;
  }
 
@@ -244,6 +246,9 @@ int main(int n, char* args[]) {
          * pass the 'paradigmOption' to declare which nn to use 
          * It returns the 'motor_command' which is used to drive the motors
          **/
+         //for (int i =0; i< predictorDeltaMeans.size(); i++){
+          //cout << predictorDeltaMeans[i] << ' ';
+          //}
         motor_command = external->onStepCompleted(statFrame, reflex_error, predictorDeltaMeans, paradigmOption);
         /**
          * The differential, left and right velocities are all equal to the motor_command

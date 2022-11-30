@@ -69,7 +69,7 @@ double fcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
  * The 'onStepCompleted' is called every step 
  *
  **/
-int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vector<double> &predictors_diff, int paradigmOption_) {
+int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vector<double> &predictorDeltaMeans_, int paradigmOption_) {
   assert(std::isfinite(reflex_error)); // making sure that the reflex error is finite value
   reflex_error_plot.push_back(reflex_error); //puts the reflex errors in a buffer for plotting
   
@@ -97,21 +97,22 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
    * Pass in the feedback_error (same as reflex error unless the learning is off)
    * Returns the NN's output, which is a weighted sum of neurons' output in the last layer
    **/
+   //cout << "number of PredictorDelta means: " << predictorDeltaMeans_.size() <<endl;
    
   
   switch (paradigmOption_){
   case 0:
-  nn_output = run_samanet(predictors_diff, feedback_error); // the output of one iteration through BCL learning 
+  nn_output = run_samanet(predictorDeltaMeans_, feedback_error); // the output of one iteration through BCL learning 
   nn_gain_coeff = bcl_nn_gain_coeff;  // Setting the nn gain varirables 
   nn_gain_power = bcl_nn_gain_power;
-  //cout << " Currently on BCL Step " << endl;
+  
   break;
 
   case 1:
-  nn_output = run_fclNet(predictors_diff, reflex_error); // the output of one iteration of FCL learning 
+  nn_output = run_fclNet(predictorDeltaMeans_, reflex_error); // the output of one iteration of FCL learning 
   nn_gain_coeff = fcl_nn_gain_coeff;
   nn_gain_power = fcl_nn_gain_power;
-  //cout << " Currently on FCL Step " << endl;
+  
   break;
   }
   // saving the error into a new variable for calculating the derivative

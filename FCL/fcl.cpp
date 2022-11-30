@@ -1,5 +1,8 @@
 #include "fcl.h"
 #include <math.h>
+#include <iostream>
+
+using namespace std; 
 
 /**
  * GNU GENERAL PUBLIC LICENSE
@@ -102,6 +105,7 @@ void FeedforwardClosedloopLearning::setDecay(double decay) {
 void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 	// we set the input to the input layer
 	layers[0]->setInputs(input);
+	//cout << 
 	// ..and calc its output
 	layers[0]->calcOutputs();
 	// new lets calc the other outputs

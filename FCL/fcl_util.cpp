@@ -1,5 +1,7 @@
 #include "fcl_util.h"
 #include <math.h>
+#include <iostream>
+using namespace std; 
 
 /**
  * GNU GENERAL PUBLIC LICENSE
@@ -76,7 +78,8 @@ FeedforwardClosedloopLearningWithFilterbank::~FeedforwardClosedloopLearningWithF
 void FeedforwardClosedloopLearningWithFilterbank::doStep(double* input, double* error) {
 	for(int i=0;i<nInputs;i++) {
 		for(int j=0;j<nFiltersPerInput;j++) {
-			filterbankOutputs[i*nFiltersPerInput+j] = bandpass[i][j]->filter(input[i]);	
+			filterbankOutputs[i*nFiltersPerInput+j] = bandpass[i][j]->filter(input[i]);
+			cout << filterbankOutputs[i*nFiltersPerInput+j] << ' ';
 		}
 	}
 	FeedforwardClosedloopLearning::doStep(filterbankOutputs,error);
