@@ -300,7 +300,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
 
 //############################################# FCL Running for each iteration ##############################################
 
-double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
+double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, float* vR, float* vL){
   // capturing the time stamp
   using namespace std::chrono;
   milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
@@ -336,10 +336,10 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error){
 
  //Seperate left and right motor commands from network: 
  //  
-  		float vL = (float)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*50 +
+  		 *vL = (float)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*50 +
   				   (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*10 +
   				   (fclFB->getOutputLayer()->getNeuron(2)->getOutput())*2);
-  		float vR = (float)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
+  		 *vR = (float)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
   				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
   				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
   //cout << "vL =: " << vL << endl;

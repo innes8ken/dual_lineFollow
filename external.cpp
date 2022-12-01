@@ -63,6 +63,9 @@ double prev_error = 0.00; // The previous reflex_error, used to calculate the re
 double fcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
 double fcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 
+double fcl_vR;
+double fcl_vL;
+
 //################################################################################################################################
 
 /**
@@ -109,7 +112,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   break;
 
   case 1:
-  nn_output = run_fclNet(predictorDeltaMeans_, reflex_error); // the output of one iteration of FCL learning 
+  nn_output = run_fclNet(predictorDeltaMeans_, reflex_error, &fcl_vR, &fcl_vL); // the output of one iteration of FCL learning 
   nn_gain_coeff = fcl_nn_gain_coeff;
   nn_gain_power = fcl_nn_gain_power;
   
@@ -121,6 +124,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   // ###########################################   GENERAL MOTOR COMMANDS   ##############################################################
   double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
   double learning_for_nav = nn_output * nn_gain_coeff * pow(10,nn_gain_power); // calculate the learning part of the motor speed command
+  double leftCommand = fcl_vL *  
   double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command
  
   // ###########################################   SECTION: PLOTS   ######################################################################

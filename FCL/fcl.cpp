@@ -111,6 +111,11 @@ void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 	}
 	cout << '\n' << endl; 
 	
+	for (int i=0;i<9;i++){
+	cout << error[i] << ' ';
+	}
+	cout << '\n' << endl; 
+	
 	// ..and calc its output
 	layers[0]->calcOutputs();
 	// new lets calc the other outputs
