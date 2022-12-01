@@ -105,7 +105,12 @@ void FeedforwardClosedloopLearning::setDecay(double decay) {
 void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 	// we set the input to the input layer
 	layers[0]->setInputs(input);
-	//cout << 
+	
+	for (int i=0;i<480;i++){
+	cout << input[i] << ' ';
+	}
+	cout << '\n' << endl; 
+	
 	// ..and calc its output
 	layers[0]->calcOutputs();
 	// new lets calc the other outputs

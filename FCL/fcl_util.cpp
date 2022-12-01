@@ -29,6 +29,11 @@ FeedforwardClosedloopLearningWithFilterbank::FeedforwardClosedloopLearningWithFi
 	assert((nInputs*nFiltersPerInput) == getNumInputs());
 	bandpass = new FCLBandpass**[num_of_inputs];
 	filterbankOutputs = new double[num_of_inputs * num_filtersInput];
+	//cout << "size of filterbankout : " << sizeof(filterbankOutputs)/sizeof(*filterbankOutputs) << endl;
+	//cout << "ninputs x numfilt: " << num_of_inputs*num_filtersInput << endl;
+	
+
+	
 	for(int i=0;i<num_of_inputs;i++) {
 		bandpass[i] = new FCLBandpass*[num_filtersInput];
 		double fs = 1;
@@ -79,9 +84,12 @@ void FeedforwardClosedloopLearningWithFilterbank::doStep(double* input, double* 
 	for(int i=0;i<nInputs;i++) {
 		for(int j=0;j<nFiltersPerInput;j++) {
 			filterbankOutputs[i*nFiltersPerInput+j] = bandpass[i][j]->filter(input[i]);
-			cout << filterbankOutputs[i*nFiltersPerInput+j] << ' ';
 		}
 	}
+	//for (int i=0;i<nInputs*nFiltersPerInput; i++){
+		//cout << filterbankOutputs[i] << ' ';
+	//}
+	//cout << '\n' << endl;
 	FeedforwardClosedloopLearning::doStep(filterbankOutputs,error);
 }
 

@@ -282,6 +282,7 @@ void FCLLayer::setInputs( double* inputs ) {
 			neuronsp++;
 		}
 	}
+
 }
 
 
