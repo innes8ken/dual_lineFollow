@@ -105,16 +105,16 @@ void FeedforwardClosedloopLearning::setDecay(double decay) {
 void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 	// we set the input to the input layer
 	layers[0]->setInputs(input);
-	
-	for (int i=0;i<480;i++){
+	cout << "size of input: " << sizeof(input)/sizeof(input[0]) << endl; 
+	/*for (int i=0;i<sizeof(input)/sizeof(input[0]);i++){
 	cout << input[i] << ' ';
 	}
 	cout << '\n' << endl; 
 	
-	for (int i=0;i<9;i++){
+	/*for (int i=0;i<9;i++){
 	cout << error[i] << ' ';
 	}
-	cout << '\n' << endl; 
+	cout << '\n' << endl; */
 	
 	// ..and calc its output
 	layers[0]->calcOutputs();
@@ -127,6 +127,7 @@ void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 		for(int j=0;j<emitterLayer->getNneurons();j++) {
 			// get the output of a neuron in the input layer
 			double v = emitterLayer->getNeuron(j)->getOutput();
+			//cout << v << ' '<< endl;
 			// set that output as an input to the next layer which
 			// is distributed to all neurons
 			receiverLayer->setInput(j,v);

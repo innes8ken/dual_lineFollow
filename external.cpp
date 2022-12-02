@@ -112,6 +112,8 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   break;
 
   case 1:
+  //cout<< "Size of FCL predictor input array: " << predictorDeltaMeans_.size()<< endl; //sizeof(predictorDeltaMeans_[0]) << endl;
+ // cout<< "Size of FCL reflex input array: " << sizeof(predictorDeltaMeans_)/sizeof(*predictorDeltaMeans_) << endl;
   nn_output = run_fclNet(predictorDeltaMeans_, reflex_error, &fcl_vR, &fcl_vL); // the output of one iteration of FCL learning 
   nn_gain_coeff = fcl_nn_gain_coeff;
   nn_gain_power = fcl_nn_gain_power;
@@ -124,7 +126,8 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   // ###########################################   GENERAL MOTOR COMMANDS   ##############################################################
   double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
   double learning_for_nav = nn_output * nn_gain_coeff * pow(10,nn_gain_power); // calculate the learning part of the motor speed command
-  double leftCommand = fcl_vL *  
+  double leftCommand = fcl_vL * nn_gain_coeff * pow(10,nn_gain_power);
+  double rightCommand = fcl_vR * nn_gain_coeff * pow(10,nn_gain_power);
   double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command
  
   // ###########################################   SECTION: PLOTS   ######################################################################
