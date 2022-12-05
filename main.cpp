@@ -48,11 +48,11 @@ int main(int n, char* args[]) {
   if ((n != 2) || ((paradigmOption!=0) && (paradigmOption!=1)))  
     { 
     cout << "ERROR: Wrong arguments as input. PLease pass 0 for Back-Prop OR 1 for Forward-Prop after executable" << endl;  
-    cout << "Number of input arguments = " << n -1 << endl;  
+    cout << "Number of input arguments = " << n -1 << endl;   
     return 0;
     }
   
-    //Printing successful paradigm setting  
+    
    
 
   /**
@@ -81,15 +81,14 @@ int main(int n, char* args[]) {
 
  switch (paradigmOption) { //***************************************************************************ADDITION***********************************
    case 0:
-    cout << "The learning paradigm is set to BACKWARD ERROR PROP"<< endl;
-    initialize_samanet(nPredictors);
+    cout << "The learning paradigm is set to BACKWARD ERROR PROP"<< endl; //Printing successful paradigm setting 
+    initialize_samanet(nPredictors); // Initialising the chosen paradigm 
     break; 
     
    case 1: 
     cout << "The learning paradigm is set to FORWARD ERROR PROP"<< endl;
     initialize_fclNet(nPredictors);
     cout << "Number of Preictors: " << nPredictors << endl; 
-    //cout << "array of preds: "<< endl;
     break;
  }
 
@@ -180,7 +179,6 @@ int main(int n, char* args[]) {
      * Pass the camera view 'frame' to extract the predictors from.
      * Pass a pointer to an empty vector 'predictorDeltaMeans'
      * where the new predictor values will be stored.
-     * It returns the angle of deviation, this is not used for the normal Back-Propagation learning
      **/
     external->calcPredictors(frame, predictorDeltaMeans);        
 
