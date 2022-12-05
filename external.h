@@ -38,7 +38,7 @@ class Extern {
 	 * @param paradigmOption Selects the learning paradigm to return correct output 
 	 * @return int motor_command
 	 */
-	int onStepCompleted(Mat &stat_frame, double deltaSensorData, vector<double> &predictorDeltas, int paradigmOption_);
+	int onStepCompleted(Mat &stat_frame, double deltaSensorData, vector<double> &predictorDeltas, int paradigmOption_, double *leftCommand, double *rightCommand);
 
 	/**
 	 * @brief Returns reflex error 

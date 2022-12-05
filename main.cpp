@@ -147,6 +147,7 @@ int main(int n, char* args[]) {
   int16_t left_velocity = (int16_t)0;
   int16_t right_velocity = (int16_t)0;
   int16_t differential_velocity = (int16_t)0;
+
   /**
    * This is an infinite loop.
    * It stops if there is an error occures or we exit the program
@@ -247,7 +248,7 @@ int main(int n, char* args[]) {
          //for (int i =0; i< predictorDeltaMeans.size(); i++){
           //cout << predictorDeltaMeans[i] << ' ';
           //}
-        motor_command = external->onStepCompleted(statFrame, reflex_error, predictorDeltaMeans, paradigmOption);
+        motor_command = external->onStepCompleted(statFrame, reflex_error, predictorDeltaMeans, paradigmOption, &left_velocity, &right_velocity);
         /**
          * The differential, left and right velocities are all equal to the motor_command
          * In the future they could be used to send different values to the motors

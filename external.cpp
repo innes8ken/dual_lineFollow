@@ -46,9 +46,10 @@ std::ofstream modulusFile("/home/pi/projects/dual_lineFollow/Plotting/modulusDat
 
 
 //##################################   Mutual Environment   ######################################################################
-
 double reflex_error_gain = 1.9; // reflex error's gain, how much influence the reflex has on the steering 
 double nn_output;
+double nn_left_output;
+double nn_right_output;
 double nn_gain_coeff; 
 double nn_gain_power;
 
@@ -56,15 +57,11 @@ double nn_gain_power;
 // NN gain is calculated as coeff x 10^(power)
 double bcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
 double bcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
-double prev_error = 0.00; // The previous reflex_error, used to calculate the reflex_error derivative, not used for normal bak-propagation
 
 //###################################    FCL Environment  ########################################################################
 
 double fcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
 double fcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
-
-double fcl_vR;
-double fcl_vL;
 
 //################################################################################################################################
 
@@ -72,7 +69,7 @@ double fcl_vL;
  * The 'onStepCompleted' is called every step 
  *
  **/
-int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vector<double> &predictorDeltaMeans_, int paradigmOption_) {
+int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vector<double> &predictorDeltaMeans_, int paradigmOption_, double *leftCommand, double *rightCommand) {
   assert(std::isfinite(reflex_error)); // making sure that the reflex error is finite value
   reflex_error_plot.push_back(reflex_error); //puts the reflex errors in a buffer for plotting
   
@@ -93,7 +90,6 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
     feedback_error = 0;
   }
 
-
    /**
    * Switch case to Run both Sama's net and FCL algo from neural.cpp. Does one iteration of learning
    * Pass in the predictors differences (before filtration)
@@ -112,24 +108,22 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   break;
 
   case 1:
-  //cout<< "Size of FCL predictor input array: " << predictorDeltaMeans_.size()<< endl; //sizeof(predictorDeltaMeans_[0]) << endl;
- // cout<< "Size of FCL reflex input array: " << sizeof(predictorDeltaMeans_)/sizeof(*predictorDeltaMeans_) << endl;
-  nn_output = run_fclNet(predictorDeltaMeans_, reflex_error, &fcl_vR, &fcl_vL); // the output of one iteration of FCL learning 
+  //cout<< "Size of FCL predictor input array: " << predictorDeltaMeans_.size()<< endl;
+  //cout<< "Size of FCL reflex input array: " << sizeof(predictorDeltaMeans_)/sizeof(*predictorDeltaMeans_) << endl;
+  nn_output = run_fclNet(predictorDeltaMeans_, reflex_error, &nn_left_output, &nn_right_output); // the output of one iteration of FCL learning 
   nn_gain_coeff = fcl_nn_gain_coeff;
   nn_gain_power = fcl_nn_gain_power;
   
   break;
   }
-  // saving the error into a new variable for calculating the derivative
-  prev_error = reflex_error;
 
   // ###########################################   GENERAL MOTOR COMMANDS   ##############################################################
   double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
   double learning_for_nav = nn_output * nn_gain_coeff * pow(10,nn_gain_power); // calculate the learning part of the motor speed command
-  double leftCommand = fcl_vL * nn_gain_coeff * pow(10,nn_gain_power);
-  double rightCommand = fcl_vR * nn_gain_coeff * pow(10,nn_gain_power);
-  double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command
- 
+  double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command used for BCL robot control 
+  *leftCommand = nn_right_output * nn_gain_coeff * pow(10,nn_gain_power) + reflex_for_nav; // Seperate wheel commands to be used for FCL robot control
+  *rightCommand = nn_left_output * nn_gain_coeff * pow(10,nn_gain_power) + reflex_for_nav;
+
   // ###########################################   SECTION: PLOTS   ######################################################################
   /**
    * setting up the GUI with the stats. Display the stat
@@ -202,8 +196,6 @@ double totalIntegral = 0;
  * It takes in the state_frame where the info will be displayed 
  * It also takes in the raw sensor data in order to calculate the reflex error
  **/
-
-
 double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR, int paradigmOption_){
 	const int numSensors = 8; //number of sensors
 	int startIndex = 8; // used to find the first sensor data, syncing the data
