@@ -391,7 +391,7 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR, int p
         //cout << "totalIntegralAve: " << totalIntegralAve << endl;
          
         
-        if (paradigmOption_ == 1){fcl_weightPlotting()} //This is to record and later plot the weight values of the nn in the first layer
+        if (paradigmOption_ == 1){fcl_weightPlotting();} //This is to record and later plot the weight values of the nn in the first layer
       }
         
       successDone = 1;

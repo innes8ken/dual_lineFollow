@@ -282,7 +282,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
 
 //############################################# FCL Running for each iteration ##############################################
 
-double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, double nnLeft, double nnRight, double *leftMotorCommand, double *rightMotorCommand){
+double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, double *leftMotorCommand, double *rightMotorCommand){
   // capturing the time stamp
   using namespace std::chrono;
   milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
@@ -326,12 +326,12 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   		 *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
   				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
   				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
-  //cout << "leftMotorCommand: " << *leftMotorCommand << endl;
+  cout << "leftMotorCommand: " << *leftMotorCommand << endl;
 
  //Combining motor commands so Left and right have equal commands (matching the BCL algo): 
  //3 different outputs are sumed in a weighted manner so that the NN can output slow, moderate, or fast steering
 
-  double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
+ /* double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
   double outSmall = fclFB->getOutputLayer()->getNeuron(0)->getOutput();
   double outMedium = fclFB->getOutputLayer()->getNeuron(1)->getOutput();
   double outLarge = fclFB->getOutputLayer()->getNeuron(2)->getOutput();
@@ -342,9 +342,11 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   //cout << "nnFclOut: " << resultNN << '\n' <<endl;
   //cout << "testNeuronOutput: " << outTest << '\n' <<endl;
   //cout << "Number of inputs : " << fclFB->getNumInputs() << endl;
-  
-  return resultNN; // returns the overall output of the NN which together with the reflex error drives the robot's navigation
+  */
+  //return resultNN; // returns the overall output of the NN which together with the reflex error drives the robot's navigation
+  return 0;
 }
+
 
 void fcl_weightPlotting(){
 

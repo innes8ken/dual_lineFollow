@@ -144,8 +144,8 @@ int main(int n, char* args[]) {
    * the speed command (i.e. the output of NN)
    **/
   int motor_command = 0;
-  int16_t left_velocity = (int16_t)0;
-  int16_t right_velocity = (int16_t)0;
+  double left_velocity = (int16_t)0;
+  double right_velocity = (int16_t)0;
   int16_t differential_velocity = (int16_t)0;
 
   /**
@@ -264,7 +264,7 @@ int main(int n, char* args[]) {
       /**
        * Putting all 4 variables in one array to send to arduino
        **/
-      int16_t motor_array_command[4] = {differential_velocity, left_velocity , right_velocity, startMarker};
+      int16_t motor_array_command[4] = {differential_velocity, (int16_t)left_velocity , (int16_t)right_velocity, startMarker};
       /**
        * Sending the motor command to the arduino
        **/
