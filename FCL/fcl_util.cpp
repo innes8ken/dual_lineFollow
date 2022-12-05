@@ -31,11 +31,10 @@ FeedforwardClosedloopLearningWithFilterbank::FeedforwardClosedloopLearningWithFi
 	//double filterbankOutputs[num_of_inputs * num_filtersInput];
 	filterbankOutputs = new double[num_of_inputs * num_filtersInput];
 	
-	cout << "number of inputs from _util: " << nInputs << endl;
-	cout << "ninputs x numfilt: " << num_of_inputs*num_filtersInput << endl;
-	
+	/*cout << "number of inputs from _util: " << nInputs << endl;
+	  cout << "ninputs x numfilt: " << num_of_inputs*num_filtersInput << endl;
+	*/
 
-	
 	for(int i=0;i<num_of_inputs;i++) {
 		bandpass[i] = new FCLBandpass*[num_filtersInput];
 		double fs = 1;

@@ -105,13 +105,13 @@ void FeedforwardClosedloopLearning::setDecay(double decay) {
 void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 	// we set the input to the input layer
 	layers[0]->setInputs(input);
-	cout << "size of input: " << sizeof(input)/sizeof(input[0]) << endl; 
+	//cout << "size of input: " << sizeof(input)/sizeof(input[0]) << endl; 
+	
 	/*for (int i=0;i<sizeof(input)/sizeof(input[0]);i++){
 	cout << input[i] << ' ';
 	}
-	cout << '\n' << endl; 
 	
-	/*for (int i=0;i<9;i++){
+	/*for (int i=0;i<n[0];i++){
 	cout << error[i] << ' ';
 	}
 	cout << '\n' << endl; */
@@ -127,10 +127,10 @@ void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 		for(int j=0;j<emitterLayer->getNneurons();j++) {
 			// get the output of a neuron in the input layer
 			double v = emitterLayer->getNeuron(j)->getOutput();
-			//cout << v << ' '<< endl;
 			// set that output as an input to the next layer which
 			// is distributed to all neurons
 			receiverLayer->setInput(j,v);
+			//cout << v << ' '<< endl;
 		}
 		
 		// now let's calc the output which can then be sent out
@@ -181,7 +181,7 @@ void FeedforwardClosedloopLearning::setLearningRate(double rate) {
 void FeedforwardClosedloopLearning::setMomentum(double momentum) {
 	for (int i=0; i<num_layers; i++) {
 #ifdef DEBUG_FCL
-		fprintf(stderr,"setMomentum in layer %d\n",i);
+	    fprintf(stderr,"setMomentum in layer %d\n",i);
 #endif
 		layers[i]->setMomentum(momentum);
 	}
