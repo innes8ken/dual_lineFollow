@@ -59,16 +59,13 @@ double bcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
 double bcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 
 //###################################    FCL Environment  ########################################################################
-
 double fcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
 double fcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 
 //################################################################################################################################
 
-/**
- * The 'onStepCompleted' is called every step 
- *
- **/
+// The 'onStepCompleted' is called every step 
+
 int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vector<double> &predictorDeltaMeans_, int paradigmOption_, double *leftCommand, double *rightCommand) {
   assert(std::isfinite(reflex_error)); // making sure that the reflex error is finite value
   reflex_error_plot.push_back(reflex_error); //puts the reflex errors in a buffer for plotting
@@ -96,9 +93,7 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
    * Pass in the feedback_error (same as reflex error unless the learning is off)
    * Returns the NN's output, which is a weighted sum of neurons' output in the last layer
    **/
-   //cout << "number of PredictorDelta means: " << predictorDeltaMeans_.size() <<endl;
    
-  
   switch (paradigmOption_){
   case 0:
   nn_output = run_samanet(predictorDeltaMeans_, feedback_error); // the output of one iteration through BCL learning 
@@ -168,7 +163,7 @@ LowPassFilter lpf7(cutOff, sampFreq);
 
 // each loop of path is about 1500 samples
 // create an arrray to monitor the moving average of the error
-const int loopLength = 900;
+const int loopLength = 400;
 boost::circular_buffer<double> movingIntegralVector(loopLength);
 
 // create flags for monitoring the trial and the learning condition
@@ -394,23 +389,20 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR, int p
         //cout << "maxMovingIntegral: " << maxMovingIntegral << endl;
         //cout << "totalIntegral: " << totalIntegral << endl;
         //cout << "totalIntegralAve: " << totalIntegralAve << endl;
-        }
+         
+        
+        if (paradigmOption_ == 1){fcl_weightPlotting()} //This is to record and later plot the weight values of the nn in the first layer
+      }
         
       successDone = 1;
       successRatef << firstEncounter << " " << stepCount - firstEncounter 
                   << " " << movingIntegralAve << " " << maxMovingIntegral
                   << " " << totalIntegral << " " << totalIntegralAve << "\n";
       reflex_error = 100;                            
+      
+      
       //exit(14);
         
-      //This is to record and later plot the weight values of the nn in the first layer
-      
-      if ((paradigmOption_ == 1)&&(successDone==1)){
-        fcl_weightPlotting();
-      }
-
-        
-    
     }else{consistency = 0;}
   }
   return reflex_error; // return the relfex error for NN feedback and for motor command
@@ -495,9 +487,6 @@ void Extern::calcPredictors(Mat &frame, vector<double> &predictorDeltaMeans){
         rectangle(frame, rPred, Scalar(50, 50, 50));
       }
     }
-
-    // double arc = atan((predictorWidth * (index + 1))/(2)); // This is for PaM learning
-    // assert(isfinite(arc)); // This is for PaM learning
 
     line(frame, {areaMiddleLine, 0}, {areaMiddleLine, frame.rows}, Scalar(50, 50, 255));
     imshow("robot view", frame); // refresh and show the frame

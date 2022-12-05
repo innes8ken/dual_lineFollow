@@ -254,8 +254,8 @@ int main(int n, char* args[]) {
          * In the future they could be used to send different values to the motors
          **/
         differential_velocity = (int16_t)motor_command;
-        left_velocity = (int16_t)motor_command;
-        right_velocity = (int16_t)motor_command;
+        //left_velocity = (int16_t)motor_command;
+        //right_velocity = (int16_t)motor_command;
       }
       /**
        * Sending a start marker to the robot to synchoronise the communication

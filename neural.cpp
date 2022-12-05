@@ -31,27 +31,19 @@ boost::circular_buffer<double> predVector3[numPred];
 boost::circular_buffer<double> predVector4[numPred];
 boost::circular_buffer<double> predVector5[numPred];
 
-//########################################### Learning Rate Setup #######################################################
-
+//########################################### Learning Rate Setup ######################################################
 double learningExpBCL = -1; // This is the exponential of the leaning rate for the BCL algo 
 double lrCoeffBCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the BCL algo 
 
 double learningExpFCL = -5; // This is the exponential of the leaning rate for the FCL algo 
 double lrCoeffFCL = 1; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo #
 
-
 //########################################## Declaring BCL global variables ###########################################
-
-// initialising a pointer instance of BCL NN called 'samanet'
-std::unique_ptr<Net> samanet;
-
+std::unique_ptr<Net> samanet;// initialising a pointer instance of BCL NN called 'samanet'
 const int numLayersBCL = 11; // number of layers in the BCL algo 
 
-
 //########################################## Declaring FCL global variables ###########################################
-
 FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL; // initialising fcl nn from class ffcllwf 
-
 static constexpr int numLayersFCL = 6; // number of layers in the FCL algo 
 int nNeuronsInLayers[numLayersFCL] = {9,6,6,6,6,6}; // The number of neurons in every layer array 
 
@@ -64,7 +56,7 @@ FILE* flog = NULL;
 FILE* llog = NULL;
 FILE* fcoord = NULL;
 
-// ########################### initialising the filters used for predictor data ############################################
+//########################################## initialising the filters used for predictor data #########################
 
 static void initialize_filters(int numInputs, double sampleRate) {
   // number of inputs are 5* the number of predictors becuase
@@ -137,8 +129,6 @@ void initialize_samanet(int numInputs_Pi, double sampleRate) {
   initialize_filters(numInputs_Ui, sampleRate); // calls the above function to set up the filters
 }
 
-
-
 void initialize_fclNet(int numInputs_Pi){
 
   //number of network inputs
@@ -151,9 +141,8 @@ void initialize_fclNet(int numInputs_Pi){
 	const double minT = 100;
 	const double maxT = 150;
   // Setting the learning rate 
-	double learningRateFCL = lrCoeffFCL*(pow(10.0,learningExpFCL));   //0.00001;
+	double learningRateFCL = lrCoeffFCL*(pow(10,learningExpFCL));   //0.00001;
  
-
  fclFB = new FeedforwardClosedloopLearningWithFilterbank(
   nInputs, 
   nNeuronsInLayers, 
@@ -161,7 +150,6 @@ void initialize_fclNet(int numInputs_Pi){
   nFiltersInput, 
   minT, 
   maxT);
- 
   
   cout << "myLearningRate: " << learningRateFCL << endl;
   //Using fcl_util which has built in filters
@@ -308,7 +296,7 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
 	//reflex_errorArray = new double[nNeuronsInLayers[0]];
  
   //cout << '\n'<< "Reflex Error Inputs: "<< '\n'<< endl;
- for (int i = 0; i< nNeuronsInLayers[0]; i++){ //setting up reflex_error array
+  for (int i = 0; i< nNeuronsInLayers[0]; i++){ //setting up reflex_error array
   reflex_errorArray[i] = reflex_error;
   //cout << reflex_errorArray[i] << ' ';  
  }
@@ -319,11 +307,10 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
    //cout << fclInputsArray[i] << ' ';
  }
   
-  
   //one step of learning !!!!!!!
  fclFB->doStep(fclInputsArray,reflex_errorArray);
 
- //Overwriting the FCL weight distances to the same file used for BCL
+ //Saving the FCL weight distances to file
   for (int i = 0; i <numLayersFCL; i++){
   
 		weightDistancesfs << fclFB->getLayer(i)->getWeightDistanceFromInitialWeights() << " ";
@@ -331,7 +318,6 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   }
   weightDistancesfs << "\n";
   
-
  //Seperate left and right motor commands from network: 
  //  
   		 *leftMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*50 +
@@ -340,22 +326,18 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   		 *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
   				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
   				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
-  //cout << "vL =: " << vL << endl;
+  //cout << "leftMotorCommand: " << *leftMotorCommand << endl;
 
- // Combining motor commands so Left and right have equal commands (matching the BCL algo):
+ //Combining motor commands so Left and right have equal commands (matching the BCL algo): 
+ //3 different outputs are sumed in a weighted manner so that the NN can output slow, moderate, or fast steering
 
   double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
-  
-  // 3 different outputs are sumed in a weighted manner
-  // so that the NN can output slow, moderate, or fast steering
- 
   double outSmall = fclFB->getOutputLayer()->getNeuron(0)->getOutput();
   double outMedium = fclFB->getOutputLayer()->getNeuron(1)->getOutput();
   double outLarge = fclFB->getOutputLayer()->getNeuron(2)->getOutput();
-  
- // double outTest = fclFB->getLayer(1)->getNeuron(3)->getOutput();
-   
+
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
+  double outTest = fclFB->getLayer(1)->getNeuron(3)->getOutput(); 
   
   //cout << "nnFclOut: " << resultNN << '\n' <<endl;
   //cout << "testNeuronOutput: " << outTest << '\n' <<endl;
