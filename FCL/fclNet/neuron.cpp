@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
+#include <iostream>
+
+using namespace std; 
 
 /**
  * GNU GENERAL PUBLIC LICENSE
@@ -84,8 +87,15 @@ void FCLNeuron::calcOutput() {
 		output = sum;
 		break;
 	case TANH:
+		
+		//cout << "doing tanh"<< endl;
+		//cout.flush(); 
+		//printf("Doing tanh");
+		output = tanh(sum);
+		break;
 	case TANHLIMIT:
 		output = tanh(sum);
+		
 		break;
 	case RELU:
 		if (sum>0) {

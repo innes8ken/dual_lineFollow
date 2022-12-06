@@ -44,8 +44,9 @@ const int numLayersBCL = 11; // number of layers in the BCL algo
 
 //########################################## Declaring FCL global variables ###########################################
 FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL; // initialising fcl nn from class ffcllwf 
-static constexpr int numLayersFCL = 6; // number of layers in the FCL algo 
-int nNeuronsInLayers[numLayersFCL] = {9,6,6,6,6,6}; // The number of neurons in every layer array 
+static constexpr int numLayersFCL = 1; // number of layers in the FCL algo 
+int nNeuronsInLayers[numLayersFCL] = {6};//{9,6,6,6,6,6}; // The number of neurons in every layer array 
+//int* nNeuronsInLayers_pointer = &nNeuronsInLayers[0];
 
 //long step = 0; 
 //double avgError = 0;
@@ -133,6 +134,8 @@ void initialize_fclNet(int numInputs_Pi){
 
   //number of network inputs
   const int nInputs = numInputs_Pi;
+  //cout<< "nInputs: " << nInputs<< endl; 
+  
 	// We set nFilters in the input
 	const int nFiltersInput = 10;
 	// We set nFilters in the unit
@@ -158,7 +161,7 @@ void initialize_fclNet(int numInputs_Pi){
  fclFB->setLearningRate(learningRateFCL);
  fclFB->setLearningRateDiscountFactor(1);
  fclFB->setBias(1);
- fclFB->setActivationFunction(FCLNeuron::TANH);
+ fclFB->setActivationFunction(FCLNeuron::LINEAR); // Changed from tanh
  fclFB->setMomentum(0.9);		 
 
 } 
@@ -204,7 +207,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
     predictor << " " << predVector4[i][0];
     predictor << " " << predVector5[i][0];
   }
-
+//cout << "\n" << endl;
 
 /*
   for (int j = 0; j < predictorDeltas.size(); ++j) {
@@ -252,6 +255,7 @@ double run_samanet(std::vector<double> &predictorDeltas, double error){
   for (int i =0; i < networkInputs.size(); i++){
    cout << networkInputs[i] << ' ';
   }
+  
   cout << "\n" << endl;
   */
   
@@ -288,6 +292,7 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
   //std::vector<double> networkInputs;
   assert(std::isfinite(reflex_error)); // making sure that the error is finite number 
+  //cout << "pred Size: "<<predictorDeltas.size() << endl;
  
   //initialising input arrays 
   double fclInputsArray[predictorDeltas.size()];
@@ -297,26 +302,34 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
  
   //cout << '\n'<< "Reflex Error Inputs: "<< '\n'<< endl;
   for (int i = 0; i< nNeuronsInLayers[0]; i++){ //setting up reflex_error array
-  reflex_errorArray[i] = reflex_error;
+  reflex_errorArray[i] = 1;//reflex_error;
   //cout << reflex_errorArray[i] << ' ';  
  }
  
  //cout << '\n'<< "FCL Inputs: " << '\n' << endl; 
- for (int i =0; i < predictorDeltas.size(); i++){ //setting up the network inputs 
-   fclInputsArray[i] = predictorDeltas[i];
+  for (int i =0; i < predictorDeltas.size(); i++){ //setting up the network inputs 
+   fclInputsArray[i] = 0.00001;//predictorDeltas[i];
    //cout << fclInputsArray[i] << ' ';
  }
   
+  double *inputs_pointer = &fclInputsArray[0];
+  double *reflex_pointer = &reflex_errorArray[0];
+  
+  
+  
+  
   //one step of learning !!!!!!!
- fclFB->doStep(fclInputsArray,reflex_errorArray);
+ fclFB->doStep(inputs_pointer,reflex_pointer);
 
  //Saving the FCL weight distances to file
+
   for (int i = 0; i <numLayersFCL; i++){
   
 		weightDistancesfs << fclFB->getLayer(i)->getWeightDistanceFromInitialWeights() << " ";
 		
   }
   weightDistancesfs << "\n";
+  
   
  //Seperate left and right motor commands from network: 
  //  
@@ -326,7 +339,13 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   		 *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
   				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
   				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
-  cout << "leftMotorCommand: " << *leftMotorCommand << endl;
+  //cout << "leftMotorCommand: " << *leftMotorCommand << endl;
+  
+  for(int i =0; i<6; i++){
+  cout << "OutputNeurons: " << (double)(fclFB->getOutputLayer()->getNeuron(i)->getOutput()) << ' ';
+  
+} 
+cout<<'\n'<<endl;
 
  //Combining motor commands so Left and right have equal commands (matching the BCL algo): 
  //3 different outputs are sumed in a weighted manner so that the NN can output slow, moderate, or fast steering

@@ -107,6 +107,7 @@ void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 	layers[0]->setInputs(input);
 	//cout << "size of input: " << sizeof(input)/sizeof(input[0]) << endl; 
 	
+	//cout << "Filtered: " << input[1] << ' '<< endl;
 	/*for (int i=0;i<sizeof(input)/sizeof(input[0]);i++){
 	cout << input[i] << ' ';
 	}
