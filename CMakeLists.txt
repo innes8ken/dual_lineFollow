@@ -7,7 +7,6 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
 
 add_subdirectory(clBP)
 add_subdirectory(FCL)
-add_compile_definitions(DEBUG)
 
 option(BUILD_TRACKING "Build the robot tracking executable" OFF)
 

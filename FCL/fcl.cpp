@@ -105,10 +105,10 @@ void FeedforwardClosedloopLearning::setDecay(double decay) {
 void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 	// we set the input to the input layer
 	layers[0]->setInputs(input);
-	//cout << "size of input: " << sizeof(input)/sizeof(input[0]) << endl; 
 	
 	//cout << "Filtered: " << input[1] << ' '<< endl;
-	/*for (int i=0;i<sizeof(input)/sizeof(input[0]);i++){
+	
+	/*for (int i=0;i<ni;i++){
 	cout << input[i] << ' ';
 	}
 	

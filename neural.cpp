@@ -46,7 +46,8 @@ const int numLayersBCL = 11; // number of layers in the BCL algo
 FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL; // initialising fcl nn from class ffcllwf 
 static constexpr int numLayersFCL = 6; // number of layers in the FCL algo 
 int nNeuronsInLayers[numLayersFCL] = {9,6,6,6,6,6}; // The number of neurons in every layer array 
-//int* nNeuronsInLayers_pointer = &nNeuronsInLayers[0];
+const int nFiltersInput = 10; // We set nFilters in the input
+
 
 //long step = 0; 
 //double avgError = 0;
@@ -136,8 +137,6 @@ void initialize_fclNet(int numInputs_Pi){
   const int nInputs = numInputs_Pi;
   //cout<< "nInputs: " << nInputs<< endl; 
   
-	// We set nFilters in the input
-	const int nFiltersInput = 10;
 	// We set nFilters in the unit
 	const int nFilters = 0;
 	// Filterbank temporal settings - matching BCL lowpass filter settings 
@@ -161,7 +160,7 @@ void initialize_fclNet(int numInputs_Pi){
  fclFB->setLearningRate(learningRateFCL);
  fclFB->setLearningRateDiscountFactor(1);
  fclFB->setBias(1);
- fclFB->setActivationFunction(FCLNeuron::LINEAR); // Changed from tanh
+ fclFB->setActivationFunction(FCLNeuron::TANH); // Changed from tanh
  fclFB->setMomentum(0.9);		 
 
 } 
@@ -295,10 +294,10 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   //cout << "pred Size: "<<predictorDeltas.size() << endl;
  
   //initialising input array
-  double reflex_errorArray[nNeuronsInLayers[0]];
+  double reflex_errorArray[predictorDeltas.size()*nFiltersInput];
 
   //cout << '\n'<< "Reflex Error Inputs: "<< '\n'<< endl;
-  for (int i = 0; i< nNeuronsInLayers[0]; i++){ //setting up reflex_error array
+  for (int i = 0; i<predictorDeltas.size()*nFiltersInput ; i++){ //setting up reflex_error array
   reflex_errorArray[i] = 1;//reflex_error;
   //cout << reflex_errorArray[i] << ' ';  
  }
@@ -324,7 +323,8 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   		 *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
   				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
   				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
-  //cout << "leftMotorCommand: " << *leftMotorCommand << endl;
+      cout << "leftMotorCommand: " << *leftMotorCommand << endl;
+  
   
   for(int i =0; i<6; i++){
   cout << "OutputNeurons: " << (double)(fclFB->getOutputLayer()->getNeuron(i)->getOutput()) << ' ';
