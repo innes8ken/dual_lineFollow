@@ -254,8 +254,15 @@ int main(int n, char* args[]) {
          * In the future they could be used to send different values to the motors
          **/
         
-        if (paradigmOption ==0){
+        switch (paradigmOption){
+          case 0:
           general_velocity = (int16_t)motor_command; 
+          left_velocity = 0;
+          right_velocity=0;
+          break;
+          
+          case 1:
+          general_velocity = 0;
         }
         
         
@@ -273,9 +280,9 @@ int main(int n, char* args[]) {
       int16_t motor_array_command[4] = {general_velocity, (int16_t)left_velocity , (int16_t)right_velocity, startMarker};
       //int16_t motor_array_command[3] = {(int16_t)left_velocity , (int16_t)right_velocity, startMarker};
       
-      /*for (int i=0; i<sizeof(motor_array_command)/sizeof(motor_array_command[0]);i++){
+      for (int i=0; i<sizeof(motor_array_command)/sizeof(motor_array_command[0]);i++){
         cout <<motor_array_command[i]<<' ';
-      }*/
+      }
       cout<<'\n'<<endl;
       
       /**
