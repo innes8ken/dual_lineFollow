@@ -144,8 +144,8 @@ int main(int n, char* args[]) {
    * the speed command (i.e. the output of NN)
    **/
   int motor_command = 0;
-  double left_velocity = (int16_t)0;
-  double right_velocity = (int16_t)0;
+  int16_t left_velocity = (int16_t)0;
+  int16_t right_velocity = (int16_t)0;
   int16_t differential_velocity = (int16_t)0;
 
   /**
@@ -253,8 +253,7 @@ int main(int n, char* args[]) {
          * The differential, left and right velocities are all equal to the motor_command
          * In the future they could be used to send different values to the motors
          **/
-         
-        general_velocity = (int16_t)(motot_command); 
+                
         differential_velocity = (int16_t)motor_command;
         //left_velocity = (int16_t)motor_command;
         //right_velocity = (int16_t)motor_command;
