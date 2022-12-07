@@ -120,6 +120,7 @@ void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 	// ..and calc its output
 	layers[0]->calcOutputs();
 	// new lets calc the other outputs
+	
 	for (int k=1; k<num_layers; k++) {
 		FCLLayer* emitterLayer = layers[k-1];
 		FCLLayer* receiverLayer = layers[k];
@@ -131,7 +132,7 @@ void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 			// set that output as an input to the next layer which
 			// is distributed to all neurons
 			receiverLayer->setInput(j,v);
-			//cout << v << ' '<< endl;
+			cout << v << ' '<< endl;
 		}
 		
 		// now let's calc the output which can then be sent out

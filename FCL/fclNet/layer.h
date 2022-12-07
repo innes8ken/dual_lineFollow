@@ -360,7 +360,7 @@ private:
 	// for debugging output
 	int layerIndex = 0;
 	long int step = 0;
-	int useThreads = 1;
+	int useThreads = 0;
 	CalcOutputThread** calcOutputThread = NULL;
 	LearningThread** learningThread = NULL;
 	MaxDetThread** maxDetThread = NULL;

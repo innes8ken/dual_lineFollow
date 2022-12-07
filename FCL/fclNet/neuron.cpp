@@ -79,19 +79,20 @@ void FCLNeuron::calcOutput() {
 	sum = sum + biasweight * bias;
 
 #ifdef DEBUG
-	if (fabs(sum) > SUM_ERR_THRES) //fprintf(stderr,"Neuron::%s, Sum (%e) is very high in layer %d, neuron %d, step %ld.\n",__func__,sum,layerIndex,neuronIndex,step);
+	if (fabs(sum) > SUM_ERR_THRES) fprintf(stderr,"Neuron::%s, Sum (%e) is very high in layer %d, neuron %d, step %ld.\n",__func__,sum,layerIndex,neuronIndex,step);
 #endif
-	
-	switch (activationFunction) {
+	//fprintf(stderr,"%d\n",activationFunction);
+	switch (activationFunction) { 
 	case LINEAR:
 		output = sum;
 		break;
 	case TANH:
 		
 		//cout << "doing tanh"<< endl;
-		//cout.flush(); 
-		//printf("Doing tanh");
 		output = tanh(sum);
+		//cout << "output: " << output << "sum: "<< sum <<endl;
+		
+		
 		break;
 	case TANHLIMIT:
 		output = tanh(sum);
@@ -118,6 +119,7 @@ void FCLNeuron::calcOutput() {
 	default:
 		output = sum;	
 	}
+	//cout << "SUM: " <<sum<< endl;
 }
 
 
