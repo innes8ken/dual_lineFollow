@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.8.1)
 project(dualRoboNet)
+set(CMAKE_BUILD_TYPE "Debug")
 
 set(CMAKE_CXX_STANDARD 14)
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
@@ -22,3 +23,7 @@ if(BUILD_TRACKING)
   add_executable(camtrack tracking/Source.cpp)
   target_link_libraries(camtrack ${OpenCV_LIBS})
 endif()
+
+
+
+
