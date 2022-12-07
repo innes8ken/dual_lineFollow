@@ -144,8 +144,8 @@ int main(int n, char* args[]) {
    * the speed command (i.e. the output of NN)
    **/
   int motor_command = 0;
-  int16_t left_velocity = (int16_t)0;
-  int16_t right_velocity = (int16_t)0;
+  double left_velocity = 0;
+  double right_velocity = 0;
   int16_t differential_velocity = (int16_t)0;
 
   /**
@@ -253,10 +253,15 @@ int main(int n, char* args[]) {
          * The differential, left and right velocities are all equal to the motor_command
          * In the future they could be used to send different values to the motors
          **/
-                
-        differential_velocity = (int16_t)motor_command;
-        //left_velocity = (int16_t)motor_command;
-        //right_velocity = (int16_t)motor_command;
+        
+        if (paradigmOption ==0){
+          left_velocity = (int16_t)motor_command;  //setting left and right vel to a general motor command for bcl 
+          right_velocity = (int16_t)motor_command;
+        }
+        
+        //cout<< "Left Motor Command: " << leftCommand << endl;
+        //cout<< "Right Motor Command: " << rightCommand << endl;
+        //cout<< "General Motor Cammand: "<< (int16_t)motor_command << endl;
       }
       /**
        * Sending a start marker to the robot to synchoronise the communication
@@ -265,7 +270,14 @@ int main(int n, char* args[]) {
       /**
        * Putting all 4 variables in one array to send to arduino
        **/
-      int16_t motor_array_command[4] = {differential_velocity, (int16_t)left_velocity , (int16_t)right_velocity, startMarker};
+      //int16_t motor_array_command[4] = {differential_velocity, (int16_t)left_velocity , (int16_t)right_velocity, startMarker};
+      int16_t motor_array_command[3] = {(int16_t)left_velocity , (int16_t)right_velocity, startMarker};
+      
+      /*for (int i=0; i<sizeof(motor_array_command)/sizeof(motor_array_command[0]);i++){
+        cout <<motor_array_command[i]<<' ';
+      }*/
+      cout<<'\n'<<endl;
+      
       /**
        * Sending the motor command to the arduino
        **/

@@ -55,7 +55,7 @@ double nn_gain_power;
 
 //##################################   BCL Environment   #########################################################################
 // NN gain is calculated as coeff x 10^(power)
-double bcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
+double bcl_nn_gain_coeff = 1.2; // NN'output gain for steering, the coefficient
 double bcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 
 //###################################    FCL Environment  ########################################################################
@@ -115,14 +115,10 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   // ###########################################   GENERAL MOTOR COMMANDS   ##############################################################
   double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
   double learning_for_nav = nn_output * nn_gain_coeff * pow(10,nn_gain_power); // calculate the learning part of the motor speed command
+ // cout<<"Learning for Nav: " << learning_for_nav<<endl;
   double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command used for BCL robot control 
-  *leftCommand = nn_right_output * nn_gain_coeff * pow(10,nn_gain_power) + reflex_for_nav; // Seperate wheel commands to be used for FCL robot control
-  *rightCommand = nn_left_output * nn_gain_coeff * pow(10,nn_gain_power) + reflex_for_nav;
-  
-  //cout<< "Left Motor Command: " << *leftCommand << endl;
-  //cout<< "Right Motor Command: " << *rightCommand << endl;
-  cout<< "General Motor Cammand: "<< motor_command << endl;
-  
+  *leftCommand = (nn_right_output * nn_gain_coeff * pow(10,nn_gain_power) + reflex_for_nav); // Seperate wheel commands to be used for FCL robot control
+  *rightCommand = (nn_left_output * nn_gain_coeff * pow(10,nn_gain_power) + reflex_for_nav);
 
 
   // ###########################################   SECTION: PLOTS   ######################################################################
