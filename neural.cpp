@@ -304,7 +304,7 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
  }
 
   //one step of learning !!!!!!!
- fclFB->doStep(predictorDeltas.data(),reflex_pointer);
+  fclFB->doStep(predictorDeltas.data(),reflex_pointer);
 
  //Saving the FCL weight distances to file
 
