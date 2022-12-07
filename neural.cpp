@@ -294,32 +294,17 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   assert(std::isfinite(reflex_error)); // making sure that the error is finite number 
   //cout << "pred Size: "<<predictorDeltas.size() << endl;
  
-  //initialising input arrays 
-  double fclInputsArray[predictorDeltas.size()];
+  //initialising input array
   double reflex_errorArray[nNeuronsInLayers[0]];
-  //fclInputsArray= new double[predictorDeltas.size()];
-	//reflex_errorArray = new double[nNeuronsInLayers[0]];
- 
+
   //cout << '\n'<< "Reflex Error Inputs: "<< '\n'<< endl;
   for (int i = 0; i< nNeuronsInLayers[0]; i++){ //setting up reflex_error array
   reflex_errorArray[i] = 1;//reflex_error;
   //cout << reflex_errorArray[i] << ' ';  
  }
- 
- //cout << '\n'<< "FCL Inputs: " << '\n' << endl; 
-  for (int i =0; i < predictorDeltas.size(); i++){ //setting up the network inputs 
-   fclInputsArray[i] = 0.001;//predictorDeltas[i];
-   //cout << fclInputsArray[i] << ' ';
- }
-  
-  double *inputs_pointer = &fclInputsArray[0];
-  double *reflex_pointer = &reflex_errorArray[0];
-  
-  
-  
-  
+
   //one step of learning !!!!!!!
- fclFB->doStep(inputs_pointer,reflex_pointer);
+ fclFB->doStep(predictorDeltas.data(),reflex_pointer);
 
  //Saving the FCL weight distances to file
 
