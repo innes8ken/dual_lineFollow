@@ -29,10 +29,15 @@ void setup() {
   servoRight.attach(6);
   servoLeft.writeMicroseconds(speedLeft);
   servoRight.writeMicroseconds(speedRight);
+
+  const int numSpdCmnd = 3;
   }
-char speedCommand = {0};
+//char speedCommand = {0};
 void loop() {
   while(Serial.available() > 0){
+    int16_t speedCommand[numSpdCmnd] = {0,0,0,0};
+    Serial.readBytes(&speedCommand, sizeof(speedCommand));
+    
     speedCommand = Serial.read();
     servoLeft.writeMicroseconds(speedLeft + (int)speedCommand);
     servoRight.writeMicroseconds(speedRight + (int)speedCommand);
