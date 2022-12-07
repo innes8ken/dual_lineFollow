@@ -132,7 +132,7 @@ void FeedforwardClosedloopLearning::doStep(double* input, double* error) {
 			// set that output as an input to the next layer which
 			// is distributed to all neurons
 			receiverLayer->setInput(j,v);
-			cout << v << ' '<< endl;
+			//cout << v << ' '<< endl;
 		}
 		
 		// now let's calc the output which can then be sent out

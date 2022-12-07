@@ -118,6 +118,12 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command used for BCL robot control 
   *leftCommand = nn_right_output * nn_gain_coeff * pow(10,nn_gain_power) + reflex_for_nav; // Seperate wheel commands to be used for FCL robot control
   *rightCommand = nn_left_output * nn_gain_coeff * pow(10,nn_gain_power) + reflex_for_nav;
+  
+  //cout<< "Left Motor Command: " << *leftCommand << endl;
+  //cout<< "Right Motor Command: " << *rightCommand << endl;
+  cout<< "General Motor Cammand: "<< motor_command << endl;
+  
+
 
   // ###########################################   SECTION: PLOTS   ######################################################################
   /**

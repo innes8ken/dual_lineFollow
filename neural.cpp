@@ -323,13 +323,13 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   		 *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
   				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
   				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
-     // cout << "leftMotorCommand: " << *leftMotorCommand << endl;
+      //cout << "leftMotorCommand: " << *leftMotorCommand << endl;
   
   
-  for(int i =0; i<6; i++){
+  /*for(int i =0; i<6; i++){
   cout << "OutputNeurons: " << (double)(fclFB->getOutputLayer()->getNeuron(i)->getOutput()) << ' ';
   }
-  cout<<'\n'<<endl; 
+  cout<<'\n'<<endl; */
 
  //Combining motor commands so Left and right have equal commands (matching the BCL algo): 
  //3 different outputs are sumed in a weighted manner so that the NN can output slow, moderate, or fast steering
