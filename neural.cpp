@@ -45,7 +45,7 @@ const int numLayersBCL = 11; // number of layers in the BCL algo
 //########################################## Declaring FCL global variables ###########################################
 FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL; // initialising fcl nn from class ffcllwf 
 static constexpr int numLayersFCL = 6; // number of layers in the FCL algo 
-int nNeuronsInLayers[numLayersFCL] = {9,6,6,6,6,6}; // The number of neurons in every layer array 
+int nNeuronsInLayers[numLayersFCL] = {9,6,6,6,6,6}; // The number of neurons in every layer array // possiblly need to change it to 3 layers!!!!
 const int nFiltersInput = 10; // We set nFilters in the input
 
 

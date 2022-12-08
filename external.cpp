@@ -365,7 +365,8 @@ double Extern::calcError(cv::Mat &stat_frame, vector<uint8_t> &sensorCHAR, int p
   cvui::text(stat_frame, 100, 20, "ave:");
   cvui::printf(stat_frame, 130, 20, "%1.3f", movingIntegralAve);
 
-  if (nn_gain_coeff == 0){ // this is for reflex
+  if (nn_gain_coeff == 0){ 
+    // this is for reflex
     // stop the program if certain number of steps has been taken
     if ( stepCount - firstEncounter > loopLength * 2 && successDone == 0){
         cout << "DONE!" << endl;
