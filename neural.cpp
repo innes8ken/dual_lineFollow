@@ -298,9 +298,9 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
 
   //cout << '\n'<< "Reflex Error Inputs: "<< '\n'<< endl;
   for (int i = 0; i<predictorDeltas.size()*nFiltersInput ; i++){ //setting up reflex_error array
-  reflex_errorArray[i] = 1;//reflex_error;
-  //cout << reflex_errorArray[i] << ' ';  
- }
+    reflex_errorArray[i] = 1;//reflex_error;
+    //cout << reflex_errorArray[i] << ' ';  
+  }
 
   //one step of learning !!!!!!!
   fclFB->doStep(predictorDeltas.data(),reflex_errorArray);
@@ -317,12 +317,12 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   
  //Seperate left and right motor commands from network: 
  //  
-  		 *leftMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*50 +
-  				   (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*10 +
-  				   (fclFB->getOutputLayer()->getNeuron(2)->getOutput())*2);
-  		 *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
-  				   (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
-  				   (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
+  *leftMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*50 +
+                      (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*10 +
+                      (fclFB->getOutputLayer()->getNeuron(2)->getOutput())*2);
+  *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*50 +
+                       (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*10 +
+                       (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*2);
       //cout << "leftMotorCommand: " << *leftMotorCommand << endl;
   
   
@@ -332,7 +332,8 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   cout<<'\n'<<endl; */
 
  //Combining motor commands so Left and right have equal commands (matching the BCL algo): 
- //3 different outputs are sumed in a weighted manner so that the NN can output slow, moderate, or fast steering
+ //1st section: 3 different output neurons are sumed in a weighted manner so that the NN can output slow, moderate, or fast steering <---- 3 neuron output same as BCL
+ //2nd section: leftmototr command and rightmotor command are summed together to get the overall command <---- 6 output neurons)
 
  /* double coeff[3] = {1,3,5}; // This are the weights for the 3 outputs of the network
   double outSmall = fclFB->getOutputLayer()->getNeuron(0)->getOutput();
@@ -341,13 +342,16 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
 
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
   double outTest = fclFB->getLayer(1)->getNeuron(3)->getOutput(); 
+  */
   
-  //cout << "nnFclOut: " << resultNN << '\n' <<endl;
+  double resultNN = *leftMotorCommand + *rightMotorCommand ;
+  
+  cout << "nnFclOut: " << resultNN << '\n' <<endl;
   //cout << "testNeuronOutput: " << outTest << '\n' <<endl;
   //cout << "Number of inputs : " << fclFB->getNumInputs() << endl;
-  */
-  //return resultNN; // returns the overall output of the NN which together with the reflex error drives the robot's navigation
-  return 0;
+  
+  return resultNN; // returns the overall output of the NN which together with the reflex error drives the robot's navigation
+  //return 0;
 }
 
 

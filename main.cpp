@@ -254,7 +254,14 @@ int main(int n, char* args[]) {
          * In the future they could be used to send different values to the motors
          **/
         
-        switch (paradigmOption){
+      //This section will send a sum of both motor commands to the robot as a general command
+        general_velocity = (int16_t)motor_command; 
+        left_velocity = (int16_t)motor_command; 
+        right_velocity = (int16_t)motor_command; 
+        
+        
+      /*This section is for sending seperate motor commands. Can be implemented in future
+         switch (paradigmOption){
           case 0:
           general_velocity = (int16_t)motor_command; 
           left_velocity = 0;
@@ -264,8 +271,9 @@ int main(int n, char* args[]) {
           case 1:
           general_velocity = 0;
         }
+        */
         
-        
+        //#debugging
         //cout<< "Left Motor Command: " << leftCommand << endl;
         //cout<< "Right Motor Command: " << rightCommand << endl;
         //cout<< "General Motor Cammand: "<< (int16_t)motor_command << endl;
@@ -278,7 +286,8 @@ int main(int n, char* args[]) {
        * Putting all 4 variables in one array to send to arduino
        **/
       int16_t motor_array_command[4] = {general_velocity, (int16_t)left_velocity , (int16_t)right_velocity, startMarker};
-      //int16_t motor_array_command[3] = {(int16_t)left_velocity , (int16_t)right_velocity, startMarker};
+      int16_t motor_array_command[4] = {general_velocity, left_velocity , right_velocity, startMarker};
+     
       
       for (int i=0; i<sizeof(motor_array_command)/sizeof(motor_array_command[0]);i++){
         cout <<motor_array_command[i]<<' ';
