@@ -30,7 +30,7 @@ void setup() {
   servoLeft.writeMicroseconds(speedLeft);
   servoRight.writeMicroseconds(speedRight);
 
-  const int numSpdCmnd = 3;
+  const int numSpdCmnd = 4;
   }
 //char speedCommand = {0};
 void loop() {
