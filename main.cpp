@@ -245,9 +245,9 @@ int main(int n, char* args[]) {
          * pass the 'paradigmOption' to declare which nn to use 
          * It returns the 'motor_command' which is used to drive the motors
          **/
-         //for (int i =0; i< predictorDeltaMeans.size(); i++){
-          //cout << predictorDeltaMeans[i] << ' ';
-          //}
+        /* for (int i =0; i< predictorDeltaMeans.size(); i++){
+          cout << predictorDeltaMeans[i] << ' ';
+          } */
         motor_command = external->onStepCompleted(statFrame, reflex_error, predictorDeltaMeans, paradigmOption, &left_velocity, &right_velocity);
         /**
          * The differential, left and right velocities are all equal to the motor_command
@@ -285,14 +285,15 @@ int main(int n, char* args[]) {
       /**
        * Putting all 4 variables in one array to send to arduino
        **/
-      int16_t motor_array_command[4] = {general_velocity, (int16_t)left_velocity , (int16_t)right_velocity, startMarker};
+      //int16_t motor_array_command[4] = {general_velocity, (int16_t)left_velocity , (int16_t)right_velocity, startMarker};
       int16_t motor_array_command[4] = {general_velocity, left_velocity , right_velocity, startMarker};
      
+      //cout <<"General M Command: "<< motor_array_command[0]<<endl;
       
-      for (int i=0; i<sizeof(motor_array_command)/sizeof(motor_array_command[0]);i++){
+      /*for (int i=0; i<sizeof(motor_array_command)/sizeof(motor_array_command[0]);i++){
         cout <<motor_array_command[i]<<' ';
       }
-      cout<<'\n'<<endl;
+      cout<<'\n'<<endl; */
       
       /**
        * Sending the motor command to the arduino

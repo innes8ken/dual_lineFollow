@@ -89,11 +89,13 @@ void FeedforwardClosedloopLearningWithFilterbank::doStep(double* input, double* 
 			filterbankOutputs[i*nFiltersPerInput+j] = bandpass[i][j]->filter(input[i]);
 		}
 	}
-	/*for (int i=0;i<nInputs*nFiltersPerInput; i++){
+	
+	/*cout<<"FCL filterOuts: "<<'\n'<<endl;
+	for (int i=0;i<nInputs*nFiltersPerInput; i++){
 		cout << filterbankOutputs[i] << ' ';
 	}
-	cout << '\n' << endl;
-	*/
+	cout << '\n' << endl; */
+	
 	FeedforwardClosedloopLearning::doStep(filterbankOutputs,error);
 }
 

@@ -59,8 +59,8 @@ double bcl_nn_gain_coeff = 1.2; // NN'output gain for steering, the coefficient
 double bcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 
 //###################################    FCL Environment  ########################################################################
-double fcl_nn_gain_coeff = 1.1; // NN'output gain for steering, the coefficient
-double fcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
+double fcl_nn_gain_coeff = 1.2; // NN's output parameters for steering: coefficient * 10^(power)
+double fcl_nn_gain_power = 2;
 
 //################################################################################################################################
 
@@ -116,6 +116,8 @@ int Extern::onStepCompleted(cv::Mat &stat_frame, double reflex_error, std::vecto
   double reflex_for_nav = reflex_error * reflex_error_gain; // calculate the relfex part of speed command
   double learning_for_nav = nn_output * nn_gain_coeff * pow(10,nn_gain_power); // calculate the learning part of the motor speed command
  // cout<<"Learning for Nav: " << learning_for_nav<<endl;
+  cout<< "NN Comand result: "<<nn_output<<endl;
+  
   double motor_command = reflex_for_nav + learning_for_nav; // calculate the overal motor command used for BCL robot control 
   *leftCommand = (nn_right_output * nn_gain_coeff * pow(10,nn_gain_power) + reflex_for_nav); // Seperate wheel commands to be used for FCL robot control
   *rightCommand = (nn_left_output * nn_gain_coeff * pow(10,nn_gain_power) + reflex_for_nav);

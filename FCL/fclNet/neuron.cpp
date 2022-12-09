@@ -86,6 +86,9 @@ void FCLNeuron::calcOutput() {
 	case LINEAR:
 		output = sum;
 		break;
+	/*case SIGMOID:
+		output = (1/(1+(exp(-sum)))) - 0.5;
+		break;*/
 	case TANH:
 		
 		//cout << "doing tanh"<< endl;
@@ -128,10 +131,15 @@ double FCLNeuron::dActivation() {
 	switch (activationFunction) {
 	case LINEAR:
 		return 1;
+	/*case SIGMOID:
+		d = (1/(1+(exp(-sum))))*(1-(1/(1+(exp(-sum)))));
+		return d;
+		break;*/
 	case TANH:
 		d = (1.0 - output*output);
 		return d;
 		break;
+	
 	case TANHLIMIT:
 		d = (1.0 - fabs(output*output*output));
 		if (d<0) return 0;
