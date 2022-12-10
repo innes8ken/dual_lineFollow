@@ -449,10 +449,10 @@ void Extern::calcPredictors(Mat &frame, vector<double> &predictorDeltaMeans){
   // as the black path
   double predThreshW[nPredictorCols][nPredictorRows] = {{170,180,190,200,210,220,220,220},
                                                         {170,180,190,190,200,210,220,210},
-                                                        {160,170,180,190,190,200,200,200},
-                                                        {150,160,170,180,180,180,190,190},
-                                                        {140,150,150,160,160,170,170,170},
-                                                        {130,130,130,140,140,140,140,140}};
+                                                        {165,170,180,190,190,200,200,200},
+                                                        {155,160,170,180,180,180,190,190},
+                                                        {145,150,150,160,160,170,170,170},
+                                                        {140,140,140,140,140,140,140,140}};
   double predThreshWAdjustment = 20;
   double predThreshWDiff = 50;
   double activePixel = 0.00;
