@@ -35,7 +35,7 @@ boost::circular_buffer<double> predVector5[numPred];
 double learningExpBCL = -1; // This is the exponential of the leaning rate for the BCL algo 
 double lrCoeffBCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the BCL algo 
 
-double learningExpFCL = -6; // This is the exponential of the leaning rate for the FCL algo 
+double learningExpFCL = -4; // This is the exponential of the leaning rate for the FCL algo 
 double lrCoeffFCL = 1; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo #
 
 //########################################## Declaring BCL global variables ###########################################
@@ -45,9 +45,9 @@ const int numLayersBCL = 11; // number of layers in the BCL algo
 //########################################## Declaring FCL global variables ###########################################
 FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL; // initialising fcl nn from class ffcllwf 
 static constexpr int numLayersFCL = 3; // number of layers in the FCL algo 
-int nNeuronsInLayers[numLayersFCL] = {9,6,6};//,6,6,6}; // The number of neurons in every layer array // 
-const int nFiltersInput = 5; // We set nFilters in the input
-
+int nNeuronsInLayers[numLayersFCL] = {9,6,6};//,6,6,6};//,6,6,6}; // The number of neurons in every layer array // 
+//int nNeuronsInLayers[numLayersFCL] = {10,14,13,12,11,10,9,8,7,6};
+const int nFiltersInput = 8; // We set nFilters in the input
 
 //long step = 0; 
 //double avgError = 0;
@@ -111,7 +111,7 @@ void initialize_samanet(int numInputs_Pi, double sampleRate) {
   for (int i = numLayersBCL - 2; i >= 0; i--){
     numNeurons[i] = lastHiddenLayer + (numLayersBCL - 2 - i)  * incrementLayer;
     totalNeurons += numNeurons[i];
-    assert(numNeurons[i] > 0);
+    assert(numNeurons[i] > 0); //11,12,10,9,8,8,7,6,5,4,3
   }
 
   // setting up the BCL NN with the number of layers, neurons per layer and number of inputs
@@ -301,9 +301,9 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
 
   //cout << '\n'<< "Reflex Error Inputs: "<< '\n'<< endl;
   for (int i = 0; i<predictorDeltas.size()*nFiltersInput ; i++){ //setting up reflex_error array
-    reflex_errorArray[i] = 1;//reflex_error;
-    //cout << reflex_errorArray[i] << ' ';  
-  }
+    reflex_errorArray[i] = reflex_error;
+   // cout << reflex_errorArray[i] << ' ';  
+  } 
 
   //one step of learning !!!!!!!
   fclFB->doStep(predictorDeltas.data(),reflex_errorArray);
@@ -321,12 +321,12 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
  //Seperate left and right motor commands from network: 
    
   
-  *leftMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*5 +
-                      (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*3 +
-                      (fclFB->getOutputLayer()->getNeuron(2)->getOutput())*1);
-  *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*5 +
-                       (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*3 +
-                       (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*1);
+  *leftMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*10 +
+                      (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*5 +
+                      (fclFB->getOutputLayer()->getNeuron(2)->getOutput())*2);
+  *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*2 +
+                       (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*5 +
+                       (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*10);
   
   double resultNN = *leftMotorCommand + *rightMotorCommand ;
   
@@ -351,7 +351,7 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   
   double outTest = fclFB->getLayer(1)->getNeuron(3)->getOutput();
   //cout << "FCL resultNN: " << resultNN << '\n' <<endl;
-  cout << "testNeuronOutput: " << outTest << '\n' <<endl;
+  //cout << "testNeuronOutput: " << outTest << '\n' <<endl;
   //cout << "Number of inputs : " << fclFB->getNumInputs() << endl;
   
   
