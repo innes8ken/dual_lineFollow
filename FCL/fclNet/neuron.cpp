@@ -136,7 +136,7 @@ double FCLNeuron::dActivation() {
 		return d;
 		break;*/
 	case TANH:
-		d = (1.0 - output*output);
+		d = (1.0 - output*output); // approx? 
 		return d;
 		break;
 	

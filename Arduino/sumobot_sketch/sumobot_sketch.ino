@@ -30,17 +30,17 @@ void setup() {
   servoLeft.writeMicroseconds(speedLeft);
   servoRight.writeMicroseconds(speedRight);
 
-  const int numSpdCmnd = 4;
+  //const int numSpdCmnd = 4;
   }
-//char speedCommand = {0};
+char speedCommand = {0};
 void loop() {
   while(Serial.available() > 0){
-    int16_t speedCommand[numSpdCmnd] = {0,0,0,0};
-    Serial.readBytes(&speedCommand, sizeof(speedCommand));
+    //int16_t speedCommand[numSpdCmnd] = {0,0,0,0};
+    //Serial.readBytes(&speedCommand, sizeof(speedCommand));
 
-    //speedCommand = Serial.read();
-    servoLeft.writeMicroseconds(speedLeft + (int)speedCommand[0] + (int)speedCommand[1]);
-    servoRight.writeMicroseconds(speedRight + (int)speedCommand[0] + (int)speedCommand[2]);
+    speedCommand = Serial.read();
+    servoLeft.writeMicroseconds(speedLeft + (int)speedCommand);//[0] + (int)speedCommand[1]);
+    servoRight.writeMicroseconds(speedRight + (int)speedCommand);//[0] + (int)speedCommand[2]);
     sensorBuffer[8]= 0;
     for (int i=0; i < numSensors; i++){
       sensorValues[i] = analogRead(sensors[i]);

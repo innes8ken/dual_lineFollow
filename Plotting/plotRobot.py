@@ -14,11 +14,11 @@ plt.rcParams.update({'font.size': 7})
 
 expNumber = 1     # Choose where to locate data files
 run = 1
-FCLplots = 0
-BCLplots = 1 
+FCLplots = 1
+BCLplots = 0 
 
-#names of possible file locations
-FCLfolder = np.array(['FCL/learning/Map 1/L0.2_R1.9_N1.1_run', 'FCL/learning/Map 1/L0.2_R1.9_N1.2_run', 'FCL/reflex/reflex_run'])
+#names of possible file locations FCL/learning/Map 1/L0.000001_R1.9_N1.2_run1
+FCLfolder = np.array(['FCL/learning/Map 1/L0.000001_R1.9_N1.2_run', 'FCL/learning/Map 1/L0.2_R1.9_N1.2_run', 'FCL/reflex/reflex_run'])
 BCLfolder = np.array(['BCL/learning/Map 1/L0.2_R1.9_N1.1_run', 'BCL/learning/Map 1/L0.2_R1.9_N1.2_run', 'BCL/reflex/reflex_run'])
 
 if (BCLplots ==1 and FCLplots==0):
@@ -87,13 +87,22 @@ wch=np.empty(wchraw.shape)
 nLayers=wchraw.shape[1]
 for i in range(nLayers):
     wch[:,i]= (wchraw[:,i]) # / (max(abs(wchraw[:,i])))) * (max(abs(wchraw[:,0])))
-wchfig=plt.figure('weigth change', figsize=(3,2),dpi=my_dpi)
+wchfig=plt.figure('weigthchange', figsize=(3,2),dpi=my_dpi)
 axe=wchfig.add_subplot(111)
-for i in range(1,wch.shape[1]-2):
-    j= (i+0.1)/(13)
-    plt.plot(time, wch[:,i], color= [0,0,0] , linestyle="--", linewidth=0.3 , dashes=(5, i/2), label='layer'+str(i+1))
-    plt.xlabel("Time (s)")
-    plt.ylabel("Euclidian Distance of Weight Changes")
+
+if (FCLplots == 1 & BCLplots==0):
+    for i in range(0,wch.shape[1]):
+        j= (i+0.1)/(13)
+        plt.plot(time, wch[:,i], color= [0,0,0] , linestyle="--", linewidth=0.3 , dashes=(5, i/2), label='layer'+str(i+1))
+        plt.xlabel("Time (s)")
+        plt.ylabel("Euclidian Distance of Weight Changes")
+
+if (BCLplots == 1 & FCLplots==0):
+    for i in range(1,wch.shape[1]-1):
+        j= (i+0.1)/(13)
+        plt.plot(time, wch[:,i], color= [0,0,0] , linestyle="--", linewidth=0.3 , dashes=(5, i/2), label='layer'+str(i+1))
+        plt.xlabel("Time (s)")
+        plt.ylabel("Euclidian Distance of Weight Changes")
 #plt.plot(wch[:,wch.shape[1]-1], color=[0,0,0], linestyle="-", linewidth=0.3)
 #axe.legend()
 #plt.ylim(-0.05, 0.45)
