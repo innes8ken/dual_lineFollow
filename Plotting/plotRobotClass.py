@@ -35,17 +35,20 @@ class setFileName():
 
         
 class layer():
-    def __init__ (self, lname, location):
+    def __init__ (self, lname, location, networkType):
         mySetpath = setFileName(location)
         self.path= mySetpath.getPath()
         self.spath= mySetpath.getSavePath()
         self.lname=lname
-        self.data=np.loadtxt('{}wL{}.csv'.format(self.path, self.lname))     
+        if networkType == 1: 
+            self.data=np.loadtxt('{}FCLwL.dat'.format(self.path))     
+        if networkType == 0:
+            self.data=np.loadtxt('{}wL{}.csv'.format(self.path, self.lname))
         self.numNeurons=self.data.shape[0]
         self.numInputs=self.data.shape[1]
         self.ratio=self.numInputs/self.numNeurons
 
-    def plotLayerWeights(self):
+    def plotLayerWeights(self, networkType):
         dataNormTemp = self.data - self.data.min()
         dataNorm = dataNormTemp / dataNormTemp.max()
         dataFlip = 1 - dataNorm
@@ -56,7 +59,10 @@ class layer():
         plt.gca().set_xticks(np.arange(0,self.numInputs,5))
         ax.set_aspect(aspect=2)
         plt.show()
-        fig.savefig(self.spath+'wL'+str(self.lname) , quality= 100, format='svg', bbox_inches='tight')
+        if networkType == 0: 
+            fig.savefig(self.spath+'BCLwL'+str(self.lname) , quality= 100, format='svg', bbox_inches='tight')
+        if networkType == 1: 
+            fig.savefig(self.spath+'FCLwL'+str(self.lname) , quality= 100, format='svg', bbox_inches='tight')
         
         
 #Function that Calculate Root Mean Square  
