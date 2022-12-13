@@ -19,7 +19,7 @@ BCLplots = 1
 
 
 #names of possible file locations FCL/learning/Map 1/L0.000001_R1.9_N1.2_run1
-FCLfolder = np.array(['FCL/learning/Map 1/L0.000001_R1.9_N1.2_run', 'FCL/learning/Map 1/L0.00001_R1.9_N1.2_run', 'FCL/reflex/reflex_run'])
+FCLfolder = np.array(['FCL/learning/Map 1/L0.000001_R1.9_N1.2_run', 'FCL/learning/Map 1/L0.00001_R1.9_N1.2_run', 'FCL/reflex/reflex_run', 'L-5_3Lay(5,3,3)_F5_run'])
 BCLfolder = np.array(['BCL/learning/Map 1/L0.2_R1.9_N1.1_run', 'BCL/learning/Map 1/L0.2_R1.9_N1.2_run', 'BCL/reflex/reflex_run'])
 
 if (BCLplots ==1 and FCLplots==0):
