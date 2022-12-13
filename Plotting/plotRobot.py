@@ -131,7 +131,7 @@ layer.plotLayerWeights(plotType)
 # time = [,,,,]
 # lR = [,,,,,]
 # rangeFig=plt.figure('lrChange', figsize=(3,1), dpi=my_dpi)
-# axe=fig.add_subplot(111)
+# axe=fig.add_subplot(111) 
 # plt.plot()
 
 
