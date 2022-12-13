@@ -12,15 +12,14 @@ from plotRobotClass import setFileName
 plt.rcParams['font.family'] = 'serif'
 plt.rcParams.update({'font.size': 7})
 
-expNumber = 4     # Choose where to locate data files
-run = 1
+expNumber = 2     # Choose where to locate data files
+run = 2
 FCLplots = 1
 BCLplots = 0 
 
 
 #names of possible file locations FCL/learning/Map 1/L0.000001_R1.9_N1.2_run1
-FCLfolder = np.array(['FCL/learning/Map 1/L0.000001_R1.9_N1.2_run', 
-                    'FCL/learning/Map 1/L0.00001_R1.9_N1.2_run', 'FCL/reflex/reflex_run','FCL/learning/Map 1/L-5_3Lay(5,3,3)_F5_run'])
+FCLfolder = np.array(['FCL/reflex/reflex_run','FCL/learning/Map 1/L-5_3Lay(5,3,3)_F5_run'])
 BCLfolder = np.array(['BCL/learning/Map 1/L0.2_R1.9_N1.1_run', 'BCL/learning/Map 1/L0.2_R1.9_N1.2_run', 'BCL/reflex/reflex_run'])
 
 if (BCLplots ==1 and FCLplots==0):
@@ -75,7 +74,7 @@ fig.savefig(spath+'error', quality=100, format='svg', bbox_inches='tight')
 speedDiffdata=np.loadtxt('{}speedDiffdata.csv'.format(path));
 #learningSpeedDiff = speedDiffdata[0:5000,4];
 learningSpeedDiff = speedDiffdata[:,4];
-
+time = np.linspace(0,len(speedDiffdata)/33, len(speedDiffdata))  #divide by 33Hz to get runtime 
 #figs=plt.figure('speedDiff')#, figsize=(3,1), dpi=my_dpi)
 #axes=figs.add_subplot(111)
 plt.plot(time, learningSpeedDiff, color='black', linestyle="-", linewidth=0.2)
