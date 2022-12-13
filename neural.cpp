@@ -35,7 +35,7 @@ boost::circular_buffer<double> predVector5[numPred];
 double learningExpBCL = -1; // This is the exponential of the leaning rate for the BCL algo 
 double lrCoeffBCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the BCL algo 
 
-double learningExpFCL = -5; // This is the exponential of the leaning rate for the FCL algo 
+double learningExpFCL = -4; // This is the exponential of the leaning rate for the FCL algo 
 double lrCoeffFCL = 1; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo #
 
 //########################################## Declaring BCL global variables ###########################################
@@ -46,7 +46,7 @@ const int numLayersBCL = 11; // number of layers in the BCL algo
 FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL; // initialising fcl nn from class ffcllwf 
 static constexpr int numLayersFCL = 3; // number of layers in the FCL algo 
 //int nNeuronsInLayers[numLayersFCL] = {10,11,14,15,12,11,10,8,6,6,6};//,6,6,6}; // The number of neurons in every layer array // 
-int nNeuronsInLayers[numLayersFCL] = {5,3,3};//,5,3};//7,5,3}; //9,3,3};
+int nNeuronsInLayers[numLayersFCL] = {5,3,3};//,11,10,9,8,7,6,5,4,3};//,5,3};//7,5,3}; //9,3,3};
 const int nFiltersInput = 5; // We set nFilters in the input
 
 //long step = 0; 
