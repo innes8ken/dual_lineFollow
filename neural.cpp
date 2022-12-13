@@ -140,8 +140,8 @@ void initialize_fclNet(int numInputs_Pi){
 	// We set nFilters in the unit
 	const int nFilters = 0;
 	// Filterbank temporal settings - matching BCL lowpass filter settings 
-	const double minT = 100;
-	const double maxT = 150;
+	const double minT = 2;
+	const double maxT = 20;
   // Setting the learning rate 
 	double learningRateFCL = lrCoeffFCL*(pow(10,learningExpFCL));   //0.00001;
  
