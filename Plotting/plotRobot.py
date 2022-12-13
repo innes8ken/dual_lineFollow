@@ -14,8 +14,8 @@ plt.rcParams.update({'font.size': 7})
 
 expNumber = 2     # Choose where to locate data files
 run = 1
-FCLplots = 1
-BCLplots = 0 
+FCLplots = 0
+BCLplots = 1 
 
 
 #names of possible file locations FCL/learning/Map 1/L0.000001_R1.9_N1.2_run1
@@ -39,10 +39,14 @@ ratioYX=4
 my_dpi=300
 plt.close("all")
 
+
+
+#%%
 #this section plots the reflex error over time 
 
 errorSuccessData=np.loadtxt('{}errorSuccessData.csv'.format(path));
 successTime=np.loadtxt('{}successTime.csv'.format(path));
+##time = np.linspace(0,successTime[1]/33); 
 time = np.linspace(0,len(errorSuccessData)/33, len(errorSuccessData))  #divide by 33Hz to get runtime 
 error = errorSuccessData[:,0];
 #errorShifted = errorSuccessData[:,1];
@@ -62,7 +66,7 @@ plt.ylabel("Error Magnitude \n [E]")
 fig.savefig(spath+'error', quality=100, format='svg', bbox_inches='tight')
 plt.show()
 
-
+#%%
 ##speedDiffdata is an array with columbs containg different data = [reflex_error reflex_error refelx_for_nav nn_output learnign_for_nav Motor_command] 
 # 
 # This section plots the learning part of the motor command (currently only for BCL) 
@@ -83,7 +87,7 @@ plt.show()
 #plt.show()
 
 
-
+#%%
 wchraw=np.loadtxt('{}weight_distances.csv'.format(path))
 time = np.linspace(0,len(wchraw)/33, len(wchraw))  #divide by 33Hz to get runtime 
 wch=np.empty(wchraw.shape)
@@ -101,7 +105,7 @@ if (plotType == 1):
         plt.ylabel("Euclidian Distance of Weight Changes")
 
 if (plotType == 0):
-    for i in range(1,wch.shape[1]-1):
+    for i in range(1,wch.shape[1]-2):
         j= (i+0.1)/(13)
         plt.plot(time, wch[:,i], color= [0,0,0] , linestyle="--", linewidth=0.3 , dashes=(5, i/2), label='layer'+str(i+1))
         plt.xlabel("Time (s)")
@@ -121,8 +125,16 @@ layer=layerClass(1, location, plotType)
 layer.plotLayerWeights(plotType)
 
 
-
 #%%
+# successTime=np.loadtxt('{}successTime.csv'.format(path));
+# time = successTime[1];
+# time = [,,,,]
+# lR = [,,,,,]
+# rangeFig=plt.figure('lrChange', figsize=(3,1), dpi=my_dpi)
+# axe=fig.add_subplot(111)
+# plt.plot()
+
+
 
 #count = 0
 #for i in range(len(errorIntegral)):
