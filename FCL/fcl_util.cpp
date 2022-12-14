@@ -86,7 +86,7 @@ void FeedforwardClosedloopLearningWithFilterbank::doStep(double* input, double* 
 	for(int i=0;i<nInputs;i++) {
 		//cout << "Non Filtered: " << input[1] << endl;
 		for(int j=0;j<nFiltersPerInput;j++) {
-			filterbankOutputs[i*nFiltersPerInput+j] = bandpass[i][j]->filter(input[i])*100; //100
+			filterbankOutputs[i*nFiltersPerInput+j] = bandpass[i][j]->filter(input[i])*10; //100
 		}
 	}
 	
