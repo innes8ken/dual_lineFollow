@@ -12,14 +12,14 @@ from plotRobotClass import setFileName
 plt.rcParams['font.family'] = 'serif'
 plt.rcParams.update({'font.size': 7})
 
-expNumber = 2     # Choose where to locate data files
-run = 2
+expNumber = 3     # Choose where to locate data files
+run = 1
 FCLplots = 1
 BCLplots = 0 
 
 
 #names of possible file locations FCL/learning/Map 1/L0.000001_R1.9_N1.2_run1
-FCLfolder = np.array(['FCL/reflex/reflex_run','FCL/learning/Map 1/L-5_3Lay(5,3,3)_F5_run'])
+FCLfolder = np.array(['FCL/reflex/reflex_run','FCL/learning/Map 1/L-5_3Lay(5,3,3)_F5_run', 'FCL/learning/Map 1/LR4_5,3,3_F5_run'])
 BCLfolder = np.array(['BCL/learning/Map 1/L0.2_R1.9_N1.1_run', 'BCL/learning/Map 1/L0.2_R1.9_N1.2_run', 'BCL/reflex/reflex_run'])
 
 if (BCLplots ==1 and FCLplots==0):
