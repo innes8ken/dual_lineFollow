@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Thu Oct 11 10:51:20 2018
 
-@author: sama
+@author: Innes
 """
 
 import numpy as np
@@ -10,11 +9,6 @@ import matplotlib.pylab as plt
 import matplotlib as mpl
 import math  
 
-#from plotRobot import path
-#from plotRobot import spath
-
-#path='/home/sama/Documents/dataForLinefollower/l0p1/l0p1_3/'
-#spath='/home/sama/Documents/dataForLinefollower/l0p1/l0p1_3/figs/'
 
 sizeY=10
 ratioYX=4

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sat Jul  7 18:13:03 2018
 
-@author: sama
+@author: Innes
 """
 import numpy as np
 import matplotlib.pylab as plt
@@ -12,14 +11,19 @@ from plotRobotClass import setFileName
 plt.rcParams['font.family'] = 'serif'
 plt.rcParams.update({'font.size': 7})
 
-expNumber = 3     # Choose where to locate data files
-run = 1
+expNumber = 2     # Choose where to locate data files ()
+
 FCLplots = 1
 BCLplots = 0 
 
+map = 1
+coeff = 3
+power = -4
+run = 2
+
 
 #names of possible file locations FCL/learning/Map 1/L0.000001_R1.9_N1.2_run1
-FCLfolder = np.array(['FCL/reflex/reflex_run','FCL/learning/Map 1/L-5_3Lay(5,3,3)_F5_run', 'FCL/learning/Map 1/LR4_5,3,3_F5_run'])
+FCLfolder = np.array(['FCL/reflex/reflex_run','FCL/learning/Map '+str(map)+'/L'+str(coeff)+'e'+str(power)+'_(5,3,3)_F5_run'])
 BCLfolder = np.array(['BCL/learning/Map 1/L0.2_R1.9_N1.1_run', 'BCL/learning/Map 1/L0.2_R1.9_N1.2_run', 'BCL/reflex/reflex_run'])
 
 if (BCLplots ==1 and FCLplots==0):
@@ -55,16 +59,16 @@ minE=int(min(error))-1; maxE=int(max(error))
 #errorNorm=error/maxE
 fig=plt.figure('error', figsize=(3,1), dpi=my_dpi)
 axe=fig.add_subplot(111)
-plt.plot(time, error, color='black', linestyle="-", linewidth=0.2)
+plt.plot(time, error, color='black', linestyle="-", linewidth=0.5)
 #plt.plot(errorShifted[:], color='black', linestyle="-", linewidth=0.2)
-plt.plot(time, errorIntegral, color='black', linestyle="--", linewidth=0.3)
-plt.ylim(-6.5, 6.5)
+plt.plot(time, errorIntegral, color='black', linestyle="--", linewidth=0.5)
+plt.ylim(-6.5, 9)
 plt.yticks(np.arange(-6, 7, 3))
-plt.xlabel("Time [s]")
-plt.ylabel("Error Magnitude \n [E]")
+plt.xlabel("Time [s]",fontsize=6)
+plt.ylabel("Error Magnitude \n [E]", fontsize=6)
 #axe.set_aspect(aspect=100) 
 fig.savefig(spath+'error', quality=100, format='svg', bbox_inches='tight')
-#plt.show()
+plt.show()
 
 
 #speedDiffdata is an array with columbs containg different data = [reflex_error reflex_error refelx_for_nav nn_output learnign_for_nav Motor_command] 
@@ -75,11 +79,13 @@ speedDiffdata=np.loadtxt('{}speedDiffdata.csv'.format(path));
 #learningSpeedDiff = speedDiffdata[0:5000,4];
 learningSpeedDiff = speedDiffdata[:,4];
 time = np.linspace(0,len(speedDiffdata)/33, len(speedDiffdata))  #divide by 33Hz to get runtime 
-#figs=plt.figure('speedDiff')#, figsize=(3,1), dpi=my_dpi)
-#axes=figs.add_subplot(111)
-plt.plot(time, learningSpeedDiff, color='black', linestyle="-", linewidth=0.2)
-plt.xlabel("Time [s]")
-plt.ylabel("Predictive Motor Comamand \n [O_p]")
+figs=plt.figure('speedDiff', figsize=(3,1), dpi=my_dpi)
+axes=figs.add_subplot(111)
+plt.plot(time, learningSpeedDiff, color='black', linestyle="-", linewidth=0.4)
+plt.ylim(-6.5, 6.5)
+plt.yticks(np.arange(-6, 7, 3))
+plt.xlabel("Time [s]",fontsize=6)
+plt.ylabel("Predictive Motor\n Comamand \n [O_p]",fontsize=6)
 ##plt.ylim(-9.9, 6.5)
 
 ##plt.yticks(np.arange(-9, 7, 3))
@@ -101,16 +107,16 @@ axe=wchfig.add_subplot(111)
 if (plotType == 1):
     for i in range(0,wch.shape[1]):
         j= (i+0.1)/(13)
-        plt.plot(time, wch[:,i], color= [0,0,0] , linestyle="--", linewidth=0.3 , dashes=(5, i/2), label='layer'+str(i+1))
-        plt.xlabel("Time (s)")
-        plt.ylabel("Euclidian Distance of Weight Changes")
+        plt.plot(time, wch[:,i], color= [0,0,0] , linestyle="--", linewidth=0.5 , dashes=(5, i/2), label='layer'+str(i+1))
+        plt.xlabel("Time [s]",fontsize=6)
+        plt.ylabel("Euclidian Distance of\n Weight Changes",fontsize=6)
 
 if (plotType == 0):
     for i in range(1,wch.shape[1]-2):
         j= (i+0.1)/(13)
-        plt.plot(time, wch[:,i], color= [0,0,0] , linestyle="--", linewidth=0.3 , dashes=(5, i/2), label='layer'+str(i+1))
-        plt.xlabel("Time (s)")
-        plt.ylabel("Euclidian Distance of Weight Changes")
+        plt.plot(time, wch[:,i], color= [0,0,0] , linestyle="--", linewidth=0.5 , dashes=(5, i/2), label='layer'+str(i+1))
+        plt.xlabel("Time [s]",fontsize=6)
+        plt.ylabel("Euclidian Distance of\n Weight Changes",fontsize=6)
 #plt.plot(wch[:,wch.shape[1]-1], color=[0,0,0], linestyle="-", linewidth=0.3)
 #axe.legend()
 #plt.ylim(-0.05, 0.45)
