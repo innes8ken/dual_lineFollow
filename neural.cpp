@@ -35,8 +35,8 @@ boost::circular_buffer<double> predVector5[numPred];
 double learningExpBCL = -1; // This is the exponential of the leaning rate for the BCL algo 
 double lrCoeffBCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the BCL algo 
 
-double learningExpFCL = -4; // This is the exponential of the leaning rate for the FCL algo 
-double lrCoeffFCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo #
+double learningExpFCL = -5; // This is the exponential of the leaning rate for the FCL algo 
+double lrCoeffFCL = 1; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo #
 
 //########################################## Declaring BCL global variables ###########################################
 std::unique_ptr<Net> samanet;// initialising a pointer instance of BCL NN called 'samanet'
@@ -45,8 +45,7 @@ const int numLayersBCL = 11; // number of layers in the BCL algo
 //########################################## Declaring FCL global variables ###########################################
 FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL; // initialising fcl nn from class ffcllwf 
 static constexpr int numLayersFCL = 3; // number of layers in the FCL algo 
-//int nNeuronsInLayers[numLayersFCL] = {10,11,14,15,12,11,10,8,6,6,6};//,6,6,6}; // The number of neurons in every layer array // 
-int nNeuronsInLayers[numLayersFCL] = {5,3,3};//,11,10,9,8,7,6,5,4,3};//,5,3};//7,5,3}; //9,3,3};
+int nNeuronsInLayers[numLayersFCL] = {5,6,6};//5,3,3};  // The number of neurons in every layer array // 
 const int nFiltersInput = 5; // We set nFilters in the input
 
 //long step = 0; 
@@ -320,29 +319,29 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
   
  //Seperate left and right motor commands from network: 
    
-  /*
-  *leftMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*5+
-                      (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*3 +
-                      (fclFB->getOutputLayer()->getNeuron(2)->getOutput())*1);
-  *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*1 +
-                       (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*3 +
-                       (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*5);
+  
+  *leftMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(0)->getOutput())*8+
+                      (fclFB->getOutputLayer()->getNeuron(1)->getOutput())*5 +
+                      (fclFB->getOutputLayer()->getNeuron(2)->getOutput())*2);
+  *rightMotorCommand = (double)((fclFB->getOutputLayer()->getNeuron(3)->getOutput())*2 +
+                       (fclFB->getOutputLayer()->getNeuron(4)->getOutput())*5 +
+                       (fclFB->getOutputLayer()->getNeuron(5)->getOutput())*8);
   
   double resultNN = *leftMotorCommand + *rightMotorCommand ;
-  */
+  
   
 
  //Combining motor commands so Left and right have equal commands (matching the BCL algo): 
  //1st section: 3 different output neurons are sumed in a weighted manner so that the NN can output slow, moderate, or fast steering <---- 3 neuron output same as BCL
  //2nd section: leftmototr command and rightmotor command are summed together to get the overall command <---- 6 output neurons)
 
-  double coeff[3] = {2,5,8}; //{2,5,8};// This are the weights for the 3 outputs of the network
+  /*double coeff[3] = {2,5,8}; //{2,5,8};// This are the weights for the 3 outputs of the network
   double outSmall = fclFB->getOutputLayer()->getNeuron(0)->getOutput();
   double outMedium = fclFB->getOutputLayer()->getNeuron(1)->getOutput();
   double outLarge = fclFB->getOutputLayer()->getNeuron(2)->getOutput();
 
   double resultNN = (coeff[0] * outSmall) + (coeff[1] * outMedium) + (coeff[2] * outLarge);
-  //cout << "FCL outNodes: "<< outSmall<<' '<<outMedium<<' '<<outLarge<<' '<<endl;
+  //cout << "FCL outNodes: "<< outSmall<<' '<<outMedium<<' '<<outLarge<<' '<<endl;*/
    
   cout << "OutputNeurons: " <<endl;
   for(int i =0; i<nNeuronsInLayers[numLayersFCL-1]; i++){

@@ -59,7 +59,7 @@ double bcl_nn_gain_coeff = 1.2; // NN'output gain for steering, the coefficient
 double bcl_nn_gain_power = 0; // NN'output gain for steering, the power of 10
 
 //###################################    FCL Environment  ########################################################################
-double fcl_nn_gain_coeff = 1.2; // NN's output parameters for steering: coefficient * 10^(power)
+double fcl_nn_gain_coeff = 1; // NN's output parameters for steering: coefficient * 10^(power)
 double fcl_nn_gain_power = 0;
 
 //################################################################################################################################
