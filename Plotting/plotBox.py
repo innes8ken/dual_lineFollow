@@ -1,4 +1,4 @@
-
+import pandas as pd
 import numpy as np
 import os
 import matplotlib.pylab as plt
@@ -24,7 +24,7 @@ y=[]
 
 
 for i in range (4,6):
-    for j in range (1,10):
+    for j in range (1,5):
         for k in range (1,5):
             folder = path1 + 'L'+ str(j) + 'e-' +str(i) + '_(5,3,3)_F5_run' + str(k) +'/'
             check = os.path.isdir(folder)
@@ -43,7 +43,30 @@ for i in range (4,6):
                 x.append(xdat)
                 y.append(ydat)
                 
-plt.xticks([6*pow(10,-5), 7*pow(10,-5), 8*pow(10,-5), 9*pow(10,-5), 1*pow(10,-4), 2*pow(10,-4), 3*pow(10,-4), 4*pow(10,-4), 5*pow(10,-4), 1*pow(10,-3)])
-plt.scatter(x,y)
-#plt.boxplot(y)
+np.roll(y,8)
+print(y)
+plt.xticks([1*pow(10,-5), 1*pow(10,-4), 2*pow(10,-4), 3*pow(10,-4), 4*pow(10,-4)])
+plt.tick_params(labelsize=10, pad=10)
+plt.xlabel("Learning Rate ($\mu$)", fontsize =14 )
+plt.ylabel("Time Steps to Success", fontsize =14)
+plt.scatter(x,y,c='black',s=70)
+#plt.plot(x,y)
+# z = np.polyfit(x,y,2)
+# p = np.poly1d(z)
+# plt.plot(x, p(x)) #trendline
 plt.show()
+
+# oneE4 = y[0:5]
+# twoE4 = y[5:9]
+# threeE4 = y[9:13]
+# fourE4 = y[13:17]
+# fiveE4 = y[17:21]
+# oneE5 = y[21:25]
+
+
+# columns = [oneE5, oneE4, twoE4, threeE4, fourE4, fiveE4]
+
+# fig, ax = plt.subplots()
+# ax.boxplot(columns)
+# plt.xticks([1, 2, 3, 4, 5, 6], [1*pow(10,-5), 1*pow(10,-4), 2*pow(10,-4), 3*pow(10,-4), 4*pow(10,-4), 5*pow(10,-4)], rotation=10)
+# plt.show()
