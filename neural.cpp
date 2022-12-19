@@ -36,7 +36,7 @@ double learningExpBCL = -1; // This is the exponential of the leaning rate for t
 double lrCoeffBCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the BCL algo 
 
 double learningExpFCL = -4; // This is the exponential of the leaning rate for the FCL algo 
-double lrCoeffFCL = 3; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo #
+double lrCoeffFCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo #
 
 //########################################## Declaring BCL global variables ###########################################
 std::unique_ptr<Net> samanet;// initialising a pointer instance of BCL NN called 'samanet'
