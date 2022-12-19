@@ -4,6 +4,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <iostream>
+#include <string>
+#include <initializer_list>
+#include <fstream> 
+
+
+#include <assert.h>
+#include <ctgmath>
+#include <cstdlib>
+#include <cstdio>
+#include <cassert>
+#include <numeric>
+
+
+using namespace std;
 
 /**
  * GNU GENERAL PUBLIC LICENSE
@@ -309,15 +324,27 @@ void FCLLayer::setConvolution( int width,  int height) {
 }
 
 
-int FCLLayer::saveWeightMatrix(char *filename) {
-	FILE* f = fopen(filename,"FCLwL.dat"); //wL1 before
-	if (!f) return errno;
+int FCLLayer::saveWeightMatrix() {
+	std::ofstream wfileFCL("/home/pi/projects/dual_lineFollow/Plotting/FCLwL.csv");
+	
+	//if (!filename) return errno;
 	for(int i=0;i<nNeurons;i++) {
 		for(int j=0;j<neurons[i]->getNinputs();j++) {
-			fprintf(f,"%f\t",neurons[i]->getWeight(j));
+			wfileFCL << neurons[i]->getWeight(j) << ' ';
 		}
-		fprintf(f,"\n");
+		wfileFCL << "\n";
 	}
-	fclose(f);
+	//wfileFCL.close();
 	return 0;
+	
+	//FILE* f = fopen(filename,"FCLwL"); //wt before wL1
+	//if (!f) return errno;
+	//for(int i=0;i<nNeurons;i++) {
+		//for(int j=0;j<neurons[i]->getNinputs();j++) {
+			//fprintf(f,"%f\t",neurons[i]->getWeight(j));
+		//}
+		//fprintf(f,"\n");
+	//}
+	//fclose(f);
+	//return 0;
 }

@@ -13,6 +13,8 @@
 #include "neuron.h"
 #include <stdlib.h>
 #include <string.h>
+#include <string>
+
 
 #ifdef __linux__
 #include <pthread.h>
@@ -346,8 +348,8 @@ public:
 	/** Save weight matrix for documentation and debugging
          * \param filename The filename it should be saved to.
          **/
-	int saveWeightMatrix(char *filename);
-
+	//int saveWeightMatrix(char *filename);
+	int saveWeightMatrix();
 	
 private:
 

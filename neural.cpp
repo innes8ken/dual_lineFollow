@@ -15,6 +15,7 @@
 #include <ctgmath>
 #include "FCL/fcl.h"
 #include "FCL/fcl_util.h"
+#include <iostream>
 
 using namespace std;
 
@@ -36,7 +37,7 @@ double learningExpBCL = -1; // This is the exponential of the leaning rate for t
 double lrCoeffBCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the BCL algo 
 
 double learningExpFCL = -4; // This is the exponential of the leaning rate for the FCL algo 
-double lrCoeffFCL = 2; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo #
+double lrCoeffFCL = 2.5; //additional learning rate coefficient (for lrCoeff*10^(learningExp)) for the FCL algo #
 
 //########################################## Declaring BCL global variables ###########################################
 std::unique_ptr<Net> samanet;// initialising a pointer instance of BCL NN called 'samanet'
@@ -47,6 +48,7 @@ FeedforwardClosedloopLearningWithFilterbank* fclFB = NULL; // initialising fcl n
 static constexpr int numLayersFCL = 3; // number of layers in the FCL algo 
 int nNeuronsInLayers[numLayersFCL] = {5,6,6};//5,3,3};  // The number of neurons in every layer array // 
 const int nFiltersInput = 5; // We set nFilters in the input
+
 
 //long step = 0; 
 //double avgError = 0;
@@ -361,9 +363,12 @@ double run_fclNet(std::vector<double> &predictorDeltas, double reflex_error, dou
 
 
 void fcl_weightPlotting(){ //NEEDS FIXED!!
-
-  char tmp[256];
-  sprintf(tmp,"FCLwL.dat");
-  fclFB->getLayer(0)->saveWeightMatrix(tmp);
+  //std::ofstream wFileFCL;
+  //char name;
+  //name = 'FCLwL.csv' ;
+  
+  //char tmp[256];
+  //sprintf(tmp,"FCLwL.dat");
+  fclFB->getLayer(0)->saveWeightMatrix();
 }
   
