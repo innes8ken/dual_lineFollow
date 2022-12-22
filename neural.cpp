@@ -112,7 +112,7 @@ void initialize_samanet(int numInputs_Pi, double sampleRate) {
   for (int i = numLayersBCL - 2; i >= 0; i--){
     numNeurons[i] = lastHiddenLayer + (numLayersBCL - 2 - i)  * incrementLayer;
     totalNeurons += numNeurons[i];
-    assert(numNeurons[i] > 0); //11,12,10,9,8,8,7,6,5,4,3
+    assert(numNeurons[i] > 0); //11,12,11,10,9,8,7,6,5,4,3
   }
 
   // setting up the BCL NN with the number of layers, neurons per layer and number of inputs
